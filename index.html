@@ -247,6 +247,13 @@
       .timecard-table .text-\[10px\] {
         font-size: 0.65rem !important;
       }
+      
+      /* 改修：時間表記のコロン調整（左右の余白をさらに広げて見やすく） */
+      .time-colon {
+        margin: 0 4px !important;
+        display: inline-block;
+      }
+
       /* 列幅の固定割り当て（スマホ最適化版） */
       .timecard-table th:nth-child(1) { width: 12%; } /* 日付 */
       .timecard-table th:nth-child(2) { width: 14%; } /* 出勤 */
@@ -1299,7 +1306,7 @@
         if (dayRecords.length === 0) {
           rowsHtml += `
             <tr class="hover:bg-gray-50">
-              <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base ${dayColorClass}">${day}<br><span class="text-xs font-normal">(${dayOfWeek})</span></td>
+              <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base ${dayColorClass}">${day}日<br><span class="text-xs font-normal">(${dayOfWeek})</span></td>
               <td class="p-1 sm:p-2 border ${tdBorder} text-center text-gray-300 text-xs sm:text-sm align-middle">-</td>
               <td class="p-1 sm:p-2 border ${tdBorder} text-center text-gray-300 text-xs sm:text-sm align-middle">-</td>
               <td class="p-1 sm:p-2 border ${tdBorder} text-center text-gray-300 text-xs sm:text-sm align-middle">-</td>
@@ -1350,18 +1357,18 @@
             
             rowsHtml += `
               <tr class="hover:bg-gray-50 bg-white">
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base ${dayColorClass} align-middle">${day}<br><span class="text-xs font-normal">(${dayOfWeek})</span></td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${record.startTime}</td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${record.endTime}</td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base ${dayColorClass} align-middle">${day}日<br><span class="text-xs font-normal">(${dayOfWeek})</span></td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${formatTimeColon(record.startTime)}</td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${formatTimeColon(record.endTime)}</td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center text-xs sm:text-sm align-middle">${restDisplayHtml}</td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-700 whitespace-nowrap align-middle">
                   <span class="hidden sm:inline">${formatTime(workMin)}</span>
-                  <span class="sm:hidden tracking-tighter">${formatTimeShort(workMin)}</span>
+                  <span class="sm:hidden tracking-tighter">${formatTimeColon(formatTimeShort(workMin))}</span>
                 </td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-red-600 whitespace-nowrap align-middle">
                   ${overMin > 0 ? `
                     <span class="hidden sm:inline">${formatTime(overMin)}</span>
-                    <span class="sm:hidden tracking-tighter">${formatTimeShort(overMin)}</span>
+                    <span class="sm:hidden tracking-tighter">${formatTimeColon(formatTimeShort(overMin))}</span>
                   ` : '-'}
                 </td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center align-middle">
