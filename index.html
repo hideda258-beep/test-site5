@@ -1170,6 +1170,12 @@
       return `${h}:${m}`;
     }
 
+    // 新設：コロンの左右に余白を入れる（表示用）
+    function formatTimeColon(timeStr) {
+      if (!timeStr) return '';
+      return String(timeStr).replace(':', '<span class="time-colon">:</span>');
+    }
+
     // 画面の描画更新
     function render() {
       const targetPrefix = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
