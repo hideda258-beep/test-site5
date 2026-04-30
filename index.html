@@ -283,15 +283,31 @@
     </div>
   </div>
 
-  <!-- 新設：削除確認モーダル -->
+  <!-- 新設：操作選択モーダル -->
+  <div id="actionSelectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-gray-300">
+      <h2 class="text-2xl font-bold mb-4 text-gray-800">操作を選択してください</h2>
+      <p class="text-lg font-bold text-gray-600 mb-8 leading-relaxed">
+        この勤務情報をどうしますか？
+      </p>
+      <div class="flex flex-col gap-5">
+        <button onclick="executeActionEdit()" class="w-full bg-blue-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-blue-700 active:translate-y-1 transition-colors">修正する</button>
+        <button onclick="executeActionDelete()" class="w-full bg-red-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-red-700 active:translate-y-1 transition-colors">削除する</button>
+        <button onclick="closeActionModal()" class="w-full bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 改修：削除確認モーダル -->
   <div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-red-400">
       <div class="text-5xl mb-4">⚠️</div>
-      <p id="deleteModalText" class="text-2xl font-bold mb-8 text-gray-800 leading-relaxed">
-        --月--日の勤務情報を<br>削除します
+      <h2 class="text-2xl font-bold mb-4 text-gray-800">削除確認</h2>
+      <p id="deleteModalText" class="text-xl font-bold mb-8 text-gray-800 leading-relaxed">
+        この内容を削除しますか？
       </p>
       <div class="flex justify-center gap-5">
-        <button onclick="closeDeleteModal()" class="flex-1 bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">キャンセル</button>
+        <button onclick="closeDeleteModal()" class="flex-1 bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">いいえ</button>
         <button onclick="executeDeleteRecord()" class="flex-1 bg-red-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-red-700 active:translate-y-1 transition-colors">はい</button>
       </div>
     </div>
@@ -491,13 +507,13 @@
               <!-- 改修：選択ボタン群（初期非表示）スマホは折り返し対応 -->
               <div id="flexRestOptions" class="hidden flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 mt-2 mb-2">
                 <button type="button" id="btnFlex20" onclick="selectFlexRest(20)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
-                  20
+                  20分
                 </button>
                 <button type="button" id="btnFlex30" onclick="selectFlexRest(30)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
-                  30
+                  30分
                 </button>
                 <button type="button" id="btnFlex40" onclick="selectFlexRest(40)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
-                  40
+                  40分
                 </button>
               </div>
             </div>
@@ -513,13 +529,13 @@
                 <!-- 新設：選択ボタン群（初期非表示）スマホは折り返し対応 -->
                 <div id="eveningRestOptions" class="hidden flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 mt-2 mb-2">
                   <button type="button" id="btnEve20" onclick="selectEveningRest(20)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
-                    20
+                    20分
                   </button>
                   <button type="button" id="btnEve30" onclick="selectEveningRest(30)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
-                    30
+                    30分
                   </button>
                   <button type="button" id="btnEve40" onclick="selectEveningRest(40)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
-                    40
+                    40分
                   </button>
                 </div>
 
@@ -614,6 +630,7 @@
     let isEditMode = false;
     let currentDateStr = '';
     let targetDeleteDate = null; // 削除対象日付
+    let targetActionDate = null; // 新設：操作対象日付
     let currentUserIcon = '🙍🏻‍♂️'; // 新規：選択中のユーザーアイコン
     
     // Firebase関連
@@ -1260,11 +1277,12 @@
             let workMin = record.workMinutes;
             let overMin = record.overMinutes;
             
+            let baseRest = record.baseRestMinutes !== undefined ? record.baseRestMinutes : record.restMinutes;
+            let eveningVal = record.eveningRestMinutes !== undefined ? record.eveningRestMinutes : (record.hasEveningRest ? 30 : 0);
+
             // 既存データの互換性対応
             if (overMin === undefined) {
-               let base = record.baseRestMinutes !== undefined ? record.baseRestMinutes : record.restMinutes;
-               let eveningVal = record.eveningRestMinutes !== undefined ? record.eveningRestMinutes : (record.hasEveningRest ? 30 : 0);
-               const calc = calculateWorkTimes(record.startTime, record.endTime, base, eveningVal);
+               const calc = calculateWorkTimes(record.startTime, record.endTime, baseRest, eveningVal);
                workMin = calc.workMinutes;
                overMin = calc.overMinutes;
             }
@@ -1272,19 +1290,34 @@
             subTotalWorkMinutes += workMin;
             subTotalOverMinutes += overMin;
             
+            // 休憩時間の表示用HTML生成
+            let restDisplayHtml = '-';
+            let totalRest = baseRest + eveningVal;
+            if (totalRest > 0) {
+              if (baseRest > 0 && eveningVal > 0) {
+                restDisplayHtml = `
+                  <div class="flex flex-col items-center justify-center leading-tight whitespace-nowrap">
+                    <span>${totalRest}分</span>
+                    <span class="text-[10px] sm:text-xs text-gray-500 mt-0.5">昼${baseRest}分 / 夕${eveningVal}分</span>
+                  </div>
+                `;
+              } else if (baseRest > 0) {
+                restDisplayHtml = `<span class="whitespace-nowrap">昼${baseRest}分</span>`;
+              } else if (eveningVal > 0) {
+                restDisplayHtml = `<span class="whitespace-nowrap">夕${eveningVal}分</span>`;
+              }
+            }
+            
             rowsHtml += `
               <tr class="hover:bg-gray-50 bg-white">
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base ${dayColorClass}">${day}<br><span class="text-xs font-normal">(${dayOfWeek})</span></td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold">${record.startTime}</td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold">${record.endTime}</td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-xs sm:text-sm">${record.restMinutes > 0 ? record.restMinutes + '分' : '-'}</td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-700 whitespace-nowrap">${formatTime(workMin)}</td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-red-600 whitespace-nowrap">${overMin > 0 ? formatTime(overMin) : '-'}</td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center">
-                  <div class="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2">
-                    <button onclick="editRecord('${record.date}')" class="bg-blue-500 text-white px-2 py-1 sm:px-3 rounded text-xs sm:text-sm font-bold shadow hover:bg-blue-600 active:translate-y-1 whitespace-nowrap">修正</button>
-                    <button onclick="confirmDeleteRecord('${record.date}')" class="bg-red-500 text-white px-2 py-1 sm:px-3 rounded text-xs sm:text-sm font-bold shadow hover:bg-red-600 active:translate-y-1 whitespace-nowrap">削除</button>
-                  </div>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base ${dayColorClass} align-middle">${day}<br><span class="text-xs font-normal">(${dayOfWeek})</span></td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${record.startTime}</td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${record.endTime}</td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center text-xs sm:text-sm align-middle">${restDisplayHtml}</td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-700 whitespace-nowrap align-middle">${formatTime(workMin)}</td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-red-600 whitespace-nowrap align-middle">${overMin > 0 ? formatTime(overMin) : '-'}</td>
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center align-middle">
+                  <button onclick="openActionModal('${record.date}')" class="bg-blue-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-sm sm:text-base font-bold shadow hover:bg-blue-600 active:translate-y-1 whitespace-nowrap w-full sm:w-auto">修正</button>
                 </td>
               </tr>
             `;
@@ -1656,13 +1689,32 @@
       document.getElementById('successModal').classList.add('hidden');
     };
 
+    // --- 操作選択モーダルの処理 ---
+    window.openActionModal = function(dateStr) {
+      targetActionDate = dateStr;
+      document.getElementById('actionSelectModal').classList.remove('hidden');
+    };
+
+    window.closeActionModal = function() {
+      targetActionDate = null;
+      document.getElementById('actionSelectModal').classList.add('hidden');
+    };
+
+    window.executeActionEdit = function() {
+      const dateStr = targetActionDate;
+      closeActionModal();
+      if (dateStr) editRecord(dateStr);
+    };
+
+    window.executeActionDelete = function() {
+      const dateStr = targetActionDate;
+      closeActionModal();
+      if (dateStr) confirmDeleteRecord(dateStr);
+    };
+
     // --- 削除確認モーダルの処理 ---
     window.confirmDeleteRecord = function(dateStr) {
       targetDeleteDate = dateStr;
-      const d = new Date(dateStr);
-      const m = d.getMonth() + 1;
-      const day = d.getDate();
-      document.getElementById('deleteModalText').innerHTML = `${m}月${day}日の勤務情報を<br>削除します`;
       document.getElementById('deleteConfirmModal').classList.remove('hidden');
     };
 
