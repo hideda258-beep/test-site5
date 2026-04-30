@@ -214,19 +214,22 @@
       .header-user-row {
         display: flex !important;
         align-items: center !important;
-        justify-content: center !important;
-        gap: 8px !important; /* 名前と設定ボタンの隙間 */
-        margin-top: 12px !important; /* 全体を少し下にずらす */
+        justify-content: flex-end !important; /* 中央から右寄せに変更 */
+        gap: 10px !important; /* 名前と設定ボタンの隙間を少し調整 */
+        margin-top: 12px !important; 
+        padding-right: 12px !important; /* 右端からの余白 */
       }
       .name-box {
         width: auto !important; /* 自動幅にする */
         max-width: fit-content !important;
         padding: 8px 16px !important; /* 左右の余白を小さくする */
         margin: 0 !important;
+        margin-left: auto !important; /* 左側の空間を自動にして全体を右に押しやる */
       }
       .setting-btn {
         position: static !important; /* 絶対配置を解除して横並びに */
         margin: 0 !important;
+        margin-right: 4px !important; /* 右ギリギリになりすぎないように調整 */
         flex-shrink: 0 !important;
       }
     }
