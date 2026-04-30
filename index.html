@@ -179,6 +179,14 @@
       padding-top: 16px;
     }
 
+    /* 新設：名前とボタンを横並びにするためのラッパー */
+    .header-user-row {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .name-box {
       display: flex;
       justify-content: center;
@@ -186,7 +194,7 @@
       width: 85%;
       max-width: 400px;
       margin: 16px auto 12px auto;
-      padding: 10px;
+      padding: 10px 20px;
       border-radius: 12px;
       text-align: center;
     }
@@ -200,19 +208,26 @@
 
     @media (max-width: 480px) {
       .header-area {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        padding-top: 48px; /* タイトルと設定ボタンが被らないように上部余白を追加 */
+        /* スマホ時の上部余白を調整（タイトル被り対策を解除し、自然な余白に） */
+        padding-top: 20px !important; 
       }
-      .setting-btn {
-        position: absolute;
-        top: 8px;
-        right: 8px;
+      .header-user-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important; /* 名前と設定ボタンの隙間 */
+        margin-top: 12px !important; /* 全体を少し下にずらす */
       }
       .name-box {
-        width: 90%;
+        width: auto !important; /* 自動幅にする */
+        max-width: fit-content !important;
+        padding: 8px 16px !important; /* 左右の余白を小さくする */
+        margin: 0 !important;
+      }
+      .setting-btn {
+        position: static !important; /* 絶対配置を解除して横並びに */
+        margin: 0 !important;
+        flex-shrink: 0 !important;
       }
     }
   </style>
@@ -228,14 +243,17 @@
       <span class="relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-[#22c55e] to-[#15803d]">勤務時間かんたん管理</span>
     </h1>
     
-    <!-- 改修：名前表示エリア（横長ボックス） -->
-    <div id="headerUserName" class="name-box bg-[#FFF8CC] text-gray-800 text-xl sm:text-2xl font-bold shadow-sm tracking-widest border-2 border-yellow-200" style="display: none; font-family: 'UDGothic', 'UD デジタル 教科書体 N-R', 'BIZ UDPGothic', sans-serif;"></div>
+    <!-- 改修：スマホ時に横並びにするためのラッパー -->
+    <div class="header-user-row">
+      <!-- 名前表示エリア -->
+      <div id="headerUserName" class="name-box bg-[#FFF8CC] text-gray-800 text-xl sm:text-2xl font-bold shadow-sm tracking-widest border-2 border-yellow-200" style="display: none; font-family: 'UDGothic', 'UD デジタル 教科書体 N-R', 'BIZ UDPGothic', sans-serif;"></div>
 
-    <!-- 改修：設定ボタン（右上に独立配置） -->
-    <button onclick="openSettings()" class="setting-btn bg-white/70 backdrop-blur-sm text-gray-600 border border-gray-300 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm sm:text-base font-bold shadow-sm hover:bg-white active:scale-95 transition-all flex items-center gap-1.5 sm:gap-2">
-      <span class="text-base sm:text-lg">⚙️</span>
-      <span>設定</span>
-    </button>
+      <!-- 設定ボタン -->
+      <button onclick="openSettings()" class="setting-btn bg-white/70 backdrop-blur-sm text-gray-600 border border-gray-300 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm sm:text-base font-bold shadow-sm hover:bg-white active:scale-95 transition-all flex items-center gap-1.5 sm:gap-2">
+        <span class="text-base sm:text-lg">⚙️</span>
+        <span>設定</span>
+      </button>
+    </div>
   </div>
 
   <!-- ヘッダー（月切り替え） -->
