@@ -265,6 +265,16 @@
         white-space: nowrap !important;
       }
     }
+
+    /* 新設：ボタン選択時の凹み表現 */
+    .btn-pressed {
+      box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* 新設：入力済みの入力欄の背景色 */
+    .filled {
+      background-color: #e6f4ea !important;
+    }
   </style>
 </head>
 <body class="pb-20">
@@ -394,9 +404,15 @@
 
   <main class="p-4 max-w-2xl mx-auto mt-4">
     <!-- 新設：タブ切り替え -->
-    <div class="flex mb-8 rounded-2xl overflow-hidden shadow-md border-4 border-blue-600">
+    <div class="flex mb-4 rounded-2xl overflow-hidden shadow-md border-4 border-blue-600">
       <button id="btnTabInput" onclick="switchTab('input')" class="flex-1 py-5 text-xl sm:text-2xl font-bold bg-blue-600 text-white transition-colors">本日の情報入力</button>
       <button id="btnTabList" onclick="switchTab('list')" class="flex-1 py-5 text-xl sm:text-2xl font-bold bg-white text-gray-500 hover:bg-gray-100 transition-colors">タイムカード</button>
+    </div>
+
+    <!-- 新設：リアルタイム時計 -->
+    <div class="mb-8 bg-white border-2 border-blue-300 rounded-xl py-4 px-4 shadow-sm flex justify-center items-center flex-wrap gap-x-6 gap-y-1 text-xl sm:text-2xl font-extrabold text-blue-900 tracking-wider">
+      <span id="realtimeDate">📆 ----年 -月-日（-）</span>
+      <span id="realtimeClock">🕰️ -- : -- : --</span>
     </div>
 
     <!-- ★ 入力タブコンテンツ ★ -->
@@ -589,8 +605,9 @@
     <div id="tabList" class="hidden">
       <!-- ステータスエリア -->
       <div id="statusArea" class="card border-4 border-gray-300 mb-8 text-center">
-        <h2 class="text-xl font-bold text-gray-700 mb-2">今月の勤務時間合計<span class="text-sm">（87時間対象）</span></h2>
-        <div id="totalTime" class="text-huge text-gray-900 mb-8">0時間 0分</div>
+        <h2 class="text-xl font-bold text-gray-700 mb-3">今月の勤務時間合計<span class="text-sm">（87時間対象）</span></h2>
+        <!-- 改修：時間を角丸の枠で囲む -->
+        <div id="totalTime" class="text-huge text-gray-900 mb-8 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-gray-200">0時間 0分</div>
         
         <div class="progress-bg relative mx-auto">
           <div class="flex w-full h-full">
@@ -621,6 +638,7 @@
         
         <!-- 進捗バーの目盛り -->
         <div class="relative w-full h-6 mt-1 mb-8 text-xs text-gray-400 font-bold mx-auto">
+          <div class="absolute" style="left: 0%; transform: translateX(-50%);">0</div>
           <div class="absolute" style="left: calc(10 / 87 * 100%); transform: translateX(-50%);">10</div>
           <div class="absolute" style="left: calc(20 / 87 * 100%); transform: translateX(-50%);">20</div>
           <div class="absolute" style="left: calc(30 / 87 * 100%); transform: translateX(-50%);">30</div>
@@ -628,13 +646,14 @@
           <div class="absolute" style="left: calc(50 / 87 * 100%); transform: translateX(-50%);">50</div>
           <div class="absolute" style="left: calc(60 / 87 * 100%); transform: translateX(-50%);">60</div>
           <div class="absolute" style="left: calc(70 / 87 * 100%); transform: translateX(-50%);">70</div>
-          <div class="absolute" style="left: calc(75 / 87 * 100%); transform: translateX(-50%);">75</div>
-          <div class="absolute" style="left: calc(80 / 87 * 100%); transform: translateX(-50%);">80</div>
-          <div class="absolute text-red-600 font-extrabold" style="right: 0;">87</div>
+          <div class="absolute text-orange-500 font-extrabold" style="left: calc(75 / 87 * 100%); transform: translateX(-50%);">75</div>
+          <div class="absolute text-red-600 font-extrabold" style="left: calc(80 / 87 * 100%); transform: translateX(-50%);">80</div>
+          <div class="absolute text-red-600 font-extrabold" style="left: 100%; transform: translateX(-50%);">87</div>
         </div>
 
-        <h2 class="text-xl font-bold text-gray-700 mb-2">87時間まで あと</h2>
-        <div id="remainingTime" class="text-huge text-gray-700 font-bold mb-2">--時間 --分</div>
+        <h2 class="text-xl font-bold text-gray-700 mb-3 mt-4">87時間まで あと</h2>
+        <!-- 改修：時間を角丸の枠で囲む -->
+        <div id="remainingTime" class="text-huge text-gray-700 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-gray-200">--時間 --分</div>
         
         <div id="warningMessage" class="hidden"></div>
       </div>
@@ -701,8 +720,46 @@
       updateTopDisplay();
     }
 
+    // 新設：リアルタイム時計の更新
+    function updateRealtimeClock() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = now.getMonth() + 1;
+      const d = now.getDate();
+      const week = ['日', '月', '火', '水', '木', '金', '土'][now.getDay()];
+      const h = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      const sec = String(now.getSeconds()).padStart(2, '0');
+
+      const dateEl = document.getElementById('realtimeDate');
+      const timeEl = document.getElementById('realtimeClock');
+      if (dateEl) dateEl.textContent = `📆${y}年 ${m}月${d}日（${week}）`;
+      if (timeEl) timeEl.textContent = `🕰️${h} : ${min} : ${sec}`;
+    }
+
+    // 新設：入力欄の背景色を更新する関数
+    function updateInputBg(el) {
+      if (el.value.trim() !== '') {
+        el.classList.add('filled');
+      } else {
+        el.classList.remove('filled');
+      }
+    }
+
+    // 新設：すべての時間入力欄の背景色を一括更新
+    function updateAllInputBgs() {
+      ['startHour', 'startMinute', 'endHour', 'endMinute'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) updateInputBg(el);
+      });
+    }
+
     // 初期化処理
     document.addEventListener('DOMContentLoaded', () => {
+      // リアルタイム時計を開始
+      updateRealtimeClock();
+      setInterval(updateRealtimeClock, 1000);
+
       currentDateStr = getTodayStr();
 
       // 日付の初期値を今日に設定
@@ -713,7 +770,8 @@
       dateInput.addEventListener('input', updateTopDisplay);
       
       // 出退勤時間・休憩時間の手入力・Enterキー制御
-      const setupTimeInput = (id, maxVal, isRest = false) => {
+      // 改修：次のフォーカス先（nextId）を指定できるように追加
+      const setupTimeInput = (id, maxVal, isRest = false, nextId = null) => {
         const el = document.getElementById(id);
         
         // 入力時の制御（数字のみ、2桁制限）
@@ -721,6 +779,7 @@
           let val = e.target.value.replace(/[^0-9]/g, '');
           if (val.length > 2) val = val.slice(0, 2);
           e.target.value = val;
+          updateInputBg(e.target); // 追加：入力のたびに色を判定
           updateTopDisplay();
         });
         
@@ -729,6 +788,8 @@
           let val = target.value;
           if (val === '') {
             if (isRest) target.value = '0';
+            updateInputBg(target); // 追加
+            updateTopDisplay();
             return;
           }
           let num = parseInt(val, 10);
@@ -738,6 +799,7 @@
           } else {
             target.value = isRest ? '0' : '';
           }
+          updateInputBg(target); // 追加
           updateTopDisplay();
         };
 
@@ -755,18 +817,29 @@
           }, 10);
         });
 
-        // Enterキーが押された時
+        // 改修：Enterキーが押された時の動作
         el.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
             e.preventDefault(); // フォームのsubmit（登録）を防止
-            e.target.blur(); // フォーカスを外して入力を確定させる（スマホのキーボードも閉じる）
+            
+            if (nextId) {
+              // 次の入力欄が指定されている場合（「時」の欄）は、次に移動
+              const nextEl = document.getElementById(nextId);
+              if (nextEl) {
+                nextEl.focus();
+              }
+            } else {
+              // 次がない場合（「分」の欄）は、フォーカスを外して入力を確定させる
+              e.target.blur();
+            }
           }
         });
       };
       
-      setupTimeInput('startHour', 23);
+      // 改修：第4引数に次の入力欄（分のID）を渡す
+      setupTimeInput('startHour', 23, false, 'startMinute');
       setupTimeInput('startMinute', 59);
-      setupTimeInput('endHour', 23);
+      setupTimeInput('endHour', 23, false, 'endMinute');
       setupTimeInput('endMinute', 59);
 
       // 保存されている名前を読み込んで表示
@@ -809,7 +882,8 @@
       const startHour = document.getElementById('startHour');
       const startMinute = document.getElementById('startMinute');
 
-      btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-blue-500 bg-blue-100 text-blue-900 shadow-md";
+      // 選択時に凹み（btn-pressed）を適用
+      btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-blue-500 bg-blue-100 text-blue-900 btn-pressed";
       btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-green-100 transition-colors shadow-sm";
 
       startHour.value = "08";
@@ -817,6 +891,7 @@
       startHour.disabled = true;
       startMinute.disabled = true;
 
+      updateAllInputBgs(); // 追加
       updateTopDisplay();
     };
 
@@ -826,11 +901,17 @@
       const startHour = document.getElementById('startHour');
       const startMinute = document.getElementById('startMinute');
 
-      btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-green-500 bg-green-100 text-green-900 shadow-md";
+      // 選択時に凹み（btn-pressed）を適用
+      btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-green-500 bg-green-100 text-green-900 btn-pressed";
       btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-blue-100 transition-colors shadow-sm";
 
       startHour.disabled = false;
       startMinute.disabled = false;
+
+      // スマホでもキーボードが開くよう、少しだけ遅らせて「時」の入力欄にフォーカスを当てる
+      setTimeout(() => {
+        startHour.focus();
+      }, 50);
     };
 
     // --- 退勤ボタン処理 ---
@@ -840,6 +921,8 @@
       const m = String(now.getMinutes()).padStart(2, '0');
       document.getElementById('endHour').value = h;
       document.getElementById('endMinute').value = m;
+      
+      updateAllInputBgs(); // 追加
       updateTopDisplay();
     };
 
@@ -851,7 +934,8 @@
       const btnFlex = document.getElementById('btnRestFlex');
       const flexArea = document.getElementById('flexRestOptions');
 
-      btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 shadow-md";
+      // 選択時に凹みを適用
+      btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
       btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
       btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
       
@@ -866,7 +950,8 @@
       const btnFlex = document.getElementById('btnRestFlex');
       const flexArea = document.getElementById('flexRestOptions');
 
-      btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 shadow-md";
+      // 選択時に凹みを適用
+      btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
       btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
       btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
       
@@ -887,7 +972,8 @@
         if (flexArea) flexArea.classList.add('hidden');
       } else {
         currentRestMode = 'flex';
-        btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 shadow-md";
+        // 選択時に凹みを適用
+        btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
         btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
         btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
         
@@ -912,7 +998,7 @@
       for (let min in btns) {
         if (!btns[min]) continue;
         if (parseInt(min) === flexRestMinutes) {
-          btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 shadow-md";
+          btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
         } else {
           btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
         }
@@ -937,7 +1023,8 @@
       const optionsDiv = document.getElementById('eveningRestOptions');
       
       if (isEveningRestAdded) {
-        btnToggle.className = "w-full sm:w-auto py-5 px-6 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 shadow-md";
+        // 選択時に凹みを適用
+        btnToggle.className = "w-full sm:w-auto py-5 px-6 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
         optionsDiv.classList.remove('hidden');
         updateEveningOptionStyles();
       } else {
@@ -962,7 +1049,7 @@
       for (let min in btns) {
         if (!btns[min]) continue;
         if (parseInt(min) === eveningRestMinutes) {
-          btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 shadow-md";
+          btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
         } else {
           btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
         }
@@ -1193,7 +1280,9 @@
       const remainingMinutes = MAX_MINUTES - totalMinutes;
       
       document.getElementById('displayMonth').textContent = `${currentYear}年 ${currentMonth}月`;
-      document.getElementById('totalTime').textContent = formatTime(totalMinutes);
+      
+      const totalTimeElement = document.getElementById('totalTime');
+      totalTimeElement.textContent = formatTime(totalMinutes);
       
       const statusArea = document.getElementById('statusArea');
       const remainingElement = document.getElementById('remainingTime');
@@ -1220,28 +1309,34 @@
 
       warningMessage.style.display = 'none';
 
-      if (totalMinutes <= THRESHOLD_1) {
+      // 改修：残り時間だけでなく、合計時間の文字色も連動して変わるように変更
+      // さらに、枠のスタイルも同時に適用
+      if (totalMinutes < THRESHOLD_1) {
         statusArea.className = 'card border-4 border-green-500 bg-green-50 mb-8 text-center';
+        totalTimeElement.className = 'text-huge text-green-700 font-bold mb-8 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-green-200';
         remainingElement.textContent = formatTime(remainingMinutes);
-        remainingElement.className = 'text-huge text-green-700 font-bold mb-2';
-      } else if (totalMinutes <= THRESHOLD_2) {
+        remainingElement.className = 'text-huge text-green-700 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-green-200';
+      } else if (totalMinutes < THRESHOLD_2) {
         statusArea.className = 'card border-4 border-orange-400 bg-orange-50 mb-8 text-center';
+        totalTimeElement.className = 'text-huge text-orange-600 font-bold mb-8 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-orange-200';
         remainingElement.textContent = formatTime(remainingMinutes);
-        remainingElement.className = 'text-huge text-orange-600 font-bold mb-2';
+        remainingElement.className = 'text-huge text-orange-600 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-orange-200';
         warningMessage.style.display = 'block';
         warningMessage.innerHTML = '⚠️ 勤務時間が75時間を超えました！<br><span class="text-lg sm:text-xl block mt-1">⚖️ ここからは時間調整を行いましょう。</span>';
         warningMessage.className = 'mt-6 p-4 bg-orange-100 border-4 border-orange-400 rounded-xl text-xl sm:text-2xl font-bold text-orange-800 text-center leading-relaxed shadow-sm mx-auto max-w-md';
       } else if (remainingMinutes >= 0) {
         statusArea.className = 'card border-4 border-red-400 bg-red-50 mb-8 text-center';
+        totalTimeElement.className = 'text-huge text-red-600 font-bold mb-8 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-red-200';
         remainingElement.textContent = formatTime(remainingMinutes);
-        remainingElement.className = 'text-huge text-red-600 font-bold mb-2';
+        remainingElement.className = 'text-huge text-red-600 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-red-200';
         warningMessage.style.display = 'block';
         warningMessage.innerHTML = '⚠️ 80時間を超えました！<br><span class="text-lg sm:text-xl block mt-1">🚨 87時間超過に注意してください！</span>';
         warningMessage.className = 'mt-6 p-4 bg-red-100 border-4 border-red-500 rounded-xl text-xl sm:text-2xl font-bold text-red-800 text-center leading-relaxed shadow-sm mx-auto max-w-md';
       } else {
         statusArea.className = 'card border-4 border-red-600 bg-red-100 mb-8 text-center';
+        totalTimeElement.className = 'text-huge text-red-700 font-bold mb-8 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-red-300';
         remainingElement.textContent = `超過: ${formatTime(Math.abs(remainingMinutes))}`;
-        remainingElement.className = 'text-huge text-red-700 font-bold mb-2';
+        remainingElement.className = 'text-huge text-red-700 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-red-300';
         warningMessage.style.display = 'block';
         warningMessage.innerHTML = '🚨 87時間を超えました！<br><span class="text-xl sm:text-2xl mt-1 block">⛔ 直ちに時間調整を行ってください！</span>';
         warningMessage.className = 'mt-6 p-4 bg-red-200 border-4 border-red-600 rounded-xl text-2xl sm:text-3xl font-bold text-red-900 text-center leading-relaxed shadow-md mx-auto max-w-md animate-pulse';
@@ -1397,16 +1492,14 @@
       if (endDay === 15) { // 前半の表
         footerHtml = `
           <tr style="background-color: #fef9c3;">
-            <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 pr-2 sm:pr-4 whitespace-nowrap align-middle">小計</td>
+            <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 pr-4 sm:pr-6 whitespace-nowrap align-middle">小計</td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle">
               <span class="hidden sm:inline">${formatTime(subTotalWorkMinutes)}</span>
               <span class="sm:hidden">${formatTimeColon(formatTimeShort(subTotalWorkMinutes))}</span>
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-red-600 whitespace-nowrap align-middle">
-              ${subTotalOverMinutes > 0 ? `
-                <span class="hidden sm:inline">${formatTime(subTotalOverMinutes)}</span>
-                <span class="sm:hidden">${formatTimeColon(formatTimeShort(subTotalOverMinutes))}</span>
-              ` : '-'}
+              <span class="hidden sm:inline">${formatTime(subTotalOverMinutes)}</span>
+              <span class="sm:hidden">${formatTimeColon(formatTimeShort(subTotalOverMinutes))}</span>
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder}"></td>
           </tr>
@@ -1431,16 +1524,14 @@
 
         footerHtml = `
           <tr style="background-color: #ffe4e6;">
-            <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 pr-2 sm:pr-4 whitespace-nowrap align-middle">合計</td>
+            <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 pr-4 sm:pr-6 whitespace-nowrap align-middle">合計</td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle">
               <span class="hidden sm:inline">${formatTime(totalWork)}</span>
               <span class="sm:hidden">${formatTimeColon(formatTimeShort(totalWork))}</span>
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-red-600 whitespace-nowrap align-middle">
-              ${totalOver > 0 ? `
-                <span class="hidden sm:inline">${formatTime(totalOver)}</span>
-                <span class="sm:hidden">${formatTimeColon(formatTimeShort(totalOver))}</span>
-              ` : '-'}
+              <span class="hidden sm:inline">${formatTime(totalOver)}</span>
+              <span class="sm:hidden">${formatTimeColon(formatTimeShort(totalOver))}</span>
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder}"></td>
           </tr>
@@ -1598,6 +1689,8 @@
       document.getElementById('endHour').value = '';
       document.getElementById('endMinute').value = '';
       
+      updateAllInputBgs(); // 追加：リセット時に背景色を白に戻す
+
       // 休憩
       currentRestMode = null;
       flexRestMinutes = 30;
@@ -1712,11 +1805,11 @@
       const btnFemale = document.getElementById('btnIconFemale');
       
       if (currentUserIcon === '🙍🏻‍♂️') {
-        btnMale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-blue-500 bg-blue-50 text-blue-900 shadow-md";
+        btnMale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-blue-500 bg-blue-50 text-blue-900 btn-pressed";
         btnFemale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm";
       } else {
         btnMale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm";
-        btnFemale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-pink-500 bg-pink-50 text-pink-900 shadow-md";
+        btnFemale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-pink-500 bg-pink-50 text-pink-900 btn-pressed";
       }
     }
 
@@ -1955,6 +2048,7 @@
       if (editGuide) editGuide.classList.add('hidden');
 
       // 画面上部の表示を更新
+      updateAllInputBgs(); // 追加：修正モードに入った時の値を元に背景色を更新
       updateTopDisplay();
 
       // タブを入力画面に切り替える（タブ自体の自動上部スクロールは無効化）
