@@ -6,6 +6,50 @@
   <title>勤務時間管理アプリ</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* スマホはみ出し防止用のレスポンシブ設定 */
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    main,
+    .card,
+    .input-area,
+    .time-section {
+      max-width: 100%;
+    }
+
+    /* スマホ（480px以下）向けの微調整 */
+    @media (max-width: 480px) {
+      main {
+        padding: 12px !important;
+      }
+      .card {
+        padding: 14px !important;
+      }
+      .time-input-row {
+        gap: 6px !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+      }
+      .time-input {
+        width: 90px !important;
+        max-width: 35% !important;
+        font-size: 1.8rem !important;
+        padding: 12px 4px !important;
+      }
+      .time-colon {
+        font-size: 1.8rem !important;
+      }
+      .large-button {
+        width: 100% !important;
+        font-size: 1.4rem !important;
+        padding: 16px !important;
+      }
+    }
+
     body {
       font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
       color: #1f2937;
@@ -288,11 +332,11 @@
               「時間差出勤」を押してから手入力してください
             </p>
             
-            <div class="flex justify-center items-center gap-2 sm:gap-4 bg-white py-6 px-4 rounded-xl border-2 border-blue-100 shadow-inner">
+            <div class="time-input-row flex justify-center items-center gap-2 sm:gap-4 bg-white py-6 px-4 rounded-xl border-2 border-blue-100 shadow-inner">
               <label class="text-xl font-bold text-gray-700 hidden sm:block">手入力：</label>
-              <input type="text" inputmode="numeric" id="startHour" class="input-field mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-blue-50 focus:border-blue-400" placeholder="--">
-              <span class="text-4xl font-bold text-gray-500">：</span>
-              <input type="text" inputmode="numeric" id="startMinute" class="input-field mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-blue-50 focus:border-blue-400" placeholder="--">
+              <input type="text" inputmode="numeric" id="startHour" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-blue-50 focus:border-blue-400" placeholder="--">
+              <span class="time-colon text-4xl font-bold text-gray-500">：</span>
+              <input type="text" inputmode="numeric" id="startMinute" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-blue-50 focus:border-blue-400" placeholder="--">
             </div>
           </div>
 
@@ -308,11 +352,11 @@
               ※「今すぐ退勤」のあとも、時間はそのまま修正できます
             </p>
             
-            <div class="flex justify-center items-center gap-2 sm:gap-4 bg-white py-6 px-4 rounded-xl border-2 border-orange-100 shadow-inner">
+            <div class="time-input-row flex justify-center items-center gap-2 sm:gap-4 bg-white py-6 px-4 rounded-xl border-2 border-orange-100 shadow-inner">
               <label class="text-xl font-bold text-gray-700 hidden sm:block">手入力：</label>
-              <input type="text" inputmode="numeric" id="endHour" class="input-field mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-orange-50 focus:border-orange-400" placeholder="--">
-              <span class="text-4xl font-bold text-gray-500">：</span>
-              <input type="text" inputmode="numeric" id="endMinute" class="input-field mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-orange-50 focus:border-orange-400" placeholder="--">
+              <input type="text" inputmode="numeric" id="endHour" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-orange-50 focus:border-orange-400" placeholder="--">
+              <span class="time-colon text-4xl font-bold text-gray-500">：</span>
+              <input type="text" inputmode="numeric" id="endMinute" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-orange-50 focus:border-orange-400" placeholder="--">
             </div>
           </div>
           
@@ -335,8 +379,8 @@
                 </button>
               </div>
               
-              <!-- 改修：選択ボタン群（初期非表示） -->
-              <div id="flexRestOptions" class="hidden flex flex-row gap-3 sm:gap-6 mt-2 mb-2">
+              <!-- 改修：選択ボタン群（初期非表示）スマホは折り返し対応 -->
+              <div id="flexRestOptions" class="hidden flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 mt-2 mb-2">
                 <button type="button" id="btnFlex20" onclick="selectFlexRest(20)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
                   20
                 </button>
@@ -357,8 +401,8 @@
                   夕方食事休憩
                 </button>
                 
-                <!-- 新設：選択ボタン群（初期非表示） -->
-                <div id="eveningRestOptions" class="hidden flex flex-row gap-3 sm:gap-6 mt-2 mb-2">
+                <!-- 新設：選択ボタン群（初期非表示）スマホは折り返し対応 -->
+                <div id="eveningRestOptions" class="hidden flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 mt-2 mb-2">
                   <button type="button" id="btnEve20" onclick="selectEveningRest(20)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
                     20
                   </button>
@@ -378,8 +422,8 @@
             </div>
           </div>
           
-          <button type="submit" class="btn btn-primary mt-8 py-6 text-2xl">この内容で登録する</button>
-          <button type="button" onclick="resetInputOnly()" class="w-full bg-gray-500 text-white font-bold text-2xl py-6 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors mt-4">入力をリセット</button>
+          <button type="submit" class="btn btn-primary large-button mt-8 py-6 text-2xl">この内容で登録する</button>
+          <button type="button" onclick="resetInputOnly()" class="w-full large-button bg-gray-500 text-white font-bold text-2xl py-6 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors mt-4">入力をリセット</button>
         </form>
       </div>
     </div> <!-- tabInputの終了 -->
