@@ -259,9 +259,11 @@
       
       /* 修正・入力ボタンを少しコンパクトに */
       .timecard-btn {
-        padding: 6px 2px !important;
+        padding: 6px 0 !important;
         font-size: 0.75rem !important;
-        width: 100% !important;
+        width: 85% !important;
+        margin: 0 auto !important;
+        display: block !important;
         white-space: nowrap !important;
       }
     }
@@ -733,8 +735,8 @@
 
       const dateEl = document.getElementById('realtimeDate');
       const timeEl = document.getElementById('realtimeClock');
-      if (dateEl) dateEl.textContent = `📆${y}年 ${m}月${d}日（${week}）`;
-      if (timeEl) timeEl.textContent = `🕰️${h} : ${min} : ${sec}`;
+      if (dateEl) dateEl.textContent = `📆 ${y}年 ${m}月${d}日（${week}）`;
+      if (timeEl) timeEl.textContent = `🕰️ ${h} : ${min} : ${sec}`;
     }
 
     // 新設：入力欄の背景色を更新する関数
@@ -1492,7 +1494,7 @@
       if (endDay === 15) { // 前半の表
         footerHtml = `
           <tr style="background-color: #fef9c3;">
-            <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 pr-4 sm:pr-6 whitespace-nowrap align-middle">小計</td>
+            <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">小計</td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle">
               <span class="hidden sm:inline">${formatTime(subTotalWorkMinutes)}</span>
               <span class="sm:hidden">${formatTimeColon(formatTimeShort(subTotalWorkMinutes))}</span>
@@ -1524,7 +1526,7 @@
 
         footerHtml = `
           <tr style="background-color: #ffe4e6;">
-            <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 pr-4 sm:pr-6 whitespace-nowrap align-middle">合計</td>
+            <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">合計</td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle">
               <span class="hidden sm:inline">${formatTime(totalWork)}</span>
               <span class="sm:hidden">${formatTimeColon(formatTimeShort(totalWork))}</span>
