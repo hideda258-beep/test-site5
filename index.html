@@ -1143,7 +1143,8 @@
     // データ取得（Firestore）
     function fetchData() {
       if (!isFirebaseActive || !user || !db) return;
-      const collRef = collection(db, 'artifacts', appId, 'users', user.uid, 'work_hours');
+      // 修正：以前のデータ保存先である 'time_records' に戻す
+      const collRef = collection(db, 'artifacts', appId, 'users', user.uid, 'time_records');
       
       onSnapshot(collRef, (snapshot) => {
         workRecords = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -1549,7 +1550,8 @@
       if (isFirebaseActive && user && db) {
         try {
           // 日付をドキュメントIDにして同日上書きする
-          const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'work_hours', date);
+          // 修正：以前のデータ保存先である 'time_records' に戻す
+          const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'time_records', date);
           await setDoc(docRef, recordData);
           
           updateLocalData();
@@ -1803,7 +1805,8 @@
       // Firebaseから削除
       if (isFirebaseActive && user && db) {
         try {
-          const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'work_hours', dateToDelete);
+          // 修正：以前のデータ保存先である 'time_records' に戻す
+          const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'time_records', dateToDelete);
           await deleteDoc(docRef);
         } catch(e) {
           console.error("Delete error:", e);
