@@ -174,13 +174,24 @@
 <body class="pb-20">
 
   <!-- 新設：アプリタイトル -->
-  <div class="text-center mt-5 mb-4 px-2">
+  <div class="relative text-center mt-5 mb-4 px-2">
     <h1 class="relative inline-block text-3xl sm:text-4xl font-extrabold tracking-wider">
       <!-- 白い縁取りと軽いドロップシャドウ -->
       <span class="absolute left-0 top-0 w-full h-full text-transparent select-none z-0" style="-webkit-text-stroke: 6px white; filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.15));">勤務時間かんたん管理</span>
       <!-- 緑のグラデーション文字 -->
       <span class="relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-[#22c55e] to-[#15803d]">勤務時間かんたん管理</span>
     </h1>
+    
+    <!-- 改修：名前表示エリア（名札風デザインを1.5倍に拡大） -->
+    <div class="mt-3 sm:mt-4 flex justify-center min-h-[3.5rem]">
+      <div id="headerUserName" style="display: none; font-family: 'UDGothic', 'UD デジタル 教科書体 N-R', 'BIZ UDPGothic', sans-serif;" class="bg-[#FFF8CC] text-gray-800 text-xl sm:text-2xl font-bold px-8 sm:px-10 py-2 sm:py-3 rounded-2xl shadow-sm tracking-widest border-2 border-yellow-200"></div>
+    </div>
+
+    <!-- 新設：設定ボタン（位置を左に寄せ、少し大きく修正） -->
+    <button onclick="openSettings()" class="absolute right-4 sm:right-12 top-1/2 transform -translate-y-1/2 bg-white/70 backdrop-blur-sm text-gray-600 border border-gray-300 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm sm:text-base font-bold shadow-sm hover:bg-white active:scale-95 transition-all z-20 flex items-center gap-1.5 sm:gap-2">
+      <span class="text-base sm:text-lg">⚙️</span>
+      <span>設定</span>
+    </button>
   </div>
 
   <!-- ヘッダー（月切り替え） -->
@@ -232,6 +243,39 @@
         ⚖️ ここからは時間調整を<br>行いましょう。
       </p>
       <button onclick="closeAlert75Modal()" class="w-full bg-orange-600 text-white font-bold text-2xl py-4 rounded-xl shadow-md hover:bg-orange-700 active:translate-y-1 transition-colors">確認しました</button>
+    </div>
+  </div>
+
+  <!-- 新設：設定画面モーダル -->
+  <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all border-4 border-gray-300">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center border-b-2 border-gray-200 pb-2">⚙️ 設定</h2>
+      
+      <div class="mb-4 text-left">
+        <label class="block text-sm font-bold text-gray-700 mb-2">姓</label>
+        <input type="text" id="settingLastName" class="input-field mb-0 py-3 px-4 text-xl sm:text-2xl" placeholder="例：山田" onkeydown="if(event.key === 'Enter' && !event.isComposing) { event.preventDefault(); this.blur(); }">
+      </div>
+      <div class="mb-6 text-left">
+        <label class="block text-sm font-bold text-gray-700 mb-2">名</label>
+        <input type="text" id="settingFirstName" class="input-field mb-0 py-3 px-4 text-xl sm:text-2xl" placeholder="例：太郎" onkeydown="if(event.key === 'Enter' && !event.isComposing) { event.preventDefault(); this.blur(); }">
+      </div>
+      
+      <div class="mb-8 text-left">
+        <label class="block text-sm font-bold text-gray-700 mb-2">アイコン</label>
+        <div class="flex gap-4">
+          <button type="button" id="btnIconMale" onclick="selectUserIcon('🙍🏻‍♂️')" class="flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm">
+            🙍🏻‍♂️ 男性
+          </button>
+          <button type="button" id="btnIconFemale" onclick="selectUserIcon('🙍🏻‍♀️')" class="flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm">
+            🙍🏻‍♀️ 女性
+          </button>
+        </div>
+      </div>
+      
+      <div class="flex flex-col gap-3">
+        <button onclick="saveSettings()" class="w-full bg-blue-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-blue-700 active:translate-y-1 transition-colors">保存する</button>
+        <button onclick="closeSettings()" class="w-full bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">閉じる</button>
+      </div>
     </div>
   </div>
 
@@ -345,7 +389,7 @@
             <label class="block text-2xl font-bold text-orange-900 mb-6 border-b-2 border-orange-200 pb-2">🏠 退勤時間</label>
             
             <button type="button" onclick="setCurrentEndTime()" class="w-full mb-3 py-5 px-4 rounded-xl text-2xl font-bold border-4 border-orange-400 bg-orange-100 text-orange-900 hover:bg-orange-200 transition-colors shadow-md">
-              🕒 今すぐ退勤（現在時刻）
+              🕒 今すぐ退勤<br><span class="text-lg font-normal">（現在時刻）</span>
             </button>
             
             <p class="text-sm text-gray-500 leading-relaxed mb-6 text-left sm:text-center">
@@ -505,6 +549,7 @@
     let isEditMode = false;
     let currentDateStr = '';
     let targetDeleteDate = null; // 削除対象日付
+    let currentUserIcon = '🙍🏻‍♂️'; // 新規：選択中のユーザーアイコン
     
     // Firebase関連
     let isFirebaseActive = false;
@@ -609,6 +654,9 @@
       setupTimeInput('startMinute', 59);
       setupTimeInput('endHour', 23);
       setupTimeInput('endMinute', 59);
+
+      // 保存されている名前を読み込んで表示
+      loadUserName();
 
       // 初期状態はボタン未選択としてリセット処理を通す
       resetFormUI();
@@ -1441,6 +1489,69 @@
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // --- 設定画面の処理 ---
+    function loadUserName() {
+      const lastName = localStorage.getItem('lastName') || '';
+      const firstName = localStorage.getItem('firstName') || '';
+      const icon = localStorage.getItem('userIcon') || '🙍🏻‍♂️';
+      const nameDisplay = document.getElementById('headerUserName');
+      
+      const fullName = `${lastName} ${firstName}`.trim();
+      if (fullName) {
+        nameDisplay.textContent = `${icon} ${fullName}`;
+        nameDisplay.style.display = 'inline-block';
+      } else {
+        nameDisplay.textContent = '';
+        nameDisplay.style.display = 'none';
+      }
+    }
+
+    window.openSettings = function() {
+      // 保存されている値を入力欄にセットして表示
+      document.getElementById('settingLastName').value = localStorage.getItem('lastName') || '';
+      document.getElementById('settingFirstName').value = localStorage.getItem('firstName') || '';
+      currentUserIcon = localStorage.getItem('userIcon') || '🙍🏻‍♂️';
+      updateIconOptionsStyles();
+      document.getElementById('settingsModal').classList.remove('hidden');
+    };
+
+    window.closeSettings = function() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    };
+
+    window.selectUserIcon = function(icon) {
+      currentUserIcon = icon;
+      updateIconOptionsStyles();
+    };
+
+    function updateIconOptionsStyles() {
+      const btnMale = document.getElementById('btnIconMale');
+      const btnFemale = document.getElementById('btnIconFemale');
+      
+      if (currentUserIcon === '🙍🏻‍♂️') {
+        btnMale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-blue-500 bg-blue-50 text-blue-900 shadow-md";
+        btnFemale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm";
+      } else {
+        btnMale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm";
+        btnFemale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-pink-500 bg-pink-50 text-pink-900 shadow-md";
+      }
+    }
+
+    window.saveSettings = function() {
+      const lastName = document.getElementById('settingLastName').value;
+      const firstName = document.getElementById('settingFirstName').value;
+      
+      // localStorageに保存
+      localStorage.setItem('lastName', lastName);
+      localStorage.setItem('firstName', firstName);
+      localStorage.setItem('userIcon', currentUserIcon);
+      
+      // 表示を更新して閉じる
+      loadUserName();
+      closeSettings();
+      showMessage('⚙️ 設定を保存しました');
+    };
 
     // 新規：入力項目だけをリセットする処理
     window.resetInputOnly = function() {
