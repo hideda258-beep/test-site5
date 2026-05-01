@@ -142,7 +142,7 @@
     }
     .progress-bg {
       background-color: #e5e7eb;
-      height: 40px; /* 改修：メーターの縦幅を広くしました（28px → 40px） */
+      height: 40px;
       width: 100%;
       overflow: hidden;
       margin-top: 12px;
@@ -179,7 +179,6 @@
       padding-top: 16px;
     }
 
-    /* 新設：名前とボタンを横並びにするためのラッパー（PCでは通常の中央配置） */
     .header-user-row {
       width: 100%;
       display: flex;
@@ -208,17 +207,17 @@
 
     @media (max-width: 480px) {
       .header-area {
-        padding-top: 16px !important; /* タイトル上部余白を標準に戻す */
-        margin-bottom: 16px !important; /* 青い月表示との隙間を調整 */
+        padding-top: 16px !important;
+        margin-bottom: 16px !important;
       }
       .header-user-row {
-        justify-content: flex-end !important; /* 右寄せベース */
-        gap: 12px !important; /* 名前とボタンの間隔 */
-        margin-top: 20px !important; /* タイトルと少し距離を離して下に配置 */
-        padding-right: 16px !important; /* 設定ボタンを少し左に寄せるための余白 */
+        justify-content: flex-end !important;
+        gap: 12px !important;
+        margin-top: 20px !important;
+        padding-right: 16px !important;
       }
       .setting-btn {
-        position: static !important; /* 絶対配置を解除して横並びに */
+        position: static !important;
         margin: 0 !important;
         flex-shrink: 0 !important;
       }
@@ -227,37 +226,34 @@
         max-width: fit-content !important;
         padding: 8px 16px !important;
         margin: 0 !important;
-        margin-left: auto !important; /* 余った左のスペースを押し出す */
+        margin-left: auto !important;
       }
       
-      /* 新設：タイムカードのスマホ用調整（横はみ出し防止） */
       .timecard-table {
         table-layout: fixed !important;
         width: 100% !important;
       }
       .timecard-table th,
       .timecard-table td {
-        padding: 4px 2px !important; /* セルの余白を削減（最優先） */
-        font-size: 0.75rem !important; /* 文字サイズを少し小さくする（約90%） */
-        letter-spacing: -0.5px !important; /* 文字間隔を少し詰める */
-        white-space: normal !important; /* 折り返しを許可してはみ出しを防ぐ */
-        word-break: keep-all; /* 単語の途中で切れないようにする */
+        padding: 4px 2px !important;
+        font-size: 0.75rem !important;
+        letter-spacing: -0.5px !important;
+        white-space: normal !important;
+        word-break: keep-all;
       }
       .timecard-table .text-xs,
       .timecard-table .text-\[10px\] {
         font-size: 0.65rem !important;
       }
       
-      /* 列幅の固定割り当て（スマホ最適化版） */
-      .timecard-table th:nth-child(1) { width: 12%; } /* 日付 */
-      .timecard-table th:nth-child(2) { width: 14%; } /* 出勤 */
-      .timecard-table th:nth-child(3) { width: 14%; } /* 退勤 */
-      .timecard-table th:nth-child(4) { width: 22%; } /* 休憩 */
-      .timecard-table th:nth-child(5) { width: 13%; } /* 勤務 */
-      .timecard-table th:nth-child(6) { width: 12%; } /* 残業 */
-      .timecard-table th:nth-child(7) { width: 13%; } /* 操作 */
+      .timecard-table th:nth-child(1) { width: 12%; }
+      .timecard-table th:nth-child(2) { width: 14%; }
+      .timecard-table th:nth-child(3) { width: 14%; }
+      .timecard-table th:nth-child(4) { width: 22%; }
+      .timecard-table th:nth-child(5) { width: 13%; }
+      .timecard-table th:nth-child(6) { width: 12%; }
+      .timecard-table th:nth-child(7) { width: 13%; }
       
-      /* 修正・入力ボタンを少しコンパクトに */
       .timecard-btn {
         padding: 6px 0 !important;
         font-size: 0.75rem !important;
@@ -268,12 +264,10 @@
       }
     }
 
-    /* 新設：ボタン選択時の凹み表現 */
     .btn-pressed {
       box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2) !important;
     }
 
-    /* 新設：入力済みの入力欄の背景色 */
     .filled {
       background-color: #e6f4ea !important;
     }
@@ -281,21 +275,16 @@
 </head>
 <body class="pb-20">
 
-  <!-- ヘッダーエリア（タイトル・名前・設定ボタン） -->
+  <!-- ヘッダーエリア -->
   <div class="header-area mb-4 px-2">
     <h1 class="relative inline-block text-3xl sm:text-4xl font-extrabold tracking-wider">
-      <!-- 白い縁取りと軽いドロップシャドウ -->
       <span class="absolute left-0 top-0 w-full h-full text-transparent select-none z-0" style="-webkit-text-stroke: 6px white; filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.15));">勤務時間かんたん管理</span>
-      <!-- 緑のグラデーション文字 -->
       <span class="relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-[#22c55e] to-[#15803d]">勤務時間かんたん管理</span>
     </h1>
     
-    <!-- 改修：スマホ時に横並びにするためのラッパー -->
     <div class="header-user-row">
-      <!-- 名前表示エリア -->
       <div id="headerUserName" class="name-box bg-[#FFF8CC] text-gray-800 text-xl sm:text-2xl font-bold shadow-sm tracking-widest border-2 border-yellow-200" style="display: none; font-family: 'UDGothic', 'UD デジタル 教科書体 N-R', 'BIZ UDPGothic', sans-serif;"></div>
 
-      <!-- 設定ボタン -->
       <button onclick="openSettings()" class="setting-btn bg-white/70 backdrop-blur-sm text-gray-600 border border-gray-300 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm sm:text-base font-bold shadow-sm hover:bg-white active:scale-95 transition-all flex items-center gap-1.5 sm:gap-2">
         <span class="text-base sm:text-lg">⚙️</span>
         <span>設定</span>
@@ -305,29 +294,36 @@
 
   <!-- ヘッダー（月切り替え） -->
   <header class="bg-blue-800 text-white p-4 flex justify-between items-center shadow-md">
-    <button onclick="changeMonth(-1)" class="p-3 bg-blue-700 rounded-lg text-xl font-bold hover:bg-blue-600">◀ 前月</button>
-    <h1 id="displayMonth" class="text-2xl sm:text-3xl font-bold text-center flex-1">----年 --月</h1>
-    <button onclick="changeMonth(1)" class="p-3 bg-blue-700 rounded-lg text-xl font-bold hover:bg-blue-600">次月 ▶</button>
+    <!-- 改修：前月ボタンの文字と矢印を青色に変更しました -->
+    <button onclick="changeMonth(-1)" class="bg-white text-[#1d4ed8] hover:text-[#1e40af] border border-[#e5e7eb] rounded-lg py-[6px] px-[12px] text-xl font-bold shadow-[0_2px_6px_rgba(0,0,0,0.15)] hover:bg-gray-50 active:translate-y-[2px] active:shadow-none transition-all whitespace-nowrap">◀ 前月</button>
+    
+    <!-- 改修：縦幅（上下の余白）を py-1 から py-2 (PCは py-3) に増やして、少し広くしました -->
+    <div class="flex-1 flex justify-center px-1 sm:px-2">
+      <h1 id="displayMonth" class="text-2xl sm:text-3xl font-bold text-center py-2 sm:py-3 px-4 sm:px-8 rounded-sm border-2 border-white bg-blue-900/70 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6)] whitespace-nowrap">----年 --月</h1>
+    </div>
+    
+    <!-- 改修：次月ボタンの文字と矢印を青色に変更しました -->
+    <button onclick="changeMonth(1)" class="bg-white text-[#1d4ed8] hover:text-[#1e40af] border border-[#e5e7eb] rounded-lg py-[6px] px-[12px] text-xl font-bold shadow-[0_2px_6px_rgba(0,0,0,0.15)] hover:bg-gray-50 active:translate-y-[2px] active:shadow-none transition-all whitespace-nowrap">次月 ▶</button>
   </header>
 
   <!-- メッセージ表示エリア -->
   <div id="messageArea" style="display: none;"></div>
 
   <!-- 登録完了モーダル -->
-  <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden transition-opacity duration-300">
     <div class="bg-white p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-blue-400">
       <div class="text-5xl mb-4">✨</div>
       <p id="successModalTitle" class="text-2xl font-bold mb-4 text-gray-800 leading-relaxed">
         本日の勤務情報を<br>記録しました📝
       </p>
-      <p id="successModalSub" class="text-xl font-bold text-gray-600 mb-8">
+      <!-- 改修：「閉じる」ボタンを削除し、下の余白を調整しました -->
+      <p id="successModalSub" class="text-xl font-bold text-gray-600 mb-2">
         お仕事おつかれさまでした😌
       </p>
-      <button onclick="closeSuccessModal()" class="w-full bg-blue-600 text-white font-bold text-2xl py-4 rounded-xl shadow-md hover:bg-blue-700 active:translate-y-1 transition-colors">閉じる</button>
     </div>
   </div>
 
-  <!-- 新設：操作選択モーダル -->
+  <!-- 操作選択モーダル -->
   <div id="actionSelectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-gray-300">
       <h2 class="text-2xl font-bold mb-4 text-gray-800">操作を選択してください</h2>
@@ -342,7 +338,7 @@
     </div>
   </div>
 
-  <!-- 改修：削除確認モーダル -->
+  <!-- 削除確認モーダル -->
   <div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-red-400">
       <div class="text-5xl mb-4">⚠️</div>
@@ -357,7 +353,7 @@
     </div>
   </div>
 
-  <!-- 新設：75時間超過アラートモーダル（初回のみ） -->
+  <!-- 75時間超過アラートモーダル -->
   <div id="alert75Modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-orange-50 p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-orange-500">
       <div class="text-5xl mb-4">⚠️</div>
@@ -371,7 +367,7 @@
     </div>
   </div>
 
-  <!-- 新設：設定画面モーダル -->
+  <!-- 設定画面モーダル -->
   <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all border-4 border-gray-300">
       <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center border-b-2 border-gray-200 pb-2">⚙️ 設定</h2>
@@ -405,31 +401,34 @@
   </div>
 
   <main class="p-4 max-w-2xl mx-auto mt-4">
-    <!-- 新設：タブ切り替え -->
+    <!-- タブ切り替え -->
     <div class="flex mb-4 rounded-2xl overflow-hidden shadow-md border-4 border-blue-600">
       <button id="btnTabInput" onclick="switchTab('input')" class="flex-1 py-5 text-xl sm:text-2xl font-bold bg-blue-600 text-white transition-colors">本日の情報入力</button>
       <button id="btnTabList" onclick="switchTab('list')" class="flex-1 py-5 text-xl sm:text-2xl font-bold bg-white text-gray-500 hover:bg-gray-100 transition-colors">タイムカード</button>
     </div>
 
-    <!-- 新設：リアルタイム時計 -->
-    <div class="mb-8 bg-white border-2 border-blue-300 rounded-xl py-4 px-4 shadow-sm flex justify-center items-center flex-wrap gap-x-6 gap-y-1 text-xl sm:text-2xl font-extrabold text-blue-900 tracking-wider">
-      <span id="realtimeDate">📆 ----年 -月-日（-）</span>
-      <span id="realtimeClock">🕰️ -- : -- : --</span>
+    <!-- 改修：リアルタイム時計の縦幅拡大と文字サイズアップ -->
+    <div class="mb-8 bg-white border-2 border-blue-300 rounded-xl py-6 sm:py-8 px-4 shadow-sm flex justify-center items-center flex-wrap gap-x-8 gap-y-3 font-extrabold text-blue-900 tracking-wider">
+      <span id="realtimeDate" class="text-[22px] sm:text-[28px]">📆 ----年 -月-日（-）</span>
+      <span id="realtimeClock" class="text-[28px] sm:text-[36px]">🕰️ -- : -- : --</span>
     </div>
 
     <!-- ★ 入力タブコンテンツ ★ -->
     <div id="tabInput">
-      <!-- 上部ハイライトエリア（日付・出退勤時間） -->
+      <!-- 上部ハイライトエリア -->
       <div class="card mb-8 border-4 border-blue-500 bg-blue-50 text-center py-8 shadow-md">
 
-        <!-- ① 本日表示 -->
-        <div class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">本日</div>
+        <!-- 改修：① 📍本日表示と日付を確実に中央配置 -->
+        <div class="flex justify-center items-center text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+          📍本日
+        </div>
         <!-- 日付表示 -->
-        <div class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 tracking-wide">
-          📆 <span id="topDateDisplay">----年 --月--日（-）</span>
+        <!-- 改修：pt-3 (約12pxの余白) を追加し、「📍 本日」との間隔を少し広げました -->
+        <div class="flex justify-center items-center gap-2 text-2xl sm:text-3xl font-bold text-gray-800 pt-3 mb-6 tracking-wide">
+          <span>📆</span>
+          <span id="topDateDisplay">----年 --月--日（-）</span>
         </div>
         
-        <!-- 改修：本日の労働時間（対象と残業） -->
         <div class="mb-8 bg-yellow-50 border-4 border-amber-400 rounded-2xl py-6 px-4 mx-auto max-w-sm sm:max-w-md shadow-sm">
           <div class="text-lg sm:text-xl font-bold text-gray-700 mb-2">本日の勤務時間<span class="text-sm">（87h対象）</span></div>
           <div id="topWorkTime" class="text-3xl sm:text-4xl font-extrabold text-blue-900 tracking-wider mb-2">--時間 --分</div>
@@ -440,49 +439,41 @@
           </div>
         </div>
 
-        <!-- 内部処理用に日付を保持 -->
         <input type="hidden" id="date" required>
 
-        <!-- 上部の時間表示（休憩を追加） -->
         <div class="flex justify-center items-center gap-3 sm:gap-8 flex-wrap">
-          <!-- 出勤時間 -->
           <div class="flex flex-col items-center">
-            <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-2">出勤時間</div>
-            <div id="displayStartBox" class="text-2xl sm:text-4xl font-bold text-blue-900 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center transition-colors duration-300">
+            <!-- 改修：translate-y-1 を外し、mb-0.5 (約2pxの余白) を設定して、ほんの少しだけ隙間を作りました -->
+            <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-0.5 relative z-10">出勤時間</div>
+            <div id="displayStartBox" class="text-2xl sm:text-4xl font-bold text-blue-900 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center transition-colors duration-300 relative z-0">
               <span id="topStartTime">--:--</span>
             </div>
           </div>
-          <!-- 退勤時間 -->
           <div class="flex flex-col items-center">
-            <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-2">退勤時間</div>
-            <div id="displayEndBox" class="text-2xl sm:text-4xl font-bold text-orange-900 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center transition-colors duration-300">
+            <!-- 改修：translate-y-1 を外し、mb-0.5 (約2pxの余白) を設定して、ほんの少しだけ隙間を作りました -->
+            <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-0.5 relative z-10">退勤時間</div>
+            <div id="displayEndBox" class="text-2xl sm:text-4xl font-bold text-orange-900 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center transition-colors duration-300 relative z-0">
               <span id="topEndTime">--:--</span>
             </div>
           </div>
-          <!-- 休憩時間 -->
           <div class="flex flex-col items-center">
-            <!-- 改修：ラベルを「休憩時間」に変更 -->
-            <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-2">休憩時間</div>
-            <!-- 改修：文字が増えるため幅を広げ、フォントサイズを調整（折り返さないようにwhitespace-nowrapを追加） -->
-            <div id="displayRestBox" class="text-xl sm:text-2xl font-bold text-yellow-700 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[140px] sm:min-w-[180px] text-center transition-colors duration-300 whitespace-nowrap">
+            <!-- 改修：translate-y-1 を外し、mb-0.5 (約2pxの余白) を設定して、ほんの少しだけ隙間を作りました -->
+            <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-0.5 relative z-10">休憩時間</div>
+            <div id="displayRestBox" class="text-xl sm:text-2xl font-bold text-yellow-700 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[140px] sm:min-w-[180px] text-center transition-colors duration-300 whitespace-nowrap relative z-0">
               <span id="topRestTime">--分</span>
             </div>
           </div>
         </div>
 
-        <!-- 改修：登録後の修正ボタン（初期状態は非表示） -->
         <div id="editGuideMessage" class="hidden mt-8">
-          <!-- 背景色を bg-white から bg-red-50 に変更し、ホバー時の色も調整 -->
           <button type="button" onclick="editTodayRecord()" class="bg-red-50 border-4 border-red-400 text-red-600 font-bold text-xl sm:text-2xl py-4 px-8 rounded-xl shadow-md hover:bg-red-100 active:translate-y-1 transition-colors w-full max-w-sm mx-auto flex items-center justify-center gap-2">
             <span>✏️</span> 本日の情報を修正
           </button>
         </div>
 
-        <!-- ② 下部テキスト -->
         <div class="mt-8 text-sm font-bold text-gray-500">
           ※この項目は自動表示です
         </div>
-
       </div>
 
       <!-- 入力フォームエリア -->
@@ -538,7 +529,7 @@
             </div>
           </div>
           
-          <!-- 休憩時間エリア（2段構成） -->
+          <!-- 休憩時間エリア -->
           <div class="mb-8 p-6 bg-yellow-50 border-4 border-yellow-200 rounded-2xl">
             <label class="block text-2xl font-bold text-yellow-900 mb-6 border-b-2 border-yellow-200 pb-2">☕ 休憩時間</label>
             
@@ -557,7 +548,6 @@
                 </button>
               </div>
               
-              <!-- 改修：選択ボタン群（初期非表示）スマホは折り返し対応 -->
               <div id="flexRestOptions" class="hidden flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 mt-2 mb-2">
                 <button type="button" id="btnFlex20" onclick="selectFlexRest(20)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
                   20分
@@ -579,7 +569,6 @@
                   夕方食事休憩
                 </button>
                 
-                <!-- 新設：選択ボタン群（初期非表示）スマホは折り返し対応 -->
                 <div id="eveningRestOptions" class="hidden flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 mt-2 mb-2">
                   <button type="button" id="btnEve20" onclick="selectEveningRest(20)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
                     20分
@@ -610,12 +599,10 @@
     <div id="tabList" class="hidden">
       <!-- ステータスエリア -->
       <div id="statusArea" class="card border-4 border-gray-300 mb-8 text-center">
-        <!-- 改修：左寄せの設定を解除し、綺麗に中央揃え（text-center）になるよう修正 -->
         <h2 class="text-xl font-bold text-gray-700 mb-1 mt-4 leading-tight text-center">
           ⏱️ 今月の勤務時間合計<br>
           <span class="text-sm block mt-0 text-gray-500">（87時間対象）</span>
         </h2>
-        <!-- 改修：時間を角丸の枠で囲む -->
         <div id="totalTime" class="text-huge text-gray-900 mb-8 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-gray-200">0時間 0分</div>
         
         <div class="progress-bg relative mx-auto">
@@ -635,7 +622,6 @@
             <div class="absolute top-0 bottom-0 w-[2px] bg-gray-300" style="left: calc(70 / 87 * 100%);"></div>
             <div class="absolute top-0 bottom-0 w-[2px] bg-gray-300" style="left: calc(75 / 87 * 100%);"></div>
             <div class="absolute top-0 bottom-0 w-[2px] bg-gray-300" style="left: calc(80 / 87 * 100%);"></div>
-            <!-- 81〜86の1時間ごとの目盛り -->
             <div class="absolute top-0 bottom-0 w-px bg-gray-300" style="left: calc(81 / 87 * 100%);"></div>
             <div class="absolute top-0 bottom-0 w-px bg-gray-300" style="left: calc(82 / 87 * 100%);"></div>
             <div class="absolute top-0 bottom-0 w-px bg-gray-300" style="left: calc(83 / 87 * 100%);"></div>
@@ -645,7 +631,6 @@
           </div>
         </div>
         
-        <!-- 進捗バーの目盛り -->
         <div class="relative w-full h-6 mt-1 mb-8 text-xs text-gray-400 font-bold mx-auto">
           <div class="absolute" style="left: 0%; transform: translateX(-50%);">0</div>
           <div class="absolute" style="left: calc(10 / 87 * 100%); transform: translateX(-50%);">10</div>
@@ -660,15 +645,14 @@
           <div class="absolute text-red-600 font-extrabold" style="left: 100%; transform: translateX(-50%);">87</div>
         </div>
 
-        <!-- 改修：文字を変更し、下の枠に近づけるため mb-3 から mb-1 に変更 -->
         <h2 class="text-xl font-bold text-gray-700 mb-1 mt-4">⏳ 87時間まで のこり</h2>
-        <!-- 改修：時間を角丸の枠で囲む -->
         <div id="remainingTime" class="text-huge text-gray-700 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-gray-200">--時間 --分</div>
         
         <div id="warningMessage" class="hidden"></div>
       </div>
 
       <h2 class="text-2xl font-bold text-gray-800 mb-4 pl-2 border-l-4 border-blue-800">タイムカード</h2>
+      
       <div id="recordList">
         <p class="text-center text-gray-500 text-lg py-8">読み込み中...</p>
       </div>
@@ -684,15 +668,18 @@
     let workRecords = [];
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth() + 1;
+    
+    // 改修：出勤モードを確実に管理する変数（null | 'normal' | 'flex'）
+    let currentCommuteMode = null; 
     let currentRestMode = null; // 'normal' | 'flex' | 'none' | null
-    let flexRestMinutes = 30; // 追加：基本休憩の選択時間（初期値30）
-    let isEveningRestAdded = false; // 新規：追加休憩フラグ
-    let eveningRestMinutes = 30; // 追加休憩の分数（初期値30）
+    let flexRestMinutes = 30;
+    let isEveningRestAdded = false;
+    let eveningRestMinutes = 30;
     let isEditMode = false;
     let currentDateStr = '';
-    let targetDeleteDate = null; // 削除対象日付
-    let targetActionDate = null; // 新設：操作対象日付
-    let currentUserIcon = '🙍🏻‍♂️'; // 新規：選択中のユーザーアイコン
+    let targetDeleteDate = null;
+    let targetActionDate = null;
+    let currentUserIcon = '🙍🏻‍♂️';
     
     // Firebase関連
     let isFirebaseActive = false;
@@ -701,7 +688,6 @@
     const MAX_HOURS = 87;
     const MAX_MINUTES = MAX_HOURS * 60;
 
-    // 今日の日付文字列を取得する関数
     function getTodayStr() {
       const today = new Date();
       const yyyy = today.getFullYear();
@@ -710,22 +696,20 @@
       return `${yyyy}-${mm}-${dd}`;
     }
 
-    // 新設：確定状態に応じて上部の背景色を変更する関数
     function updateTopDisplayBg(isConfirmed) {
       const boxes = ['displayStartBox', 'displayEndBox', 'displayRestBox'];
       boxes.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           if (isConfirmed) {
-            el.style.backgroundColor = '#e6f4ea'; // 薄い緑
+            el.style.backgroundColor = '#e6f4ea';
           } else {
-            el.style.backgroundColor = 'white'; // 入力中は白
+            el.style.backgroundColor = 'white';
           }
         }
       });
     }
 
-    // 今日のデータ有無に応じてフォームの表示を切り替える関数
     function updateInputVisibilityByToday() {
       const todayStr = getTodayStr();
       document.getElementById('date').value = todayStr;
@@ -747,7 +731,6 @@
       updateTopDisplay();
     }
 
-    // 新設：リアルタイム時計の更新
     function updateRealtimeClock() {
       const now = new Date();
       const y = now.getFullYear();
@@ -764,7 +747,6 @@
       if (timeEl) timeEl.textContent = `🕰️ ${h} : ${min} : ${sec}`;
     }
 
-    // 新設：入力欄の背景色を更新する関数
     function updateInputBg(el) {
       if (el.value.trim() !== '') {
         el.classList.add('filled');
@@ -773,7 +755,6 @@
       }
     }
 
-    // 新設：すべての時間入力欄の背景色を一括更新
     function updateAllInputBgs() {
       ['startHour', 'startMinute', 'endHour', 'endMinute'].forEach(id => {
         const el = document.getElementById(id);
@@ -781,41 +762,33 @@
       });
     }
 
-    // 初期化処理
     document.addEventListener('DOMContentLoaded', () => {
-      // リアルタイム時計を開始
       updateRealtimeClock();
       setInterval(updateRealtimeClock, 1000);
 
       currentDateStr = getTodayStr();
 
-      // 日付の初期値を今日に設定
       const dateInput = document.getElementById('date');
       dateInput.value = currentDateStr;
       
-      // 入力時に上部表示を自動更新するイベント
       dateInput.addEventListener('input', updateTopDisplay);
       
-      // 出退勤時間・休憩時間の手入力・Enterキー制御
-      // 改修：次のフォーカス先（nextId）を指定できるように追加
       const setupTimeInput = (id, maxVal, isRest = false, nextId = null) => {
         const el = document.getElementById(id);
         
-        // 入力時の制御（数字のみ、2桁制限）
         el.addEventListener('input', (e) => {
           let val = e.target.value.replace(/[^0-9]/g, '');
           if (val.length > 2) val = val.slice(0, 2);
           e.target.value = val;
-          updateInputBg(e.target); // 追加：入力のたびに色を判定
+          updateInputBg(e.target);
           updateTopDisplay();
         });
         
-        // 値の確定・整形処理
         const formatTimeValue = (target) => {
           let val = target.value;
           if (val === '') {
             if (isRest) target.value = '0';
-            updateInputBg(target); // 追加
+            updateInputBg(target);
             updateTopDisplay();
             return;
           }
@@ -826,67 +799,50 @@
           } else {
             target.value = isRest ? '0' : '';
           }
-          updateInputBg(target); // 追加
+          updateInputBg(target);
           updateTopDisplay();
         };
 
-        // フォーカスが外れた時
         el.addEventListener('blur', (e) => {
           formatTimeValue(e.target);
         });
 
-        // スマホでも操作しやすいよう、フォーカス時（タップ時）に全選択
         el.addEventListener('focus', (e) => {
-          // iOS等でのタイミングのズレを考慮し、わずかに遅らせて全選択する
           setTimeout(() => {
             e.target.select();
             e.target.setSelectionRange(0, 9999);
           }, 10);
         });
 
-        // 改修：Enterキーが押された時の動作
         el.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
-            e.preventDefault(); // フォームのsubmit（登録）を防止
-            
+            e.preventDefault();
             if (nextId) {
-              // 次の入力欄が指定されている場合（「時」の欄）は、次に移動
               const nextEl = document.getElementById(nextId);
-              if (nextEl) {
-                nextEl.focus();
-              }
+              if (nextEl) nextEl.focus();
             } else {
-              // 次がない場合（「分」の欄）は、フォーカスを外して入力を確定させる
               e.target.blur();
             }
           }
         });
       };
       
-      // 改修：第4引数に次の入力欄（分のID）を渡す
       setupTimeInput('startHour', 23, false, 'startMinute');
       setupTimeInput('startMinute', 59);
       setupTimeInput('endHour', 23, false, 'endMinute');
       setupTimeInput('endMinute', 59);
 
-      // 保存されている名前を読み込んで表示
       loadUserName();
-
-      // 初期状態はボタン未選択としてリセット処理を通す
       resetFormUI();
-      // 最初の表示を更新
       updateInputVisibilityByToday();
-
       initApp();
 
-      // 1分ごとに日付が変わったかチェック
       setInterval(() => {
         const todayStr = getTodayStr();
         if (todayStr !== currentDateStr) {
           currentDateStr = todayStr;
           isEditMode = false;
           
-          // 月が変わった場合（月末の深夜0時をまたいだ等）、表示月も自動で当月に更新する
           const newDate = new Date();
           const newYear = newDate.getFullYear();
           const newMonth = newDate.getMonth() + 1;
@@ -897,19 +853,19 @@
           
           resetFormUI();
           updateInputVisibilityByToday();
-          render(); // タイムカード等の表示を最新の月に更新
+          render();
         }
       }, 60000);
     });
 
     // --- 出勤ボタン処理 ---
     window.setNormalCommute = function() {
+      currentCommuteMode = 'normal'; // モードを記憶
       const btnNormal = document.getElementById('btnNormal');
       const btnFlex = document.getElementById('btnFlex');
       const startHour = document.getElementById('startHour');
       const startMinute = document.getElementById('startMinute');
 
-      // 選択時に凹み（btn-pressed）を適用
       btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-blue-500 bg-blue-100 text-blue-900 btn-pressed";
       btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-green-100 transition-colors shadow-sm";
 
@@ -918,24 +874,23 @@
       startHour.disabled = true;
       startMinute.disabled = true;
 
-      updateAllInputBgs(); // 追加
+      updateAllInputBgs();
       updateTopDisplay();
     };
 
     window.setFlexCommute = function() {
+      currentCommuteMode = 'flex'; // モードを記憶
       const btnNormal = document.getElementById('btnNormal');
       const btnFlex = document.getElementById('btnFlex');
       const startHour = document.getElementById('startHour');
       const startMinute = document.getElementById('startMinute');
 
-      // 選択時に凹み（btn-pressed）を適用
       btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-green-500 bg-green-100 text-green-900 btn-pressed";
       btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-blue-100 transition-colors shadow-sm";
 
       startHour.disabled = false;
       startMinute.disabled = false;
 
-      // スマホでもキーボードが開くよう、少しだけ遅らせて「時」の入力欄にフォーカスを当てる
       setTimeout(() => {
         startHour.focus();
       }, 50);
@@ -949,7 +904,7 @@
       document.getElementById('endHour').value = h;
       document.getElementById('endMinute').value = m;
       
-      updateAllInputBgs(); // 追加
+      updateAllInputBgs();
       updateTopDisplay();
     };
 
@@ -961,7 +916,6 @@
       const btnFlex = document.getElementById('btnRestFlex');
       const flexArea = document.getElementById('flexRestOptions');
 
-      // 選択時に凹みを適用
       btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
       btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
       btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
@@ -977,7 +931,6 @@
       const btnFlex = document.getElementById('btnRestFlex');
       const flexArea = document.getElementById('flexRestOptions');
 
-      // 選択時に凹みを適用
       btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
       btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
       btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
@@ -992,14 +945,12 @@
       const btnFlex = document.getElementById('btnRestFlex');
       const flexArea = document.getElementById('flexRestOptions');
 
-      // もう一度押したときは解除
       if (!forceEnable && currentRestMode === 'flex') {
         currentRestMode = null;
         btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
         if (flexArea) flexArea.classList.add('hidden');
       } else {
         currentRestMode = 'flex';
-        // 選択時に凹みを適用
         btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
         btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
         btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
@@ -1032,7 +983,6 @@
       }
     }
 
-    // --- 追加休憩（夕方など）ボタン処理 ---
     window.toggleEveningRest = function(forceValue, forceMinutes) {
       if (forceValue !== undefined) {
         isEveningRestAdded = forceValue;
@@ -1050,7 +1000,6 @@
       const optionsDiv = document.getElementById('eveningRestOptions');
       
       if (isEveningRestAdded) {
-        // 選択時に凹みを適用
         btnToggle.className = "w-full sm:w-auto py-5 px-6 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
         optionsDiv.classList.remove('hidden');
         updateEveningOptionStyles();
@@ -1083,7 +1032,6 @@
       }
     }
 
-    // --- 勤務時間の計算ロジック（改修：17:30境界） ---
     function calculateWorkTimes(startTime, endTime, baseRest, eveningRestVal) {
       if (!startTime || !endTime) return { workMinutes: 0, overMinutes: 0 };
       
@@ -1103,15 +1051,12 @@
       let overMinutes = 0;
 
       if (endTotal <= limitTime) {
-        // 退勤が17:30以前
         workMinutes = Math.max(0, endTotal - startTotal - baseRest);
         overMinutes = 0;
       } else if (startTotal >= limitTime) {
-        // 出勤が17:30以降
         workMinutes = 0;
         overMinutes = Math.max(0, endTotal - startTotal - eveningRestVal);
       } else {
-        // 17:30をまたぐ場合
         workMinutes = Math.max(0, limitTime - startTotal - baseRest);
         overMinutes = Math.max(0, endTotal - limitTime - eveningRestVal);
       }
@@ -1119,7 +1064,6 @@
       return { workMinutes, overMinutes };
     }
 
-    // 上部の「日付」と「出退勤時間」の表示更新
     function updateTopDisplay() {
       const dateVal = document.getElementById('date').value;
       const topDateDisplay = document.getElementById('topDateDisplay');
@@ -1136,7 +1080,6 @@
         topDateDisplay.textContent = '----年 --月--日（-）';
       }
       
-      // フォームの入力値を取得
       const startH = document.getElementById('startHour').value;
       const startM = document.getElementById('startMinute').value;
       const formStartTime = (startH && startM) ? `${startH}:${startM}` : '';
@@ -1154,18 +1097,14 @@
       
       let eveningRest = isEveningRestAdded ? eveningRestMinutes : 0;
 
-      // 登録済みのデータを探す
       const targetRecord = workRecords.find(r => r.date === dateVal);
 
-      // 表示ロジック
       const displayStart = formStartTime || (targetRecord ? targetRecord.startTime : '--:--');
       const displayEnd = formEndTime || (targetRecord ? targetRecord.endTime : '--:--');
       
       let displayRest = '';
 
-      // 改修：休憩時間の表示を「昼〇〇分 / 夕〇〇分」の形式に変更
       if (currentRestMode !== null) {
-        // フォーム入力中
         if (baseRest > 0 && eveningRest > 0) {
           displayRest = `昼${baseRest}分 / 夕${eveningRest}分`;
         } else if (baseRest > 0) {
@@ -1176,7 +1115,6 @@
           displayRest = '0分';
         }
       } else if (targetRecord) {
-        // 登録済みのデータ
         let recBaseRest = targetRecord.baseRestMinutes !== undefined ? targetRecord.baseRestMinutes : targetRecord.restMinutes;
         let recEveningVal = targetRecord.eveningRestMinutes !== undefined ? targetRecord.eveningRestMinutes : (targetRecord.hasEveningRest ? 30 : 0);
         
@@ -1202,7 +1140,6 @@
         displayOverTime = formatTime(wTimes.overMinutes);
       } else if (targetRecord) {
         let overMin = targetRecord.overMinutes;
-        // 古いデータとの互換性対応
         if (overMin === undefined) {
           let recBaseRest = targetRecord.baseRestMinutes !== undefined ? targetRecord.baseRestMinutes : targetRecord.restMinutes;
           let recEveningVal = targetRecord.eveningRestMinutes !== undefined ? targetRecord.eveningRestMinutes : (targetRecord.hasEveningRest ? 30 : 0);
@@ -1220,9 +1157,11 @@
       document.getElementById('topRestTime').textContent = displayRest;
       document.getElementById('topWorkTime').textContent = displayWorkTime;
       document.getElementById('topOverTime').textContent = displayOverTime;
+      
+      // 改修：時間が入力されたときに枠線や文字色を青・オレンジ・黄色などに変える処理を削除し、
+      // 常に「外枠グレー（border-gray-300）」の以前の色使いに戻しました。
     }
 
-    // ローカルストレージからの読み込み
     function loadLocalData() {
       const data = localStorage.getItem('localWorkRecords');
       if (data) {
@@ -1267,15 +1206,12 @@
       }
     }
 
-    // データ取得（Firestore）
     function fetchData() {
       if (!isFirebaseActive || !user || !db) return;
-      // 修正：以前のデータ保存先である 'time_records' に戻す
       const collRef = collection(db, 'artifacts', appId, 'users', user.uid, 'time_records');
       
       onSnapshot(collRef, (snapshot) => {
         workRecords = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        // バックアップとしてlocalStorageにも保存
         localStorage.setItem('localWorkRecords', JSON.stringify(workRecords));
         render();
       }, (error) => {
@@ -1285,35 +1221,31 @@
     }
 
     function formatTime(minutes) {
+      if (minutes < 0) return `-${formatTime(Math.abs(minutes))}`;
       const h = Math.floor(minutes / 60);
       const m = minutes % 60;
       return `${h}時間 ${m}分`;
     }
 
-    // 新設：スマホ用（H:MM形式）
     function formatTimeShort(minutes) {
+      if (minutes <= 0) return '-';
       const h = Math.floor(minutes / 60);
       const m = String(minutes % 60).padStart(2, '0');
       return `${h}:${m}`;
     }
 
-    // 新設：コロンの左右に余白を入れる（表示用）
     function formatTimeColon(timeStr) {
-      if (!timeStr) return '';
-      // 余分なCSSクラスを使わず、直接paddingを指定して文字化けや表示崩れを防ぐ
+      if (!timeStr) return '-';
       return String(timeStr).replace(':', '<span style="padding: 0 3px;">:</span>');
     }
 
-    // 画面の描画更新
     function render() {
       const targetPrefix = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
       const monthlyRecords = workRecords.filter(record => record.date.startsWith(targetPrefix));
       
-      // 合計には 87時間対象の勤務時間(workMinutes) だけを加算
       let totalMinutes = 0;
       monthlyRecords.forEach(record => {
         let workMin = record.workMinutes;
-        // 古いデータの互換性
         if (record.overMinutes === undefined) {
            let base = record.baseRestMinutes !== undefined ? record.baseRestMinutes : record.restMinutes;
            let eveningVal = record.eveningRestMinutes !== undefined ? record.eveningRestMinutes : (record.hasEveningRest ? 30 : 0);
@@ -1338,8 +1270,8 @@
       const progressBarOrange = document.getElementById('progressBarOrange');
       const progressBarRed = document.getElementById('progressBarRed');
       
-      const THRESHOLD_1 = 75 * 60; // 75時間
-      const THRESHOLD_2 = 80 * 60; // 80時間
+      const THRESHOLD_1 = 75 * 60;
+      const THRESHOLD_2 = 80 * 60;
       
       let greenMinutes = Math.min(totalMinutes, THRESHOLD_1);
       let orangeMinutes = Math.max(0, Math.min(totalMinutes - THRESHOLD_1, THRESHOLD_2 - THRESHOLD_1));
@@ -1355,8 +1287,6 @@
 
       warningMessage.style.display = 'none';
 
-      // 改修：残り時間だけでなく、合計時間の文字色も連動して変わるように変更
-      // さらに、枠のスタイルも同時に適用
       if (totalMinutes < THRESHOLD_1) {
         statusArea.className = 'card border-4 border-green-500 bg-green-50 mb-8 text-center';
         totalTimeElement.className = 'text-huge text-green-700 font-bold mb-8 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-green-200';
@@ -1396,7 +1326,6 @@
         updateTopDisplay();
       }
 
-      // 新設：75時間超過アラートの初回表示チェック
       if (totalMinutes > THRESHOLD_1) {
         const alertKey = `hasShown75Alert_${currentYear}_${currentMonth}`;
         if (!localStorage.getItem(alertKey)) {
@@ -1405,7 +1334,6 @@
       }
     }
 
-    // タイムカード一覧の描画
     function renderList(records) {
       const listContainer = document.getElementById('recordList');
       listContainer.innerHTML = '';
@@ -1416,7 +1344,14 @@
       const secondHalfHtml = generateTableHtml(16, lastDay, records, 'orange');
       
       listContainer.innerHTML = `
-        <h3 class="text-xl font-bold text-cyan-800 mb-2 mt-2">前半（1日〜15日）</h3>
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-2 mt-2 gap-2">
+          <h3 class="text-xl font-bold text-cyan-800">前半（1日〜15日）</h3>
+          <!-- 改修：text-rightをやめてtext-left（左揃え）にし、mr-2 sm:mr-6 で右側に余白を作って左にずらしました -->
+          <div class="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed text-left mr-2 sm:mr-6">
+            ※ ℹ️未入力の日がある場合は「入力」ボタンを押してください<br>
+            ※ ✏️内容を変更したい場合は「修正」ボタンを押してください
+          </div>
+        </div>
         <div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-cyan-300 mb-8">
           ${firstHalfHtml}
         </div>
@@ -1461,7 +1396,8 @@
               <td class="p-1 sm:p-2 border ${tdBorder} text-center text-gray-300 text-xs sm:text-sm align-middle">-</td>
               <td class="p-1 sm:p-2 border ${tdBorder} text-center text-gray-300 text-xs sm:text-sm align-middle">-</td>
               <td class="p-1 sm:p-2 border ${tdBorder} text-center">
-                <button onclick="editRecord('${dateStr}')" class="timecard-btn bg-gray-400 text-white px-2 py-1 sm:px-3 rounded text-xs sm:text-sm font-bold shadow hover:bg-gray-500 active:translate-y-1 whitespace-nowrap">入力</button>
+                <!-- 改修：「入力」ボタンの大きさを「修正」ボタンと完全に同じ設定に統一しました -->
+                <button onclick="editRecord('${dateStr}')" class="timecard-btn bg-gray-400 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-sm sm:text-base font-bold shadow hover:bg-gray-500 active:translate-y-1 whitespace-nowrap w-full sm:w-auto">入力</button>
               </td>
             </tr>
           `;
@@ -1473,7 +1409,6 @@
             let baseRest = record.baseRestMinutes !== undefined ? record.baseRestMinutes : record.restMinutes;
             let eveningVal = record.eveningRestMinutes !== undefined ? record.eveningRestMinutes : (record.hasEveningRest ? 30 : 0);
 
-            // 既存データの互換性対応
             if (overMin === undefined) {
                const calc = calculateWorkTimes(record.startTime, record.endTime, baseRest, eveningVal);
                workMin = calc.workMinutes;
@@ -1483,12 +1418,10 @@
             subTotalWorkMinutes += workMin;
             subTotalOverMinutes += overMin;
             
-            // 休憩時間の表示用HTML生成
             let restDisplayHtml = '-';
             let totalRest = baseRest + eveningVal;
             if (totalRest > 0) {
               if (baseRest > 0 && eveningVal > 0) {
-                // 改修：スマホ時は「分」を省略してコンパクトに
                 restDisplayHtml = `
                   <div class="flex flex-col items-center justify-center leading-tight whitespace-nowrap">
                     <span>${totalRest}分</span>
@@ -1515,14 +1448,11 @@
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${formatTimeColon(record.endTime)}</td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center text-xs sm:text-sm align-middle">${restDisplayHtml}</td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-700 whitespace-nowrap align-middle">
-                  <span class="hidden sm:inline">${formatTime(workMin)}</span>
-                  <span class="sm:hidden">${formatTimeColon(formatTimeShort(workMin))}</span>
+                  ${formatTimeColon(formatTimeShort(workMin))}
                 </td>
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-red-600 whitespace-nowrap align-middle">
-                  ${overMin > 0 ? `
-                    <span class="hidden sm:inline">${formatTime(overMin)}</span>
-                    <span class="sm:hidden">${formatTimeColon(formatTimeShort(overMin))}</span>
-                  ` : '-'}
+                <!-- 改修：残業時間の文字色を #d97706 に変更 -->
+                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
+                  ${overMin > 0 ? formatTimeColon(formatTimeShort(overMin)) : '-'}
                 </td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center align-middle">
                   <button onclick="openActionModal('${record.date}')" class="timecard-btn bg-blue-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-sm sm:text-base font-bold shadow hover:bg-blue-600 active:translate-y-1 whitespace-nowrap w-full sm:w-auto">修正</button>
@@ -1533,25 +1463,22 @@
         }
       }
 
-      // 最下行の小計・合計を追加
       let footerHtml = '';
-      if (endDay === 15) { // 前半の表
+      if (endDay === 15) { 
         footerHtml = `
           <tr style="background-color: #fef9c3;">
             <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">小計</td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle">
-              <span class="hidden sm:inline">${formatTime(subTotalWorkMinutes)}</span>
-              <span class="sm:hidden">${formatTimeColon(formatTimeShort(subTotalWorkMinutes))}</span>
+              ${formatTimeColon(formatTimeShort(subTotalWorkMinutes))}
             </td>
-            <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-red-600 whitespace-nowrap align-middle">
-              <span class="hidden sm:inline">${formatTime(subTotalOverMinutes)}</span>
-              <span class="sm:hidden">${formatTimeColon(formatTimeShort(subTotalOverMinutes))}</span>
+            <!-- 改修：小計の残業時間の文字色を #d97706 に変更 -->
+            <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
+              ${formatTimeColon(formatTimeShort(subTotalOverMinutes))}
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder}"></td>
           </tr>
         `;
-      } else { // 後半の表
-        // 月全体の合計を計算
+      } else { 
         let totalWork = 0;
         let totalOver = 0;
         records.forEach(r => {
@@ -1572,12 +1499,11 @@
           <tr style="background-color: #ffe4e6;">
             <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">合計</td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle">
-              <span class="hidden sm:inline">${formatTime(totalWork)}</span>
-              <span class="sm:hidden">${formatTimeColon(formatTimeShort(totalWork))}</span>
+              ${formatTimeColon(formatTimeShort(totalWork))}
             </td>
-            <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-red-600 whitespace-nowrap align-middle">
-              <span class="hidden sm:inline">${formatTime(totalOver)}</span>
-              <span class="sm:hidden">${formatTimeColon(formatTimeShort(totalOver))}</span>
+            <!-- 改修：合計の残業時間の文字色を #d97706 に変更 -->
+            <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
+              ${formatTimeColon(formatTimeShort(totalOver))}
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder}"></td>
           </tr>
@@ -1629,7 +1555,7 @@
       }, 3000);
     }
 
-    // 登録（同日は上書き）
+    // 登録
     window.saveRecord = async function(e) {
       e.preventDefault();
       
@@ -1639,6 +1565,10 @@
       const endH = document.getElementById('endHour').value;
       const endM = document.getElementById('endMinute').value;
       
+      if (!currentCommuteMode) {
+        showMessage('出勤モード（通常出勤または時間差出勤）を選択してください', true);
+        return;
+      }
       if (!startH || !startM) {
         showMessage('出勤時間を選択してください', true);
         return;
@@ -1652,7 +1582,6 @@
         return;
       }
 
-      // 休憩時間の計算
       let baseRest = 0;
       if (currentRestMode === 'none') {
         baseRest = 0;
@@ -1668,11 +1597,10 @@
       const startTime = `${startH}:${startM}`;
       const endTime = `${endH}:${endM}`;
       
-      // 計算
       const wTimes = calculateWorkTimes(startTime, endTime, baseRest, eveningRest);
       
       // 出勤が通常出勤か時間差出勤かを判定して保存
-      const isFlex = !document.getElementById('startHour').disabled;
+      const isFlex = (currentCommuteMode === 'flex');
       
       const recordData = {
         date,
@@ -1680,15 +1608,14 @@
         endTime,
         restMinutes: totalRest, 
         baseRestMinutes: baseRest,
-        hasEveningRest: isEveningRestAdded, // 互換性のため残す
+        hasEveningRest: isEveningRestAdded,
         eveningRestMinutes: eveningRest,
         workMinutes: wTimes.workMinutes,
         overMinutes: wTimes.overMinutes,
-        isFlexCommute: isFlex, // 新規追加：登録時の出勤モードを記憶
+        isFlexCommute: isFlex, 
         createdAt: Date.now()
       };
 
-      // 画面上部に即座に反映させるため、ローカルのデータを先に更新する
       const updateLocalData = () => {
         const existingIndex = workRecords.findIndex(r => r.date === date);
         if (existingIndex >= 0) {
@@ -1701,8 +1628,6 @@
 
       if (isFirebaseActive && user && db) {
         try {
-          // 日付をドキュメントIDにして同日上書きする
-          // 修正：以前のデータ保存先である 'time_records' に戻す
           const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'time_records', date);
           await setDoc(docRef, recordData);
           
@@ -1715,10 +1640,7 @@
           showMessage('登録に失敗しました', true);
         }
       } else {
-        // オフライン・ローカル動作時の同日上書き処理
         updateLocalData();
-        
-        // localStorageへ保存
         localStorage.setItem('localWorkRecords', JSON.stringify(workRecords));
         showSuccessModal(isEditMode, date);
         resetFormAfterSave(recordData);
@@ -1727,11 +1649,12 @@
     };
 
     function resetFormUI() {
-      // 出勤
+      // 出勤モードと入力欄を初期化（未選択・入力不可）
+      currentCommuteMode = null;
       document.getElementById('startHour').value = '';
       document.getElementById('startMinute').value = '';
-      document.getElementById('startHour').disabled = false;
-      document.getElementById('startMinute').disabled = false;
+      document.getElementById('startHour').disabled = true;
+      document.getElementById('startMinute').disabled = true;
       document.getElementById('btnNormal').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-blue-100 transition-colors shadow-sm";
       document.getElementById('btnFlex').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-green-100 transition-colors shadow-sm";
       
@@ -1739,7 +1662,7 @@
       document.getElementById('endHour').value = '';
       document.getElementById('endMinute').value = '';
       
-      updateAllInputBgs(); // 追加：リセット時に背景色を白に戻す
+      updateAllInputBgs(); 
 
       // 休憩
       currentRestMode = null;
@@ -1762,11 +1685,9 @@
       if (optionsDiv) optionsDiv.classList.add('hidden');
       updateEveningOptionStyles();
 
-      // 案内メッセージを隠す
       const editGuide = document.getElementById('editGuideMessage');
       if (editGuide) editGuide.classList.add('hidden');
 
-      // フォームを表示状態に戻す
       const inputFormArea = document.getElementById('inputFormArea');
       if (inputFormArea) inputFormArea.classList.remove('hidden');
     }
@@ -1774,25 +1695,20 @@
     function resetFormAfterSave(recordData) {
       resetFormUI();
       
-      // 登録後は日付を「今日」に戻す
       const today = new Date();
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, '0');
       const dd = String(today.getDate()).padStart(2, '0');
       document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
       
-      // 日付表示を更新（ここで自動的に新しく登録されたデータが表示に反映される）
       updateTopDisplay();
 
-      // ★ 修正案内のメッセージ（ボタン）を表示する
       const editGuide = document.getElementById('editGuideMessage');
       if (editGuide) editGuide.classList.remove('hidden');
 
-      // ★ 登録完了後はフォームを非表示にする
       const inputFormArea = document.getElementById('inputFormArea');
       if (inputFormArea) inputFormArea.classList.add('hidden');
       
-      // 確定済みのため背景を薄い緑にする
       updateTopDisplayBg(true);
 
       isEditMode = false;
@@ -1800,7 +1716,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 設定画面の処理 ---
     function loadUserName() {
       const lastName = localStorage.getItem('lastName') || '';
       const firstName = localStorage.getItem('firstName') || '';
@@ -1810,7 +1725,7 @@
       const fullName = `${lastName} ${firstName}`.trim();
       if (fullName) {
         nameDisplay.textContent = `${icon} ${fullName}`;
-        nameDisplay.style.display = 'flex'; // inline-block から flex に変更して中央寄せを適用
+        nameDisplay.style.display = 'flex'; 
       } else {
         nameDisplay.textContent = '';
         nameDisplay.style.display = 'none';
@@ -1818,7 +1733,6 @@
     }
 
     window.openSettings = function() {
-      // 保存されている値を入力欄にセットして表示
       document.getElementById('settingLastName').value = localStorage.getItem('lastName') || '';
       document.getElementById('settingFirstName').value = localStorage.getItem('firstName') || '';
       currentUserIcon = localStorage.getItem('userIcon') || '🙍🏻‍♂️';
@@ -1852,20 +1766,16 @@
       const lastName = document.getElementById('settingLastName').value;
       const firstName = document.getElementById('settingFirstName').value;
       
-      // localStorageに保存
       localStorage.setItem('lastName', lastName);
       localStorage.setItem('firstName', firstName);
       localStorage.setItem('userIcon', currentUserIcon);
       
-      // 表示を更新して閉じる
       loadUserName();
       closeSettings();
       showMessage('⚙️ 設定を保存しました');
     };
 
-    // 新規：入力項目だけをリセットする処理
     window.resetInputOnly = function() {
-      // 修正途中でリセットした場合も、日付を「今日」に戻して完全に最初の状態にする
       const today = new Date();
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -1874,15 +1784,15 @@
       
       resetFormUI();
       updateTopDisplayBg(false);
-      updateTopDisplay(); // これでフォームが空になり、上部も「--:--」に戻ります
+      updateTopDisplay(); 
       isEditMode = false;
       showMessage('🔄 入力内容をリセットしました');
     };
 
-    // --- 登録完了モーダルの処理 ---
     window.showSuccessModal = function(isEdit = false, dateStr = '') {
       const titleEl = document.getElementById('successModalTitle');
       const subEl = document.getElementById('successModalSub');
+      const modal = document.getElementById('successModal');
 
       if (isEdit && dateStr) {
         const d = new Date(dateStr);
@@ -1895,14 +1805,25 @@
         subEl.innerHTML = `お仕事おつかれさまでした😊`;
       }
       
-      document.getElementById('successModal').classList.remove('hidden');
+      // モーダルを表示
+      modal.classList.remove('hidden');
+      modal.style.opacity = '1';
+
+      // 改修：2.5秒後に自動で閉じる処理を追加
+      setTimeout(() => {
+        closeSuccessModal();
+      }, 2500);
     };
 
     window.closeSuccessModal = function() {
-      document.getElementById('successModal').classList.add('hidden');
+      const modal = document.getElementById('successModal');
+      // 少しフワッと消える演出
+      modal.style.opacity = '0';
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
     };
 
-    // --- 操作選択モーダルの処理 ---
     window.openActionModal = function(dateStr) {
       targetActionDate = dateStr;
       document.getElementById('actionSelectModal').classList.remove('hidden');
@@ -1925,7 +1846,6 @@
       if (dateStr) confirmDeleteRecord(dateStr);
     };
 
-    // --- 削除確認モーダルの処理 ---
     window.confirmDeleteRecord = function(dateStr) {
       targetDeleteDate = dateStr;
       document.getElementById('deleteConfirmModal').classList.remove('hidden');
@@ -1942,10 +1862,8 @@
       const dateToDelete = targetDeleteDate;
       targetDeleteDate = null;
       
-      // Firebaseから削除
       if (isFirebaseActive && user && db) {
         try {
-          // 修正：以前のデータ保存先である 'time_records' に戻す
           const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'time_records', dateToDelete);
           await deleteDoc(docRef);
         } catch(e) {
@@ -1953,15 +1871,12 @@
         }
       }
 
-      // ローカルから特定の日のデータを削除
       workRecords = workRecords.filter(r => r.date !== dateToDelete);
       localStorage.setItem('localWorkRecords', JSON.stringify(workRecords));
 
-      // UIリセット・再描画
       closeDeleteModal();
       showMessage('🗑️ 勤務情報を削除しました');
       
-      // もし現在表示中の「本日の情報」と同じ日を削除した場合は、トップの表示も更新する
       if (document.getElementById('date').value === dateToDelete) {
          updateInputVisibilityByToday();
       }
@@ -1969,14 +1884,12 @@
       render();
     };
 
-    // --- 75時間超過アラートモーダルの処理 ---
     window.closeAlert75Modal = function() {
       const alertKey = `hasShown75Alert_${currentYear}_${currentMonth}`;
-      localStorage.setItem(alertKey, 'true'); // 表示済みフラグを保存
+      localStorage.setItem(alertKey, 'true'); 
       document.getElementById('alert75Modal').classList.add('hidden');
     };
 
-    // --- タブ切り替え処理 ---
     window.switchTab = function(tabName, preventScroll = false) {
       const btnInput = document.getElementById('btnTabInput');
       const btnList = document.getElementById('btnTabList');
@@ -1995,21 +1908,18 @@
         tabList.classList.remove('hidden');
       }
       
-      // 入力・修正からの遷移など、意図的にスクロールを無効化する場合は何もしない
       if (!preventScroll) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     };
 
-    // --- 修正（入力）ボタン処理 ---
     window.editRecord = function(dateStr) {
       const record = workRecords.find(r => r.date === dateStr);
       
-      // スクロール処理を共通化：「勤務時間を登録する」をヘッダーの下に合わせて表示
       const scrollToForm = () => {
         setTimeout(() => {
           const target = document.getElementById('inputFormArea');
-          const headerOffset = 80; // 画面上部の青い固定ヘッダーの高さ＋余白
+          const headerOffset = 80; 
           const elementPosition = target.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
           
@@ -2020,12 +1930,11 @@
         }, 50);
       };
 
-      // まだデータがない日の場合は、新規入力モードとして準備する
       if (!record) {
         resetFormUI();
         document.getElementById('date').value = dateStr;
         updateTopDisplay();
-        switchTab('input', true); // タブの自動スクロールを無効化して切り替え
+        switchTab('input', true); 
         scrollToForm();
         isEditMode = false;
         showMessage('✏️ 新規入力モードになりました');
@@ -2034,30 +1943,26 @@
 
       isEditMode = true;
 
-      // 日付の設定
       document.getElementById('date').value = record.date;
       
-      // 出勤時間の設定
       if (record.startTime) {
         const [startH, startM] = record.startTime.split(':');
         document.getElementById('startHour').value = startH;
         document.getElementById('startMinute').value = startM;
         
-        // 改修：強制的に時間差出勤にするのではなく、登録時の状態を復元する
         const btnNormal = document.getElementById('btnNormal');
         const btnFlex = document.getElementById('btnFlex');
         const startHourEl = document.getElementById('startHour');
         const startMinuteEl = document.getElementById('startMinute');
 
-        // 過去のデータでフラグがない場合は、08:30以外なら時間差出勤と判定する
-        let isFlex = false;
+        // 改修：出勤モードを確実な状態から復元
         if (record.isFlexCommute !== undefined) {
-          isFlex = record.isFlexCommute;
+          currentCommuteMode = record.isFlexCommute ? 'flex' : 'normal';
         } else {
-          isFlex = (record.startTime !== "08:30");
+          currentCommuteMode = (record.startTime !== "08:30") ? 'flex' : 'normal';
         }
 
-        if (isFlex) {
+        if (currentCommuteMode === 'flex') {
           btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-green-500 bg-green-100 text-green-900 btn-pressed";
           btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-blue-100 transition-colors shadow-sm";
           startHourEl.disabled = false;
@@ -2070,7 +1975,6 @@
         }
       }
 
-      // 退勤時間の設定
       if (record.endTime) {
         const [endH, endM] = record.endTime.split(':');
         document.getElementById('endHour').value = endH;
@@ -2080,7 +1984,6 @@
         document.getElementById('endMinute').value = '';
       }
 
-      // 休憩時間の設定（基本休憩の復元）
       let baseRest = record.baseRestMinutes !== undefined ? record.baseRestMinutes : record.restMinutes;
 
       if (baseRest === 0) {
@@ -2089,10 +1992,9 @@
         setNormalRest();
       } else {
         flexRestMinutes = baseRest;
-        setFlexRest(true); // 選択モードにする
+        setFlexRest(true); 
       }
 
-      // 追加休憩の復元
       if (record.hasEveningRest || (record.eveningRestMinutes && record.eveningRestMinutes > 0)) {
         let eveMin = record.eveningRestMinutes !== undefined ? record.eveningRestMinutes : 30;
         toggleEveningRest(true, eveMin);
@@ -2100,29 +2002,27 @@
         toggleEveningRest(false);
       }
 
-      // フォームを表示状態に戻す
       const inputFormArea = document.getElementById('inputFormArea');
       if (inputFormArea) inputFormArea.classList.remove('hidden');
 
-      // 案内メッセージを隠す
       const editGuide = document.getElementById('editGuideMessage');
       if (editGuide) editGuide.classList.add('hidden');
 
-      // 画面上部の表示を更新
-      updateAllInputBgs(); // 追加：修正モードに入った時の値を元に背景色を更新
-      updateTopDisplayBg(false); // 背景を白に戻す
+      updateAllInputBgs(); 
+      updateTopDisplayBg(false); 
       updateTopDisplay();
 
-      // タブを入力画面に切り替える（タブ自体の自動上部スクロールは無効化）
       switchTab('input', true);
-
-      // 「勤務時間を登録する」画面を一番上として表示
       scrollToForm();
+      
+      // 改修：スマホ等で意図せずキーボードが開くのを防ぐため、フォーカスを確実に外す
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
       
       showMessage('📝 修正モードになりました');
     };
 
-    // 新設：本日の情報を修正するボタンのアクション
     window.editTodayRecord = function() {
       const dateVal = document.getElementById('date').value;
       if (dateVal) {
