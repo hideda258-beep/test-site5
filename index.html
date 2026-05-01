@@ -448,31 +448,34 @@
           <!-- 出勤時間 -->
           <div class="flex flex-col items-center">
             <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-2">出勤時間</div>
-            <div class="text-2xl sm:text-4xl font-bold text-blue-900 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center">
+            <div id="displayStartBox" class="text-2xl sm:text-4xl font-bold text-blue-900 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center transition-colors duration-300">
               <span id="topStartTime">--:--</span>
             </div>
           </div>
           <!-- 退勤時間 -->
           <div class="flex flex-col items-center">
             <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-2">退勤時間</div>
-            <div class="text-2xl sm:text-4xl font-bold text-orange-900 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center">
+            <div id="displayEndBox" class="text-2xl sm:text-4xl font-bold text-orange-900 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center transition-colors duration-300">
               <span id="topEndTime">--:--</span>
             </div>
           </div>
           <!-- 休憩時間 -->
           <div class="flex flex-col items-center">
-            <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-2">合計休憩時間</div>
-            <div class="text-2xl sm:text-4xl font-bold text-yellow-700 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[110px] sm:min-w-[140px] text-center">
+            <!-- 改修：ラベルを「休憩時間」に変更 -->
+            <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-2">休憩時間</div>
+            <!-- 改修：文字が増えるため幅を広げ、フォントサイズを調整（折り返さないようにwhitespace-nowrapを追加） -->
+            <div id="displayRestBox" class="text-xl sm:text-2xl font-bold text-yellow-700 bg-white border-4 border-gray-300 py-3 px-4 sm:px-6 rounded-xl shadow-sm min-w-[140px] sm:min-w-[180px] text-center transition-colors duration-300 whitespace-nowrap">
               <span id="topRestTime">--分</span>
             </div>
           </div>
         </div>
 
-        <!-- 登録後の修正案内メッセージ（初期状態は非表示） -->
-        <div id="editGuideMessage" class="hidden mt-8 bg-red-50 border-2 border-red-500 rounded-xl p-6 text-lg sm:text-xl font-bold text-red-800 text-center leading-relaxed max-w-lg mx-auto shadow-sm">
-          本日の情報を修正する場合は、<br>
-          「タイムカード」タブを押し、<br>
-          修正したい日付の「修正」ボタンを押してください。
+        <!-- 改修：登録後の修正ボタン（初期状態は非表示） -->
+        <div id="editGuideMessage" class="hidden mt-8">
+          <!-- 背景色を bg-white から bg-red-50 に変更し、ホバー時の色も調整 -->
+          <button type="button" onclick="editTodayRecord()" class="bg-red-50 border-4 border-red-400 text-red-600 font-bold text-xl sm:text-2xl py-4 px-8 rounded-xl shadow-md hover:bg-red-100 active:translate-y-1 transition-colors w-full max-w-sm mx-auto flex items-center justify-center gap-2">
+            <span>✏️</span> 本日の情報を修正
+          </button>
         </div>
 
         <!-- ② 下部テキスト -->
@@ -707,6 +710,21 @@
       return `${yyyy}-${mm}-${dd}`;
     }
 
+    // 新設：確定状態に応じて上部の背景色を変更する関数
+    function updateTopDisplayBg(isConfirmed) {
+      const boxes = ['displayStartBox', 'displayEndBox', 'displayRestBox'];
+      boxes.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          if (isConfirmed) {
+            el.style.backgroundColor = '#e6f4ea'; // 薄い緑
+          } else {
+            el.style.backgroundColor = 'white'; // 入力中は白
+          }
+        }
+      });
+    }
+
     // 今日のデータ有無に応じてフォームの表示を切り替える関数
     function updateInputVisibilityByToday() {
       const todayStr = getTodayStr();
@@ -719,9 +737,11 @@
       if (todayRecord) {
         if (inputFormArea) inputFormArea.classList.add('hidden');
         if (editGuide) editGuide.classList.remove('hidden');
+        updateTopDisplayBg(true);
       } else {
         if (inputFormArea) inputFormArea.classList.remove('hidden');
         if (editGuide) editGuide.classList.add('hidden');
+        updateTopDisplayBg(false);
       }
 
       updateTopDisplay();
@@ -1125,7 +1145,6 @@
       const endM = document.getElementById('endMinute').value;
       const formEndTime = (endH && endM) ? `${endH}:${endM}` : '';
       
-      let formRestTime = '';
       let baseRest = 0;
       if (currentRestMode === 'none') baseRest = 0;
       else if (currentRestMode === 'normal') baseRest = 60;
@@ -1135,23 +1154,43 @@
       
       let eveningRest = isEveningRestAdded ? eveningRestMinutes : 0;
 
-      if (currentRestMode) {
-        formRestTime = `${baseRest + eveningRest}分`;
-      }
-
       // 登録済みのデータを探す
       const targetRecord = workRecords.find(r => r.date === dateVal);
 
       // 表示ロジック
       const displayStart = formStartTime || (targetRecord ? targetRecord.startTime : '--:--');
       const displayEnd = formEndTime || (targetRecord ? targetRecord.endTime : '--:--');
-      let displayRest = formRestTime;
-      if (!displayRest) {
-        if (targetRecord) {
-           displayRest = targetRecord.restMinutes > 0 ? `${targetRecord.restMinutes}分` : '0分';
+      
+      let displayRest = '';
+
+      // 改修：休憩時間の表示を「昼〇〇分 / 夕〇〇分」の形式に変更
+      if (currentRestMode !== null) {
+        // フォーム入力中
+        if (baseRest > 0 && eveningRest > 0) {
+          displayRest = `昼${baseRest}分 / 夕${eveningRest}分`;
+        } else if (baseRest > 0) {
+          displayRest = `昼${baseRest}分`;
+        } else if (eveningRest > 0) {
+          displayRest = `夕${eveningRest}分`;
         } else {
-           displayRest = '--分';
+          displayRest = '0分';
         }
+      } else if (targetRecord) {
+        // 登録済みのデータ
+        let recBaseRest = targetRecord.baseRestMinutes !== undefined ? targetRecord.baseRestMinutes : targetRecord.restMinutes;
+        let recEveningVal = targetRecord.eveningRestMinutes !== undefined ? targetRecord.eveningRestMinutes : (targetRecord.hasEveningRest ? 30 : 0);
+        
+        if (recBaseRest > 0 && recEveningVal > 0) {
+          displayRest = `昼${recBaseRest}分 / 夕${recEveningVal}分`;
+        } else if (recBaseRest > 0) {
+          displayRest = `昼${recBaseRest}分`;
+        } else if (recEveningVal > 0) {
+          displayRest = `夕${recEveningVal}分`;
+        } else {
+          displayRest = '0分';
+        }
+      } else {
+        displayRest = '--分';
       }
 
       let displayWorkTime = '--時間 --分';
@@ -1738,34 +1777,19 @@
       const dd = String(today.getDate()).padStart(2, '0');
       document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
       
-      // 日付表示を更新
+      // 日付表示を更新（ここで自動的に新しく登録されたデータが表示に反映される）
       updateTopDisplay();
 
-      // ★ 登録直後は、強制的に上部の時間表示に登録したデータをセットして残す
-      document.getElementById('topStartTime').textContent = recordData.startTime;
-      document.getElementById('topEndTime').textContent = recordData.endTime;
-      document.getElementById('topRestTime').textContent = recordData.restMinutes + '分';
-      
-      // 過去データの互換性等も考慮して表示
-      let wMin = recordData.workMinutes;
-      let oMin = recordData.overMinutes;
-      if (oMin === undefined) {
-          let recEveningVal = recordData.eveningRestMinutes !== undefined ? recordData.eveningRestMinutes : (recordData.hasEveningRest ? 30 : 0);
-          const wTimes = calculateWorkTimes(recordData.startTime, recordData.endTime, recordData.baseRestMinutes, recEveningVal);
-          wMin = wTimes.workMinutes;
-          oMin = wTimes.overMinutes;
-      }
-      
-      document.getElementById('topWorkTime').textContent = formatTime(wMin);
-      document.getElementById('topOverTime').textContent = formatTime(oMin);
-
-      // ★ 修正案内のメッセージを表示する
+      // ★ 修正案内のメッセージ（ボタン）を表示する
       const editGuide = document.getElementById('editGuideMessage');
       if (editGuide) editGuide.classList.remove('hidden');
 
       // ★ 登録完了後はフォームを非表示にする
       const inputFormArea = document.getElementById('inputFormArea');
       if (inputFormArea) inputFormArea.classList.add('hidden');
+      
+      // 確定済みのため背景を薄い緑にする
+      updateTopDisplayBg(true);
 
       isEditMode = false;
 
@@ -1845,6 +1869,7 @@
       document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
       
       resetFormUI();
+      updateTopDisplayBg(false);
       updateTopDisplay(); // これでフォームが空になり、上部も「--:--」に戻ります
       isEditMode = false;
       showMessage('🔄 入力内容をリセットしました');
@@ -2056,6 +2081,7 @@
 
       // 画面上部の表示を更新
       updateAllInputBgs(); // 追加：修正モードに入った時の値を元に背景色を更新
+      updateTopDisplayBg(false); // 背景を白に戻す
       updateTopDisplay();
 
       // タブを入力画面に切り替える（タブ自体の自動上部スクロールは無効化）
@@ -2065,6 +2091,14 @@
       scrollToForm();
       
       showMessage('📝 修正モードになりました');
+    };
+
+    // 新設：本日の情報を修正するボタンのアクション
+    window.editTodayRecord = function() {
+      const dateVal = document.getElementById('date').value;
+      if (dateVal) {
+        editRecord(dateVal);
+      }
     };
 
   </script>
