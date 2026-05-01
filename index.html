@@ -142,7 +142,7 @@
     }
     .progress-bg {
       background-color: #e5e7eb;
-      height: 28px;
+      height: 40px; /* 改修：メーターの縦幅を広くしました（28px → 40px） */
       width: 100%;
       overflow: hidden;
       margin-top: 12px;
@@ -607,8 +607,11 @@
     <div id="tabList" class="hidden">
       <!-- ステータスエリア -->
       <div id="statusArea" class="card border-4 border-gray-300 mb-8 text-center">
-        <!-- 改修：下の枠に近づけるため mb-3 から mb-1 に変更、頭に⏱️を追加 -->
-        <h2 class="text-xl font-bold text-gray-700 mb-1">⏱️ 今月の勤務時間合計<span class="text-sm">（87時間対象）</span></h2>
+        <!-- 改修：全体を一段下げるため mt-4 を追加し、カッコ部分を改行・字下げ（pl-8）、時間枠に近づけるためマージンを減らす -->
+        <h2 class="text-xl font-bold text-gray-700 mb-1 mt-4 leading-tight text-left sm:text-center ml-2 sm:ml-0">
+          ⏱️ 今月の勤務時間合計<br>
+          <span class="text-sm block pl-8 mt-0 text-gray-500">（87時間対象）</span>
+        </h2>
         <!-- 改修：時間を角丸の枠で囲む -->
         <div id="totalTime" class="text-huge text-gray-900 mb-8 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-gray-200">0時間 0分</div>
         
@@ -654,8 +657,8 @@
           <div class="absolute text-red-600 font-extrabold" style="left: 100%; transform: translateX(-50%);">87</div>
         </div>
 
-        <!-- 改修：下の枠に近づけるため mb-3 から mb-1 に変更 -->
-        <h2 class="text-xl font-bold text-gray-700 mb-1 mt-4">⏳ 87時間まで</h2>
+        <!-- 改修：文字を変更し、下の枠に近づけるため mb-3 から mb-1 に変更 -->
+        <h2 class="text-xl font-bold text-gray-700 mb-1 mt-4">⏳ 87時間まで のこり</h2>
         <!-- 改修：時間を角丸の枠で囲む -->
         <div id="remainingTime" class="text-huge text-gray-700 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-gray-200">--時間 --分</div>
         
