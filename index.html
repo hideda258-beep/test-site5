@@ -1671,6 +1671,9 @@
       // 計算
       const wTimes = calculateWorkTimes(startTime, endTime, baseRest, eveningRest);
       
+      // 出勤が通常出勤か時間差出勤かを判定して保存
+      const isFlex = !document.getElementById('startHour').disabled;
+      
       const recordData = {
         date,
         startTime,
@@ -1681,6 +1684,7 @@
         eveningRestMinutes: eveningRest,
         workMinutes: wTimes.workMinutes,
         overMinutes: wTimes.overMinutes,
+        isFlexCommute: isFlex, // 新規追加：登録時の出勤モードを記憶
         createdAt: Date.now()
       };
 
@@ -2038,7 +2042,32 @@
         const [startH, startM] = record.startTime.split(':');
         document.getElementById('startHour').value = startH;
         document.getElementById('startMinute').value = startM;
-        setFlexCommute(); // 手入力モードにする
+        
+        // 改修：強制的に時間差出勤にするのではなく、登録時の状態を復元する
+        const btnNormal = document.getElementById('btnNormal');
+        const btnFlex = document.getElementById('btnFlex');
+        const startHourEl = document.getElementById('startHour');
+        const startMinuteEl = document.getElementById('startMinute');
+
+        // 過去のデータでフラグがない場合は、08:30以外なら時間差出勤と判定する
+        let isFlex = false;
+        if (record.isFlexCommute !== undefined) {
+          isFlex = record.isFlexCommute;
+        } else {
+          isFlex = (record.startTime !== "08:30");
+        }
+
+        if (isFlex) {
+          btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-green-500 bg-green-100 text-green-900 btn-pressed";
+          btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-blue-100 transition-colors shadow-sm";
+          startHourEl.disabled = false;
+          startMinuteEl.disabled = false;
+        } else {
+          btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-blue-500 bg-blue-100 text-blue-900 btn-pressed";
+          btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-green-100 transition-colors shadow-sm";
+          startHourEl.disabled = true;
+          startMinuteEl.disabled = true;
+        }
       }
 
       // 退勤時間の設定
