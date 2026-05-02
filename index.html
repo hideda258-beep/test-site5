@@ -294,15 +294,12 @@
 
   <!-- ヘッダー（月切り替え） -->
   <header class="bg-blue-800 text-white p-4 flex justify-between items-center shadow-md">
-    <!-- 改修：前月ボタンを白ベースにし、指定の余白・枠線・影を設定しました -->
     <button onclick="changeMonth(-1)" class="bg-white text-[#1f2937] border border-[#e5e7eb] rounded-lg py-[6px] px-[12px] text-xl font-bold shadow-[0_2px_6px_rgba(0,0,0,0.15)] hover:bg-gray-50 active:translate-y-[2px] active:shadow-none transition-all whitespace-nowrap">◀ 前月</button>
     
-    <!-- 改修：縦幅（上下の余白）を py-1 から py-2 (PCは py-3) に増やして、少し広くしました -->
     <div class="flex-1 flex justify-center px-1 sm:px-2">
       <h1 id="displayMonth" class="text-2xl sm:text-3xl font-bold text-center py-2 sm:py-3 px-4 sm:px-8 rounded-sm border-2 border-white bg-blue-900/70 shadow-[inset_0_3px_6px_rgba(0,0,0,0.6)] whitespace-nowrap">----年 --月</h1>
     </div>
     
-    <!-- 改修：次月ボタンを白ベースにし、指定の余白・枠線・影を設定しました -->
     <button onclick="changeMonth(1)" class="bg-white text-[#1f2937] border border-[#e5e7eb] rounded-lg py-[6px] px-[12px] text-xl font-bold shadow-[0_2px_6px_rgba(0,0,0,0.15)] hover:bg-gray-50 active:translate-y-[2px] active:shadow-none transition-all whitespace-nowrap">次月 ▶</button>
   </header>
 
@@ -316,7 +313,6 @@
       <p id="successModalTitle" class="text-2xl font-bold mb-4 text-gray-800 leading-relaxed">
         本日の勤務情報を<br>記録しました📝
       </p>
-      <!-- 改修：「閉じる」ボタンを削除し、下の余白を調整しました -->
       <p id="successModalSub" class="text-xl font-bold text-gray-600 mb-2">
         お仕事おつかれさまでした😌
       </p>
@@ -407,7 +403,7 @@
       <button id="btnTabList" onclick="switchTab('list')" class="flex-1 py-5 text-xl sm:text-2xl font-bold bg-white text-gray-500 hover:bg-gray-100 transition-colors">タイムカード</button>
     </div>
 
-    <!-- 改修：リアルタイム時計の縦幅拡大と文字サイズアップ -->
+    <!-- リアルタイム時計 -->
     <div class="mb-8 bg-white border-2 border-blue-300 rounded-xl py-6 sm:py-8 px-4 shadow-sm flex justify-center items-center flex-wrap gap-x-8 gap-y-3 font-extrabold text-blue-900 tracking-wider">
       <span id="realtimeDate" class="text-[22px] sm:text-[28px]">📆 ----年 -月-日（-）</span>
       <span id="realtimeClock" class="text-[28px] sm:text-[36px]">🕰️ -- : -- : --</span>
@@ -416,19 +412,21 @@
     <!-- ★ 入力タブコンテンツ ★ -->
     <div id="tabInput">
       <!-- 上部ハイライトエリア -->
-      <div class="card mb-8 border-4 border-blue-500 bg-blue-50 text-center py-8 shadow-md">
+      <!-- 改修： メインパネルの背景をご指定の少し濃いグラデーションに変更 -->
+      <div class="card mb-8 border-4 border-blue-500 text-center py-8 shadow-md" style="background: linear-gradient(180deg, #e3ebf4, #d7e2ee);">
 
-        <!-- 改修：既存のタイトル「📋 本日の勤務情報」のデザインを復元 -->
+        <!-- タイトル -->
         <div class="flex justify-center items-center text-[28px] sm:text-[34px] mb-3 mt-1">
           <span class="mr-1 relative z-10" style="filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.2));">📋</span>
-          <div class="relative inline-block font-black tracking-[0.1em]" style="font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;">
+          <!-- 改修： tracking-[0.15em] から tracking-[0.25em] に変更し、文字間隔をさらに少し広くしました -->
+          <div class="relative inline-block font-black tracking-[0.25em]" style="font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;">
             <span class="absolute left-0 top-0 text-[#fde047] select-none" style="-webkit-text-stroke: 8px #fde047; filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.35));">本日の勤務情報</span>
             <span class="absolute left-0 top-0 text-white select-none" style="-webkit-text-stroke: 3px white;">本日の勤務情報</span>
             <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-b from-[#6b7280] via-[#111827] to-[#000000]" style="-webkit-text-stroke: 0.15px rgba(0,0,0,0.25);">本日の勤務情報</span>
           </div>
         </div>
         
-        <!-- 改修：日付部分を指定のネウモーフィズム風デザイン（影と背景色）に変更 -->
+        <!-- 日付部分 -->
         <div class="flex justify-center mb-6 mt-2">
           <div class="inline-flex items-center justify-center gap-2 sm:gap-[14px] px-5 py-3 sm:px-[34px] sm:py-[14px] rounded-[16px] bg-[#e9edf3]" style="box-shadow: inset 1px 1px 3px rgba(0,0,0,0.18), inset -2px -2px 3px rgba(255,255,255,1);">
             <span class="text-[24px] sm:text-[32px]">📅</span>
@@ -449,35 +447,37 @@
 
         <input type="hidden" id="date">
 
-        <!-- 改修：時間表示の枠を画面幅いっぱいに広げ、文字サイズと字間（tracking）もゆったり調整しました -->
+        <!-- 情報表示の枠 -->
         <div class="flex flex-col items-center gap-5 w-full mt-2">
-          <div class="flex justify-center w-full gap-4 sm:gap-8">
+          <div class="flex justify-center w-full gap-4 sm:gap-8 px-2">
             <div class="flex flex-col items-center flex-1">
               <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-1 translate-y-[3px]">出勤時間</div>
-              <!-- tracking-[0.15em] と text-[28px] で文字を大きく、広く配置 -->
-              <div id="displayStartBox" class="w-full text-[28px] sm:text-4xl font-bold text-blue-900 bg-white border-4 border-gray-300 py-3 sm:py-4 rounded-xl shadow-sm text-center transition-colors duration-300 tracking-[0.15em]">
+              <!-- 改修：明るいグラデーションと指定のシャドウ設定に変更 -->
+              <div id="displayStartBox" class="w-full text-[28px] sm:text-4xl font-bold text-blue-900 text-center transition-colors duration-300 tracking-[0.15em]" 
+                style="background: linear-gradient(145deg, #fffbe6, #f0e3b8); border-radius: 14px; border: none; box-shadow: inset 3px 3px 6px rgba(0,0,0,0.12), inset -3px -3px 6px rgba(255,255,255,0.9); padding: 16px;">
                 <span id="topStartTime">-- : --</span>
               </div>
             </div>
             <div class="flex flex-col items-center flex-1">
               <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-1 translate-y-[3px]">退勤時間</div>
-              <!-- tracking-[0.15em] と text-[28px] で文字を大きく、広く配置 -->
-              <div id="displayEndBox" class="w-full text-[28px] sm:text-4xl font-bold text-orange-900 bg-white border-4 border-gray-300 py-3 sm:py-4 rounded-xl shadow-sm text-center transition-colors duration-300 tracking-[0.15em]">
+              <!-- 改修：明るいグラデーションと指定のシャドウ設定に変更 -->
+              <div id="displayEndBox" class="w-full text-[28px] sm:text-4xl font-bold text-orange-900 text-center transition-colors duration-300 tracking-[0.15em]" 
+                style="background: linear-gradient(145deg, #fffbe6, #f0e3b8); border-radius: 14px; border: none; box-shadow: inset 3px 3px 6px rgba(0,0,0,0.12), inset -3px -3px 6px rgba(255,255,255,0.9); padding: 16px;">
                 <span id="topEndTime">-- : --</span>
               </div>
             </div>
           </div>
-          <!-- 休憩時間の枠も横幅95%まで広げました -->
-          <div class="flex flex-col items-center w-[95%] sm:w-2/3 mt-1">
+          <div class="flex flex-col items-center w-[95%] sm:w-2/3 mt-1 px-2">
             <div class="text-lg sm:text-2xl font-bold text-gray-600 mb-1 translate-y-[3px]">休憩時間</div>
-            <div id="displayRestBox" class="w-full text-2xl sm:text-3xl font-bold text-yellow-700 bg-white border-4 border-gray-300 py-3 sm:py-4 rounded-xl shadow-sm text-center whitespace-nowrap transition-colors duration-300 tracking-[0.1em]">
+            <!-- 改修：明るいグラデーションと指定のシャドウ設定に変更 -->
+            <div id="displayRestBox" class="w-full text-2xl sm:text-3xl font-bold text-yellow-700 text-center whitespace-nowrap transition-colors duration-300 tracking-[0.1em]" 
+              style="background: linear-gradient(145deg, #fffbe6, #f0e3b8); border-radius: 14px; border: none; box-shadow: inset 3px 3px 6px rgba(0,0,0,0.12), inset -3px -3px 6px rgba(255,255,255,0.9); padding: 16px;">
               <span id="topRestTime">-- 分</span>
             </div>
           </div>
         </div>
 
         <div id="editGuideMessage" class="hidden mt-8">
-          <!-- 改修：「本日の情報を修正」ボタンの枠線をご指定の太さと色に変更 -->
           <button type="button" onclick="editTodayRecord()" class="w-full max-w-sm mx-auto flex items-center justify-center gap-2 transition-all active:scale-95 text-xl sm:text-2xl" 
             style="background: #fff5f5; border-radius: 14px; padding: 14px 20px; color: #dc2626; font-weight: 600; box-shadow: 3px 3px 8px rgba(0,0,0,0.12), -3px -3px 8px rgba(255,255,255,0.9); border: 2px solid rgba(220,38,38,0.25);">
             <span>✏️</span> 本日の情報を修正
@@ -682,7 +682,7 @@
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth() + 1;
     
-    // 改修：出勤モードを確実に管理する変数（null | 'normal' | 'flex'）
+    // 出勤モードを確実に管理する変数（null | 'normal' | 'flex'）
     let currentCommuteMode = null; 
     let currentRestMode = null; // 'normal' | 'flex' | 'none' | null
     let flexRestMinutes = 30;
@@ -714,18 +714,16 @@
       boxes.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          if (isConfirmed) {
-            el.style.backgroundColor = '#e6f4ea';
-          } else {
-            el.style.backgroundColor = 'white';
-          }
+          // 改修：確定・未確定にかかわらず、背景色を常に新しい明るいグラデーション（#f0e3b8）に保つ
+          el.style.background = 'linear-gradient(145deg, #fffbe6, #f0e3b8)';
         }
       });
     }
 
     function updateInputVisibilityByToday() {
       const todayStr = getTodayStr();
-      document.getElementById('date').value = todayStr;
+      const dateEl = document.getElementById('date');
+      if(dateEl) dateEl.value = todayStr;
 
       const todayRecord = workRecords.find(r => r.date === todayStr);
       const inputFormArea = document.getElementById('inputFormArea');
@@ -782,49 +780,26 @@
       currentDateStr = getTodayStr();
 
       const dateInput = document.getElementById('date');
-      dateInput.value = currentDateStr;
-      
-      dateInput.addEventListener('input', updateTopDisplay);
-      
-      const setupTimeInput = (id, maxVal, isRest = false, nextId = null) => {
-        const el = document.getElementById(id);
-        
-    const updateTopDisplay = () => {
-      const dateVal = document.getElementById('date').value || getTodayStr();
-      const d = new Date(dateVal);
-      const week = ['日','月','火','水','木','金','土'][d.getDay()];
-      document.getElementById('topDateDisplay').textContent = `${d.getFullYear()}年 ${d.getMonth()+1}月${d.getDate()}日（${week}）`;
-
-      const record = workRecords.find(r => r.date === dateVal);
-      const sh = document.getElementById('startHour').value, sm = document.getElementById('startMinute').value;
-      const eh = document.getElementById('endHour').value, em = document.getElementById('endMinute').value;
-
-      document.getElementById('topStartTime').textContent = sh ? `${sh}:${sm}` : (record ? record.startTime : '--:--');
-      document.getElementById('topEndTime').textContent = eh ? `${eh}:${em}` : (record ? record.endTime : '--:--');
-      document.getElementById('topWorkTime').textContent = record ? formatTime(record.workMinutes) : '--時間 --分';
-      document.getElementById('topOverTime').textContent = record ? formatTime(record.overMinutes) : '--時間 --分';
-      
-      // 改修：確定状態のときに背景を緑色（.filled）にする処理を削除し、常に白色に保つようにしました。
-
-      let restTxt = '--分';
-      if (record) {
-        const b = record.baseRestMinutes || 0, e = record.eveningRestMinutes || 0;
-        if(b > 0 && e > 0) restTxt = `昼${b}分 / 夕${e}分`;
-        else if(b > 0) restTxt = `昼${b}分`;
-        else if(e > 0) restTxt = `夕${e}分`;
-        else restTxt = '0分';
+      if(dateInput) {
+        dateInput.value = currentDateStr;
+        dateInput.addEventListener('input', updateTopDisplay);
       }
-      document.getElementById('topRestTime').textContent = restTxt;
-    };
+      
+      const setupTimeInput = (id, nextId = null) => {
+        const el = document.getElementById(id);
+        if(!el) return;
 
         el.addEventListener('blur', (e) => {
-          formatTimeValue(e.target);
+          if (el.value) {
+            el.value = el.value.padStart(2, '0');
+          }
+          updateAllInputBgs();
+          updateTopDisplay();
         });
 
         el.addEventListener('focus', (e) => {
           setTimeout(() => {
             e.target.select();
-            e.target.setSelectionRange(0, 9999);
           }, 10);
         });
 
@@ -841,10 +816,10 @@
         });
       };
       
-      setupTimeInput('startHour', 23, false, 'startMinute');
-      setupTimeInput('startMinute', 59);
-      setupTimeInput('endHour', 23, false, 'endMinute');
-      setupTimeInput('endMinute', 59);
+      setupTimeInput('startHour', 'startMinute');
+      setupTimeInput('startMinute');
+      setupTimeInput('endHour', 'endMinute');
+      setupTimeInput('endMinute');
 
       loadUserName();
       resetFormUI();
@@ -1079,10 +1054,11 @@
     }
 
     function updateTopDisplay() {
-      const dateVal = document.getElementById('date').value;
+      const dateEl = document.getElementById('date');
+      const dateVal = dateEl ? dateEl.value : getTodayStr();
       const topDateDisplay = document.getElementById('topDateDisplay');
       
-      if (dateVal) {
+      if (dateVal && topDateDisplay) {
         const d = new Date(dateVal);
         const y = d.getFullYear();
         const m = d.getMonth() + 1;
@@ -1090,16 +1066,20 @@
         const week = ['日', '月', '火', '水', '木', '金', '土'][d.getDay()];
 
         topDateDisplay.textContent = `${y}年 ${m}月${day}日（${week}）`;
-      } else {
+      } else if(topDateDisplay) {
         topDateDisplay.textContent = '----年 --月--日（-）';
       }
       
-      const startH = document.getElementById('startHour').value;
-      const startM = document.getElementById('startMinute').value;
+      const startHEl = document.getElementById('startHour');
+      const startMEl = document.getElementById('startMinute');
+      const startH = startHEl ? startHEl.value : '';
+      const startM = startMEl ? startMEl.value : '';
       const formStartTime = (startH && startM) ? `${startH}:${startM}` : '';
       
-      const endH = document.getElementById('endHour').value;
-      const endM = document.getElementById('endMinute').value;
+      const endHEl = document.getElementById('endHour');
+      const endMEl = document.getElementById('endMinute');
+      const endH = endHEl ? endHEl.value : '';
+      const endM = endMEl ? endMEl.value : '';
       const formEndTime = (endH && endM) ? `${endH}:${endM}` : '';
       
       let baseRest = 0;
@@ -1166,14 +1146,17 @@
         }
       }
 
-      document.getElementById('topStartTime').textContent = displayStart;
-      document.getElementById('topEndTime').textContent = displayEnd;
-      document.getElementById('topRestTime').textContent = displayRest;
-      document.getElementById('topWorkTime').textContent = displayWorkTime;
-      document.getElementById('topOverTime').textContent = displayOverTime;
-      
-      // 改修：時間が入力されたときに枠線や文字色を青・オレンジ・黄色などに変える処理を削除し、
-      // 常に「外枠グレー（border-gray-300）」の以前の色使いに戻しました。
+      const topStartTimeEl = document.getElementById('topStartTime');
+      const topEndTimeEl = document.getElementById('topEndTime');
+      const topRestTimeEl = document.getElementById('topRestTime');
+      const topWorkTimeEl = document.getElementById('topWorkTime');
+      const topOverTimeEl = document.getElementById('topOverTime');
+
+      if(topStartTimeEl) topStartTimeEl.textContent = displayStart.replace(':', ' : ');
+      if(topEndTimeEl) topEndTimeEl.textContent = displayEnd.replace(':', ' : ');
+      if(topRestTimeEl) topRestTimeEl.textContent = displayRest;
+      if(topWorkTimeEl) topWorkTimeEl.textContent = displayWorkTime;
+      if(topOverTimeEl) topOverTimeEl.textContent = displayOverTime;
     }
 
     function loadLocalData() {
@@ -1357,15 +1340,14 @@
       const firstHalfHtml = generateTableHtml(1, 15, records, 'cyan');
       const secondHalfHtml = generateTableHtml(16, lastDay, records, 'orange');
       
+      // 改修：注意書きを「前半」の前に配置し、上下の順序を逆にしました
       listContainer.innerHTML = `
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-2 mt-2 gap-2">
-          <h3 class="text-xl font-bold text-cyan-800">前半（1日〜15日）</h3>
-          <!-- 改修：text-rightをやめてtext-left（左揃え）にし、mr-2 sm:mr-6 で右側に余白を作って左にずらしました -->
-          <div class="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed text-left mr-2 sm:mr-6">
-            ※ ℹ️未入力の日がある場合は「入力」ボタンを押してください<br>
-            ※ ✏️内容を変更したい場合は「修正」ボタンを押してください
-          </div>
+        <div class="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed text-left mb-4 mt-2">
+          ※ ℹ️未入力の日がある場合は「入力」ボタンを押してください<br>
+          ※ ✏️内容を変更したい場合は「修正」ボタンを押してください
         </div>
+        
+        <h3 class="text-xl font-bold text-cyan-800 mb-2">前半（1日〜15日）</h3>
         <div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-cyan-300 mb-8">
           ${firstHalfHtml}
         </div>
@@ -1410,7 +1392,6 @@
               <td class="p-1 sm:p-2 border ${tdBorder} text-center text-gray-300 text-xs sm:text-sm align-middle">-</td>
               <td class="p-1 sm:p-2 border ${tdBorder} text-center text-gray-300 text-xs sm:text-sm align-middle">-</td>
               <td class="p-1 sm:p-2 border ${tdBorder} text-center">
-                <!-- 改修：「入力」ボタンの大きさを「修正」ボタンと完全に同じ設定に統一しました -->
                 <button onclick="editRecord('${dateStr}')" class="timecard-btn bg-gray-400 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded text-sm sm:text-base font-bold shadow hover:bg-gray-500 active:translate-y-1 whitespace-nowrap w-full sm:w-auto">入力</button>
               </td>
             </tr>
@@ -1464,7 +1445,6 @@
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-700 whitespace-nowrap align-middle">
                   ${formatTimeColon(formatTimeShort(workMin))}
                 </td>
-                <!-- 改修：残業時間の文字色を #d97706 に変更 -->
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
                   ${overMin > 0 ? formatTimeColon(formatTimeShort(overMin)) : '-'}
                 </td>
@@ -1485,7 +1465,6 @@
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle">
               ${formatTimeColon(formatTimeShort(subTotalWorkMinutes))}
             </td>
-            <!-- 改修：小計の残業時間の文字色を #d97706 に変更 -->
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
               ${formatTimeColon(formatTimeShort(subTotalOverMinutes))}
             </td>
@@ -1500,7 +1479,7 @@
            let o = r.overMinutes;
            if (o === undefined) {
              let base = r.baseRestMinutes !== undefined ? r.baseRestMinutes : r.restMinutes;
-             let eveningVal = r.eveningRestMinutes !== undefined ? r.eveningRestMinutes : (r.hasEveningRest ? 30 : 0);
+             let eveningVal = r.eveningRestMinutes !== undefined ? r.eveningRestMinutes : (record.hasEveningRest ? 30 : 0);
              const calc = calculateWorkTimes(r.startTime, r.endTime, base, eveningVal);
              w = calc.workMinutes;
              o = calc.overMinutes;
@@ -1515,7 +1494,6 @@
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle">
               ${formatTimeColon(formatTimeShort(totalWork))}
             </td>
-            <!-- 改修：合計の残業時間の文字色を #d97706 に変更 -->
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
               ${formatTimeColon(formatTimeShort(totalOver))}
             </td>
@@ -1613,7 +1591,6 @@
       
       const wTimes = calculateWorkTimes(startTime, endTime, baseRest, eveningRest);
       
-      // 出勤が通常出勤か時間差出勤かを判定して保存
       const isFlex = (currentCommuteMode === 'flex');
       
       const recordData = {
@@ -1663,7 +1640,6 @@
     };
 
     function resetFormUI() {
-      // 出勤モードと入力欄を初期化（未選択・入力不可）
       currentCommuteMode = null;
       document.getElementById('startHour').value = '';
       document.getElementById('startMinute').value = '';
@@ -1672,13 +1648,11 @@
       document.getElementById('btnNormal').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-blue-100 transition-colors shadow-sm";
       document.getElementById('btnFlex').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-green-100 transition-colors shadow-sm";
       
-      // 退勤
       document.getElementById('endHour').value = '';
       document.getElementById('endMinute').value = '';
       
       updateAllInputBgs(); 
 
-      // 休憩
       currentRestMode = null;
       flexRestMinutes = 30;
       isEveningRestAdded = false;
@@ -1819,11 +1793,9 @@
         subEl.innerHTML = `お仕事おつかれさまでした😊`;
       }
       
-      // モーダルを表示
       modal.classList.remove('hidden');
       modal.style.opacity = '1';
 
-      // 改修：2.5秒後に自動で閉じる処理を追加
       setTimeout(() => {
         closeSuccessModal();
       }, 2500);
@@ -1831,7 +1803,6 @@
 
     window.closeSuccessModal = function() {
       const modal = document.getElementById('successModal');
-      // 少しフワッと消える演出
       modal.style.opacity = '0';
       setTimeout(() => {
         modal.classList.add('hidden');
@@ -1969,7 +1940,6 @@
         const startHourEl = document.getElementById('startHour');
         const startMinuteEl = document.getElementById('startMinute');
 
-        // 改修：出勤モードを確実な状態から復元
         if (record.isFlexCommute !== undefined) {
           currentCommuteMode = record.isFlexCommute ? 'flex' : 'normal';
         } else {
@@ -2029,7 +1999,6 @@
       switchTab('input', true);
       scrollToForm();
       
-      // 改修：スマホ等で意図せずキーボードが開くのを防ぐため、フォーカスを確実に外す
       if (document.activeElement) {
         document.activeElement.blur();
       }
