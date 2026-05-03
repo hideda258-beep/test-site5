@@ -268,6 +268,98 @@
       box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2) !important;
     }
 
+    /* 改修：立体感のあるボタン用の共通クラスを追加 */
+    .btn-3d-flat {
+      border-radius: 12px;
+      transition: all 0.15s ease;
+      box-shadow: 
+        5px 5px 10px rgba(0,0,0,0.12),
+        -5px -5px 10px rgba(255,255,255,0.9);
+      border: 3px solid #e5e7eb;
+      background-color: #ffffff;
+      color: #4b5563;
+    }
+    .btn-3d-flat:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        7px 7px 14px rgba(0,0,0,0.12),
+        -7px -7px 14px rgba(255,255,255,1);
+    }
+    .btn-3d-flat:active {
+      transform: translateY(2px);
+      /* 改修：押した時の凹み感を強める（より深く沈み込むように） */
+      box-shadow: 
+        inset 6px 6px 12px rgba(0,0,0,0.25),
+        inset -6px -6px 12px rgba(255,255,255,0.9);
+    }
+    /* 選択時の状態（凹んで色が変わる） */
+    .btn-3d-flat.is-active-blue {
+      /* 改修：選択時の凹み感を強める（より深く沈み込むように） */
+      box-shadow: 
+        inset 6px 6px 12px rgba(0,0,0,0.25),
+        inset -6px -6px 12px rgba(255,255,255,0.9);
+      background-color: #dbeafe;
+      border-color: #3b82f6;
+      color: #1e3a8a;
+      transform: translateY(2px);
+    }
+    .btn-3d-flat.is-active-green {
+      /* 改修：選択時の凹み感を強める（より深く沈み込むように） */
+      box-shadow: 
+        inset 6px 6px 12px rgba(0,0,0,0.25),
+        inset -6px -6px 12px rgba(255,255,255,0.9);
+      background-color: #d1fae5;
+      border-color: #22c55e;
+      color: #065f46;
+      transform: translateY(2px);
+    }
+    .btn-3d-flat.is-active-yellow {
+      /* 改修：選択時の凹み感を強める（より深く沈み込むように） */
+      box-shadow: 
+        inset 6px 6px 12px rgba(0,0,0,0.25),
+        inset -6px -6px 12px rgba(255,255,255,0.9);
+      background-color: #fef3c7;
+      border-color: #eab308;
+      color: #713f12;
+      transform: translateY(2px);
+    }
+    .btn-3d-flat.is-active-pink {
+      /* 改修：選択時の凹み感を強める（より深く沈み込むように） */
+      box-shadow: 
+        inset 6px 6px 12px rgba(0,0,0,0.25),
+        inset -6px -6px 12px rgba(255,255,255,0.9);
+      background-color: #fce7f3;
+      border-color: #ec4899;
+      color: #831843;
+      transform: translateY(2px);
+    }
+
+    /* 改修：今すぐ退勤用のオレンジ3Dボタン */
+    .btn-3d-orange {
+      border-radius: 12px;
+      transition: all 0.15s ease;
+      box-shadow: 
+        5px 5px 10px rgba(0,0,0,0.12),
+        -5px -5px 10px rgba(255,255,255,0.9);
+      border: 3px solid #fb923c;
+      background-color: #ffedd5;
+      color: #7c2d12;
+    }
+    .btn-3d-orange:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        7px 7px 14px rgba(0,0,0,0.12),
+        -7px -7px 14px rgba(255,255,255,1);
+      background-color: #fed7aa;
+    }
+    .btn-3d-orange:active {
+      transform: translateY(2px);
+      /* 改修：押した時の凹み感を強める（より深く沈み込むように） */
+      box-shadow: 
+        inset 6px 6px 12px rgba(0,0,0,0.25),
+        inset -6px -6px 12px rgba(255,255,255,0.9);
+    }
+
     .filled {
       background-color: #e6f4ea !important;
     }
@@ -385,6 +477,26 @@
     </div>
   </div>
 
+  <!-- 改修：8時間超過の確認モーダルを追加 -->
+  <div id="over8HoursConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-yellow-50 p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-yellow-500">
+      <div class="text-5xl mb-6">⚠️</div>
+      <div class="flex flex-col gap-4 mb-8">
+        <div class="flex items-center justify-center w-full text-yellow-900">
+          <div class="mr-1.5 sm:mr-2 flex-shrink-0 text-[20px] sm:text-2xl">⚠️</div>
+          <div class="text-[16px] sm:text-xl font-bold whitespace-nowrap tracking-tight">勤務時間が8時間をこえています！</div>
+        </div>
+        <div class="text-center w-full text-yellow-800 leading-snug mt-2">
+          <div class="text-[15px] sm:text-lg font-bold tracking-tight">休憩時間に相違がないか<br>確認してください。</div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3">
+        <button onclick="cancelSavePendingRecord()" class="w-full bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">戻って修正する</button>
+        <button onclick="executeSavePendingRecord()" class="w-full bg-yellow-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-yellow-700 active:translate-y-1 transition-colors">このまま登録する</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 設定画面モーダル -->
   <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all border-4 border-gray-300">
@@ -402,10 +514,10 @@
       <div class="mb-8 text-left">
         <label class="block text-sm font-bold text-gray-700 mb-2">アイコン</label>
         <div class="flex gap-4">
-          <button type="button" id="btnIconMale" onclick="selectUserIcon('🙍🏻‍♂️')" class="flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm">
+          <button type="button" id="btnIconMale" onclick="selectUserIcon('🙍🏻‍♂️')" class="flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat">
             🙍🏻‍♂️ 男性
           </button>
-          <button type="button" id="btnIconFemale" onclick="selectUserIcon('🙍🏻‍♀️')" class="flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm">
+          <button type="button" id="btnIconFemale" onclick="selectUserIcon('🙍🏻‍♀️')" class="flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat">
             🙍🏻‍♀️ 女性
           </button>
         </div>
@@ -426,8 +538,15 @@
     </div>
 
     <!-- リアルタイム時計 -->
-    <div class="mb-8 bg-white border-2 border-blue-300 rounded-xl py-6 sm:py-8 px-4 shadow-sm flex justify-center items-center flex-wrap gap-x-8 gap-y-3 font-extrabold text-blue-900 tracking-wider">
-      <span id="realtimeDate" class="text-[22px] sm:text-[28px]">📆 ----年 -月-日（-）</span>
+    <!-- 改修：透明感と明るさを増し、自然な光と影で高級感のあるデザインに調整 -->
+    <div class="mb-8 py-6 sm:py-8 px-4 flex justify-center items-center flex-wrap gap-x-8 gap-y-3 font-extrabold text-blue-900 tracking-wider"
+         style="background: radial-gradient(circle at 25% 20%, rgba(255,255,255,0.9), transparent 45%), linear-gradient(160deg, #ffffff 0%, #f4f8ff 35%, #e6f0ff 100%); 
+                border: 1px solid #d6e4ff; 
+                border-radius: 14px; 
+                box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 6px 14px rgba(0,0,0,0.05);">
+      <!-- 改修：日付カプセルの立体感と視認性を強化（背景の不透明度アップ、枠線・影・余白の微調整） -->
+      <span id="realtimeDate" class="text-[22px] sm:text-[28px]" 
+            style="background: rgba(255, 255, 255, 0.85); border: 1px solid #cfd8e3; border-radius: 999px; padding: 8px 20px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.08);">📆 ----年 -月-日（-）</span>
       <span id="realtimeClock" class="text-[28px] sm:text-[36px]">🕰️ -- : -- : --</span>
     </div>
 
@@ -507,7 +626,7 @@
         </div>
 
         <div class="mt-8 text-sm font-bold text-gray-500">
-          ※この項目は自動表示です
+          ※この項目は自動表示されるため入力不可です。
         </div>
       </div>
 
@@ -523,10 +642,10 @@
             <label class="block text-2xl font-bold text-blue-900 mb-6 border-b-2 border-blue-200 pb-2">🏢 出勤時間</label>
             
             <div class="flex flex-col sm:flex-row gap-3 sm:gap-6 mb-3">
-              <button type="button" id="btnNormal" onclick="setNormalCommute()" class="flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-blue-100 transition-colors shadow-sm">
+              <button type="button" id="btnNormal" onclick="setNormalCommute()" class="flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat">
                 通常出勤<br><span class="text-lg font-normal">（08:30）</span>
               </button>
-              <button type="button" id="btnFlex" onclick="setFlexCommute()" class="flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-green-100 transition-colors shadow-sm">
+              <button type="button" id="btnFlex" onclick="setFlexCommute()" class="flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat">
                 時間差出勤<br><span class="text-lg font-normal">（手入力）</span>
               </button>
             </div>
@@ -548,7 +667,8 @@
           <div class="mb-8 p-6 bg-orange-50 border-4 border-orange-200 rounded-2xl">
             <label class="block text-2xl font-bold text-orange-900 mb-6 border-b-2 border-orange-200 pb-2">🏠 退勤時間</label>
             
-            <button type="button" onclick="setCurrentEndTime()" class="w-full mb-3 py-5 px-4 rounded-xl text-2xl font-bold border-4 border-orange-400 bg-orange-100 text-orange-900 hover:bg-orange-200 transition-colors shadow-md">
+            <!-- 改修：今すぐ退勤ボタンに .btn-3d-orange を適用 -->
+            <button type="button" onclick="setCurrentEndTime()" class="w-full mb-3 py-5 px-4 text-2xl font-bold btn-3d-orange">
               🕒 今すぐ退勤<br><span class="text-lg font-normal">（現在時刻）</span>
             </button>
             
@@ -572,25 +692,25 @@
             <div class="mb-6">
               <p class="text-xl font-bold text-yellow-800 mb-4">① 基本休憩（お昼など）</p>
               <div class="flex flex-col sm:flex-row gap-3 sm:gap-6 mb-4">
-                <button type="button" id="btnRestNone" onclick="setNoneRest()" class="flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                <button type="button" id="btnRestNone" onclick="setNoneRest()" class="flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat">
                   休憩なし<br><span class="text-lg font-normal">（0分）</span>
                 </button>
-                <button type="button" id="btnRestNormal" onclick="setNormalRest()" class="flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                <button type="button" id="btnRestNormal" onclick="setNormalRest()" class="flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat">
                   通常休憩<br><span class="text-lg font-normal">（60分）</span>
                 </button>
-                <button type="button" id="btnRestFlex" onclick="setFlexRest()" class="flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                <button type="button" id="btnRestFlex" onclick="setFlexRest()" class="flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat">
                   選択<br><span class="text-lg font-normal">（短時間等）</span>
                 </button>
               </div>
               
               <div id="flexRestOptions" class="hidden flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 mt-2 mb-2">
-                <button type="button" id="btnFlex20" onclick="selectFlexRest(20)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                <button type="button" id="btnFlex20" onclick="selectFlexRest(20)" class="flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat">
                   20分
                 </button>
-                <button type="button" id="btnFlex30" onclick="selectFlexRest(30)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                <button type="button" id="btnFlex30" onclick="selectFlexRest(30)" class="flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat">
                   30分
                 </button>
-                <button type="button" id="btnFlex40" onclick="selectFlexRest(40)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                <button type="button" id="btnFlex40" onclick="selectFlexRest(40)" class="flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat">
                   40分
                 </button>
               </div>
@@ -600,18 +720,18 @@
             <div class="border-t-2 border-yellow-200 pt-6">
               <p class="text-xl font-bold text-yellow-800 mb-4">② 追加休憩（別枠）</p>
               <div class="flex flex-col gap-2">
-                <button type="button" id="btnEveningRestToggle" onclick="toggleEveningRest()" class="w-full sm:w-auto py-5 px-6 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                <button type="button" id="btnEveningRestToggle" onclick="toggleEveningRest()" class="w-full sm:w-auto py-5 px-6 text-xl sm:text-2xl font-bold btn-3d-flat">
                   夕方食事休憩
                 </button>
                 
                 <div id="eveningRestOptions" class="hidden flex flex-wrap sm:flex-nowrap gap-3 sm:gap-6 mt-2 mb-2">
-                  <button type="button" id="btnEve20" onclick="selectEveningRest(20)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                  <button type="button" id="btnEve20" onclick="selectEveningRest(20)" class="flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat">
                     20分
                   </button>
-                  <button type="button" id="btnEve30" onclick="selectEveningRest(30)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                  <button type="button" id="btnEve30" onclick="selectEveningRest(30)" class="flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat">
                     30分
                   </button>
-                  <button type="button" id="btnEve40" onclick="selectEveningRest(40)" class="flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm">
+                  <button type="button" id="btnEve40" onclick="selectEveningRest(40)" class="flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat">
                     40分
                   </button>
                 </div>
@@ -715,6 +835,9 @@
     let targetDeleteDate = null;
     let targetActionDate = null;
     let currentUserIcon = '🙍🏻‍♂️';
+    
+    // 改修：8時間超過時に一時保存するための変数を追加
+    let pendingRecordData = null;
     
     // Firebase関連
     let isFirebaseActive = false;
@@ -877,8 +1000,8 @@
       const startHour = document.getElementById('startHour');
       const startMinute = document.getElementById('startMinute');
 
-      btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-blue-500 bg-blue-100 text-blue-900 btn-pressed";
-      btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-green-100 transition-colors shadow-sm";
+      btnNormal.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat is-active-blue";
+      btnFlex.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
 
       startHour.value = "08";
       startMinute.value = "30";
@@ -896,8 +1019,8 @@
       const startHour = document.getElementById('startHour');
       const startMinute = document.getElementById('startMinute');
 
-      btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-green-500 bg-green-100 text-green-900 btn-pressed";
-      btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-blue-100 transition-colors shadow-sm";
+      btnFlex.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat is-active-green";
+      btnNormal.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
 
       startHour.disabled = false;
       startMinute.disabled = false;
@@ -927,9 +1050,9 @@
       const btnFlex = document.getElementById('btnRestFlex');
       const flexArea = document.getElementById('flexRestOptions');
 
-      btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
-      btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
-      btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+      btnNone.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat is-active-yellow";
+      btnNormal.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
+      btnFlex.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
       
       if (flexArea) flexArea.classList.add('hidden');
       updateTopDisplay();
@@ -942,9 +1065,9 @@
       const btnFlex = document.getElementById('btnRestFlex');
       const flexArea = document.getElementById('flexRestOptions');
 
-      btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
-      btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
-      btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+      btnNormal.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat is-active-yellow";
+      btnNone.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
+      btnFlex.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
       
       if (flexArea) flexArea.classList.add('hidden');
       updateTopDisplay();
@@ -958,13 +1081,13 @@
 
       if (!forceEnable && currentRestMode === 'flex') {
         currentRestMode = null;
-        btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+        btnFlex.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
         if (flexArea) flexArea.classList.add('hidden');
       } else {
         currentRestMode = 'flex';
-        btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
-        btnNone.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
-        btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+        btnFlex.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat is-active-yellow";
+        btnNone.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
+        btnNormal.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
         
         if (flexArea) flexArea.classList.remove('hidden');
         updateFlexOptionStyles();
@@ -987,9 +1110,9 @@
       for (let min in btns) {
         if (!btns[min]) continue;
         if (parseInt(min) === flexRestMinutes) {
-          btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
+          btns[min].className = "flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat is-active-yellow";
         } else {
-          btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+          btns[min].className = "flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat";
         }
       }
     }
@@ -1011,11 +1134,11 @@
       const optionsDiv = document.getElementById('eveningRestOptions');
       
       if (isEveningRestAdded) {
-        btnToggle.className = "w-full sm:w-auto py-5 px-6 rounded-xl text-xl sm:text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
+        btnToggle.className = "w-full sm:w-auto py-5 px-6 text-xl sm:text-2xl font-bold btn-3d-flat is-active-yellow";
         optionsDiv.classList.remove('hidden');
         updateEveningOptionStyles();
       } else {
-        btnToggle.className = "w-full sm:w-auto py-5 px-6 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+        btnToggle.className = "w-full sm:w-auto py-5 px-6 text-xl sm:text-2xl font-bold btn-3d-flat";
         optionsDiv.classList.add('hidden');
       }
       updateTopDisplay();
@@ -1036,9 +1159,9 @@
       for (let min in btns) {
         if (!btns[min]) continue;
         if (parseInt(min) === eveningRestMinutes) {
-          btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-yellow-500 bg-yellow-100 text-yellow-900 btn-pressed";
+          btns[min].className = "flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat is-active-yellow";
         } else {
-          btns[min].className = "flex-1 py-4 px-2 rounded-xl text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+          btns[min].className = "flex-1 py-4 px-2 text-2xl font-bold btn-3d-flat";
         }
       }
     }
@@ -1529,7 +1652,8 @@
         footerHtml = `
           <tr style="background-color: #fef9c3;">
             <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">小計</td>
-            <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle">
+            <!-- 改修：背景色を白にせず、行の背景色をそのまま残して二重線を引く -->
+            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle" style="border: 4px double #1e40af !important;">
               ${formatTimeColon(formatTimeShort(subTotalWorkMinutes))}
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
@@ -1546,7 +1670,7 @@
            let o = r.overMinutes;
            if (o === undefined) {
              let base = r.baseRestMinutes !== undefined ? r.baseRestMinutes : r.restMinutes;
-             let eveningVal = r.eveningRestMinutes !== undefined ? r.eveningRestMinutes : (record.hasEveningRest ? 30 : 0);
+             let eveningVal = r.eveningRestMinutes !== undefined ? r.eveningRestMinutes : (r.hasEveningRest ? 30 : 0);
              const calc = calculateWorkTimes(r.startTime, r.endTime, base, eveningVal);
              w = calc.workMinutes;
              o = calc.overMinutes;
@@ -1558,7 +1682,8 @@
         footerHtml = `
           <tr style="background-color: #ffe4e6;">
             <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">合計</td>
-            <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle">
+            <!-- 改修：背景色を白にせず、行の背景色をそのまま残して二重線を引く -->
+            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle" style="border: 4px double #1e3a8a !important;">
               ${formatTimeColon(formatTimeShort(totalWork))}
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
@@ -1614,7 +1739,7 @@
       }, 3000);
     }
 
-    // 登録
+    // 改修：登録時の処理を8時間チェック用に分割
     window.saveRecord = async function(e) {
       e.preventDefault();
       
@@ -1674,6 +1799,35 @@
         createdAt: Date.now()
       };
 
+      // 勤務時間が8時間（480分）を超えているかチェック
+      if (wTimes.workMinutes > 480) {
+        pendingRecordData = recordData;
+        document.getElementById('over8HoursConfirmModal').classList.remove('hidden');
+        return; // 保存処理を一時中断
+      }
+
+      // 問題なければ保存処理へ
+      await executeSaveOperation(recordData);
+    };
+
+    // 8時間超過モーダルで「戻る」を押したとき
+    window.cancelSavePendingRecord = function() {
+      document.getElementById('over8HoursConfirmModal').classList.add('hidden');
+      pendingRecordData = null;
+    };
+
+    // 8時間超過モーダルで「このまま登録」を押したとき
+    window.executeSavePendingRecord = async function() {
+      document.getElementById('over8HoursConfirmModal').classList.add('hidden');
+      if (pendingRecordData) {
+        await executeSaveOperation(pendingRecordData);
+        pendingRecordData = null;
+      }
+    };
+
+    // 実際の保存処理を行う関数
+    async function executeSaveOperation(recordData) {
+      const date = recordData.date;
       const updateLocalData = () => {
         const existingIndex = workRecords.findIndex(r => r.date === date);
         if (existingIndex >= 0) {
@@ -1704,7 +1858,7 @@
         resetFormAfterSave(recordData);
         render();
       }
-    };
+    }
 
     function resetFormUI() {
       currentCommuteMode = null;
@@ -1712,8 +1866,8 @@
       document.getElementById('startMinute').value = '';
       document.getElementById('startHour').disabled = true;
       document.getElementById('startMinute').disabled = true;
-      document.getElementById('btnNormal').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-blue-100 transition-colors shadow-sm";
-      document.getElementById('btnFlex').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-green-100 transition-colors shadow-sm";
+      document.getElementById('btnNormal').className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
+      document.getElementById('btnFlex').className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
       
       document.getElementById('endHour').value = '';
       document.getElementById('endMinute').value = '';
@@ -1729,12 +1883,12 @@
       if (flexArea) flexArea.classList.add('hidden');
       updateFlexOptionStyles();
       
-      document.getElementById('btnRestNone').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
-      document.getElementById('btnRestNormal').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
-      document.getElementById('btnRestFlex').className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+      document.getElementById('btnRestNone').className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
+      document.getElementById('btnRestNormal').className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
+      document.getElementById('btnRestFlex').className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
       
       const btnEvening = document.getElementById('btnEveningRestToggle');
-      if (btnEvening) btnEvening.className = "w-full sm:w-auto py-5 px-6 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-yellow-100 transition-colors shadow-sm";
+      if (btnEvening) btnEvening.className = "w-full sm:w-auto py-5 px-6 text-xl sm:text-2xl font-bold btn-3d-flat";
       
       const optionsDiv = document.getElementById('eveningRestOptions');
       if (optionsDiv) optionsDiv.classList.add('hidden');
@@ -1809,11 +1963,11 @@
       const btnFemale = document.getElementById('btnIconFemale');
       
       if (currentUserIcon === '🙍🏻‍♂️') {
-        btnMale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-blue-500 bg-blue-50 text-blue-900 btn-pressed";
-        btnFemale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm";
+        btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat is-active-blue";
+        btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
       } else {
-        btnMale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors shadow-sm";
-        btnFemale.className = "flex-1 py-3 px-2 rounded-xl text-lg sm:text-xl font-bold border-4 border-pink-500 bg-pink-50 text-pink-900 btn-pressed";
+        btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
+        btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat is-active-pink";
       }
     }
 
@@ -2021,13 +2175,13 @@
         }
 
         if (currentCommuteMode === 'flex') {
-          btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-green-500 bg-green-100 text-green-900 btn-pressed";
-          btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-blue-100 transition-colors shadow-sm";
+          btnFlex.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat is-active-green";
+          btnNormal.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
           startHourEl.disabled = false;
           startMinuteEl.disabled = false;
         } else {
-          btnNormal.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-blue-500 bg-blue-100 text-blue-900 btn-pressed";
-          btnFlex.className = "flex-1 py-5 px-2 rounded-xl text-xl sm:text-2xl font-bold border-4 border-gray-300 bg-white text-gray-500 hover:bg-green-100 transition-colors shadow-sm";
+          btnNormal.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat is-active-blue";
+          btnFlex.className = "flex-1 py-5 px-2 text-xl sm:text-2xl font-bold btn-3d-flat";
           startHourEl.disabled = true;
           startMinuteEl.disabled = true;
         }
