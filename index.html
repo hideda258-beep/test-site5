@@ -89,20 +89,28 @@
       margin-bottom: 8px;
       color: #374151;
     }
+    
+    /* 改修：入力欄の枠線を指定の「シンプルな二重枠」に完全置き換え */
     .input-field {
       width: 100%;
       padding: 16px;
       font-size: 1.3rem;
-      border: 2px solid #d1d5db;
-      border-radius: 8px;
-      margin-bottom: 20px;
       background-color: #f9fafb;
+      margin-bottom: 20px;
+      
+      /* 以下、指定されたプロパティのみを !important で強制適用 */
+      border: 1px solid #888 !important;
+      box-shadow: inset 0 0 0 1px #ccc !important;
+      outline: none !important;
+      border-radius: 4px !important;
     }
     .input-field:focus {
-      border-color: #3b82f6;
-      outline: none;
-      background-color: #ffffff;
+      border: 1px solid #3b82f6 !important;
+      box-shadow: inset 0 0 0 1px #93c5fd !important;
+      background-color: #ffffff !important;
+      outline: none !important;
     }
+
     .btn {
       display: block;
       width: 100%;
@@ -675,9 +683,10 @@
             
             <div class="time-input-row flex justify-center items-center gap-2 sm:gap-4 bg-white py-6 px-4 rounded-xl border-2 border-blue-100 shadow-inner">
               <label class="text-xl font-bold text-gray-700 hidden sm:block">手入力：</label>
-              <input type="text" inputmode="numeric" id="startHour" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-blue-50 focus:border-blue-400" placeholder="--">
+              <!-- 改修：Tailwindの影やfocus装飾クラスを削除し、純粋にCSSの二重枠のみ適用 -->
+              <input type="text" inputmode="numeric" id="startHour" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300" placeholder="--">
               <span class="time-colon text-4xl font-bold text-gray-500">：</span>
-              <input type="text" inputmode="numeric" id="startMinute" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-blue-50 focus:border-blue-400" placeholder="--">
+              <input type="text" inputmode="numeric" id="startMinute" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300" placeholder="--">
             </div>
           </div>
 
@@ -696,9 +705,10 @@
             
             <div class="time-input-row flex justify-center items-center gap-2 sm:gap-4 bg-white py-6 px-4 rounded-xl border-2 border-orange-100 shadow-inner">
               <label class="text-xl font-bold text-gray-700 hidden sm:block">手入力：</label>
-              <input type="text" inputmode="numeric" id="endHour" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-orange-50 focus:border-orange-400" placeholder="--">
+              <!-- 改修：Tailwindの影やfocus装飾クラスを削除し、純粋にCSSの二重枠のみ適用 -->
+              <input type="text" inputmode="numeric" id="endHour" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300" placeholder="--">
               <span class="time-colon text-4xl font-bold text-gray-500">：</span>
-              <input type="text" inputmode="numeric" id="endMinute" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300 shadow-sm focus:bg-orange-50 focus:border-orange-400" placeholder="--">
+              <input type="text" inputmode="numeric" id="endMinute" class="input-field time-input mb-0 w-28 sm:w-36 text-4xl sm:text-5xl font-bold text-gray-800 py-4 px-2 text-center placeholder-gray-300" placeholder="--">
             </div>
           </div>
           
@@ -1506,11 +1516,11 @@
           <div class="flex flex-col gap-2.5 sm:gap-3 tracking-tight w-full">
             <div class="flex items-center justify-center w-full">
               <div class="mr-1.5 sm:mr-2 flex-shrink-0">🚨</div>
-              <div class="whitespace-nowrap">87時間を超えました！</div>
+              <div class="whitespace-nowrap">87時間を超えています！</div>
             </div>
             <div class="flex items-center justify-center w-full">
               <div class="mr-1.5 sm:mr-2 flex-shrink-0">⛔</div>
-              <div class="whitespace-nowrap">職員に報告してください！</div>
+              <div class="whitespace-nowrap">速やかに職員に報告してください！</div>
             </div>
           </div>
         `;
@@ -1675,8 +1685,8 @@
         footerHtml = `
           <tr style="background-color: #fef9c3;">
             <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">小計</td>
-            <!-- 改修：背景色を白にせず、行の背景色をそのまま残して二重線を引く -->
-            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle" style="border: 4px double #1e40af !important;">
+            <!-- 改修：ご指定の枠線スタイル（border + inset box-shadow）に変更 -->
+            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle" style="border: 1.5px solid #6b8cff !important; box-shadow: inset 0 0 0 1px #555 !important; outline: none !important;">
               ${formatTimeColon(formatTimeShort(subTotalWorkMinutes))}
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
@@ -1705,8 +1715,8 @@
         footerHtml = `
           <tr style="background-color: #ffe4e6;">
             <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">合計</td>
-            <!-- 改修：背景色を白にせず、行の背景色をそのまま残して二重線を引く -->
-            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle" style="border: 4px double #1e3a8a !important;">
+            <!-- 改修：合計の枠線のみ一つ前の状態（2pxの太線）に戻す -->
+            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle" style="border: 2px solid #1e3a8a !important;">
               ${formatTimeColon(formatTimeShort(totalWork))}
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
