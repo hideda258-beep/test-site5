@@ -477,6 +477,24 @@
     </div>
   </div>
 
+  <!-- 改修：87時間超過アラートモーダルを追加 -->
+  <div id="alert87Modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-red-100 p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-red-600">
+      <div class="text-5xl mb-6">🚨</div>
+      <div class="flex flex-col gap-4 mb-8">
+        <div class="flex items-center justify-center w-full text-red-900">
+          <div class="mr-1.5 sm:mr-2 flex-shrink-0 text-[20px] sm:text-2xl">🚨</div>
+          <div class="text-[18px] sm:text-xl font-bold whitespace-nowrap tracking-tight">87時間を超えました！</div>
+        </div>
+        <div class="flex items-center justify-center w-full text-red-800">
+          <div class="mr-1.5 sm:mr-2 flex-shrink-0 text-[20px] sm:text-2xl">⛔</div>
+          <div class="text-[15px] sm:text-lg font-bold whitespace-nowrap tracking-tight">職員に報告してください！</div>
+        </div>
+      </div>
+      <button onclick="closeAlert87Modal()" class="w-full bg-red-700 text-white font-bold text-2xl py-4 rounded-xl shadow-md hover:bg-red-800 active:translate-y-1 transition-colors">確認しました</button>
+    </div>
+  </div>
+
   <!-- 改修：8時間超過の確認モーダルを追加 -->
   <div id="over8HoursConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-yellow-50 p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-yellow-500">
@@ -1483,7 +1501,7 @@
         remainingElement.className = 'text-huge text-red-700 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-red-300';
         
         warningMessage.style.display = 'flex';
-        // 改修：テキストを真ん中揃え（justify-center）に変更
+        // 改修：テキストを真ん中揃え（justify-center）かつ内容を「職員に報告してください！」に変更
         warningMessage.innerHTML = `
           <div class="flex flex-col gap-2.5 sm:gap-3 tracking-tight w-full">
             <div class="flex items-center justify-center w-full">
@@ -1492,7 +1510,7 @@
             </div>
             <div class="flex items-center justify-center w-full">
               <div class="mr-1.5 sm:mr-2 flex-shrink-0">⛔</div>
-              <div class="whitespace-nowrap">直ちに時間調整を行ってください！</div>
+              <div class="whitespace-nowrap">職員に報告してください！</div>
             </div>
           </div>
         `;
@@ -1507,8 +1525,13 @@
         updateTopDisplay();
       }
 
-      // 改修：80時間と75時間の閾値ごとにモーダルを表示するロジックに変更
-      if (totalMinutes >= THRESHOLD_2) {
+      // 改修：87時間、80時間、75時間の閾値ごとにモーダルを表示するロジックに変更
+      if (totalMinutes >= MAX_MINUTES) {
+        const alert87Key = `hasShown87Alert_${currentYear}_${currentMonth}`;
+        if (!localStorage.getItem(alert87Key)) {
+          document.getElementById('alert87Modal').classList.remove('hidden');
+        }
+      } else if (totalMinutes >= THRESHOLD_2) {
         const alert80Key = `hasShown80Alert_${currentYear}_${currentMonth}`;
         if (!localStorage.getItem(alert80Key)) {
           document.getElementById('alert80Modal').classList.remove('hidden');
@@ -2101,6 +2124,13 @@
       const alertKey = `hasShown80Alert_${currentYear}_${currentMonth}`;
       localStorage.setItem(alertKey, 'true'); 
       document.getElementById('alert80Modal').classList.add('hidden');
+    };
+
+    // 改修：87時間超過モーダルを閉じる処理を追加
+    window.closeAlert87Modal = function() {
+      const alertKey = `hasShown87Alert_${currentYear}_${currentMonth}`;
+      localStorage.setItem(alertKey, 'true'); 
+      document.getElementById('alert87Modal').classList.add('hidden');
     };
 
     window.switchTab = function(tabName, preventScroll = false) {
