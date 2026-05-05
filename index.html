@@ -55,11 +55,11 @@
       color: #1f2937;
       /* 薄い緑をメインに、水色と黄色を四隅にふんわり配置した波のようなグラデーション */
       background: 
-        radial-gradient(ellipse at 15% 20%, rgba(224, 242, 254, 0.9) 0%, transparent 55%),    /* 左上に薄い水色 */
-        radial-gradient(ellipse at 85% 80%, rgba(224, 242, 254, 0.9) 0%, transparent 55%),    /* 右下に薄い水色 */
-        radial-gradient(ellipse at 85% 20%, rgba(254, 252, 232, 0.9) 0%, transparent 55%),    /* 右上に薄い黄色 */
-        radial-gradient(ellipse at 15% 80%, rgba(254, 252, 232, 0.9) 0%, transparent 55%),    /* 左下に薄い黄色 */
-        linear-gradient(180deg, #ebf8ef 0%, #d1fae5 40%, #ecfdf5 60%, #cdebd5 100%);          /* ベースの薄緑の波 */
+        radial-gradient(ellipse at 15% 20%, rgba(224, 242, 254, 0.9) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 80%, rgba(224, 242, 254, 0.9) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 20%, rgba(254, 252, 232, 0.9) 0%, transparent 55%),
+        radial-gradient(ellipse at 15% 80%, rgba(254, 252, 232, 0.9) 0%, transparent 55%),
+        linear-gradient(180deg, #ebf8ef 0%, #d1fae5 40%, #ecfdf5 60%, #cdebd5 100%);
       background-attachment: fixed;
       position: relative;
     }
@@ -97,8 +97,6 @@
       font-size: 1.3rem;
       background-color: #f9fafb;
       margin-bottom: 20px;
-      
-      /* 以下、指定されたプロパティのみを !important で強制適用 */
       border: 1px solid #888 !important;
       box-shadow: inset 0 0 0 1px #ccc !important;
       outline: none !important;
@@ -299,7 +297,6 @@
         inset 6px 6px 12px rgba(0,0,0,0.25),
         inset -6px -6px 12px rgba(255,255,255,0.9);
     }
-    /* 選択時の状態（凹んで色が変わる） */
     .btn-3d-flat.is-active-blue {
       box-shadow: 
         inset 6px 6px 12px rgba(0,0,0,0.25),
@@ -366,7 +363,7 @@
       background-color: #e6f4ea !important;
     }
 
-    /* タブボタンを通常出勤ボタンのように深く凹ませるデザイン */
+    /* タブボタンを深く凹ませるデザイン */
     .tab-button {
       transition: all 0.15s ease !important;
       outline: none !important;
@@ -374,14 +371,12 @@
       z-index: 10 !important;
       border: 1px solid rgba(255,255,255,0.4) !important;
     }
-    /* 通常状態（浮き） */
     .tab-button:not(.active) {
       background: #ffffff !important;
       color: #555 !important;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.6) !important;
       transform: translateY(0) !important;
     }
-    /* 選択中の状態（深い凹み） */
     .tab-button.active {
       background: #2f66e8 !important;
       color: #ffffff !important;
@@ -390,7 +385,6 @@
         inset -6px -6px 12px rgba(255,255,255,0.25) !important;
       transform: translateY(2px) !important;
     }
-    /* 未選択タブを押した瞬間の凹み */
     .tab-button:not(.active):active {
       transform: translateY(2px) !important;
       box-shadow: 
@@ -401,7 +395,6 @@
 </head>
 <body class="pb-20">
 
-  <!-- ヘッダーエリア -->
   <div class="header-area mb-4 px-2">
     <h1 class="relative inline-block text-3xl sm:text-4xl font-extrabold tracking-wider">
       <span class="absolute left-0 top-0 w-full h-full text-transparent select-none z-0" style="-webkit-text-stroke: 6px white; filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.15));">勤務時間かんたん管理</span>
@@ -418,7 +411,6 @@
     </div>
   </div>
 
-  <!-- ヘッダー（月切り替え） -->
   <header class="bg-blue-800 text-white p-4 flex justify-between items-center shadow-md">
     <button onclick="changeMonth(-1)" class="bg-white text-[#1f2937] border border-[#e5e7eb] rounded-lg py-[6px] px-[12px] text-xl font-bold shadow-[0_2px_6px_rgba(0,0,0,0.15)] hover:bg-gray-50 active:translate-y-[2px] active:shadow-none transition-all whitespace-nowrap">◀ 前月</button>
     
@@ -429,10 +421,8 @@
     <button onclick="changeMonth(1)" class="bg-white text-[#1f2937] border border-[#e5e7eb] rounded-lg py-[6px] px-[12px] text-xl font-bold shadow-[0_2px_6px_rgba(0,0,0,0.15)] hover:bg-gray-50 active:translate-y-[2px] active:shadow-none transition-all whitespace-nowrap">次月 ▶</button>
   </header>
 
-  <!-- メッセージ表示エリア -->
   <div id="messageArea" style="display: none;"></div>
 
-  <!-- 登録完了モーダル -->
   <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden transition-opacity duration-300">
     <div class="bg-white p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-blue-400">
       <div class="text-5xl mb-4">✨</div>
@@ -445,7 +435,6 @@
     </div>
   </div>
 
-  <!-- 操作選択モーダル -->
   <div id="actionSelectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-gray-300">
       <h2 class="text-2xl font-bold mb-4 text-gray-800">操作を選択してください</h2>
@@ -453,14 +442,13 @@
         この勤務情報をどうしますか？
       </p>
       <div class="flex flex-col gap-5">
-        <button onclick="executeActionEdit()" class="w-full bg-blue-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-blue-700 active:translate-y-1 transition-colors">修正する</button>
+        <button onclick="executeActionEdit()" class="w-full bg-blue-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-blue-700 active:translate-y-1 transition-colors">修正・メモ確認</button>
         <button onclick="executeActionDelete()" class="w-full bg-red-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-red-700 active:translate-y-1 transition-colors">削除する</button>
         <button onclick="closeActionModal()" class="w-full bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">キャンセル</button>
       </div>
     </div>
   </div>
 
-  <!-- 削除確認モーダル -->
   <div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-red-400">
       <div class="text-5xl mb-4">⚠️</div>
@@ -475,7 +463,6 @@
     </div>
   </div>
 
-  <!-- 75時間超過アラートモーダル -->
   <div id="alert75Modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-orange-50 p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-orange-500">
       <div class="text-5xl mb-6">⚠️</div>
@@ -493,7 +480,6 @@
     </div>
   </div>
 
-  <!-- 80時間超過アラートモーダル -->
   <div id="alert80Modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-red-50 p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-red-500">
       <div class="text-5xl mb-6">🚨</div>
@@ -511,7 +497,6 @@
     </div>
   </div>
 
-  <!-- 87時間超過アラートモーダル -->
   <div id="alert87Modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-red-100 p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-red-600">
       <div class="text-5xl mb-6">🚨</div>
@@ -529,7 +514,6 @@
     </div>
   </div>
 
-  <!-- 8時間超過の確認モーダル -->
   <div id="over8HoursConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-yellow-50 p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-yellow-500">
       <div class="text-5xl mb-6">⚠️</div>
@@ -549,7 +533,6 @@
     </div>
   </div>
 
-  <!-- 設定画面モーダル -->
   <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all border-4 border-gray-300">
       <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center border-b-2 border-gray-200 pb-2">⚙️ 設定</h2>
@@ -583,7 +566,7 @@
   </div>
 
   <main class="p-4 max-w-2xl mx-auto mt-4">
-    <!-- タブ切り替え（右側を2段書きに変更） -->
+    <!-- タブ切り替え -->
     <div class="flex mb-4 items-stretch">
       <button id="btnTabInput" onclick="switchTab('input')" class="flex-1 py-4 sm:py-5 text-[18px] sm:text-2xl font-bold rounded-l-2xl tab-button active flex items-center justify-center text-center px-1 leading-snug">
         本日の情報入力
@@ -632,7 +615,6 @@
           <div class="text-lg sm:text-xl font-bold text-gray-700 mb-2">本日の勤務時間<span class="text-sm">（87h対象）</span></div>
           <div id="topWorkTime" class="text-3xl sm:text-4xl font-extrabold text-blue-800 tracking-wider mb-4">--時間 --分</div>
           
-          <!-- 横の区切り線 -->
           <div class="border-t-2 border-amber-200 mx-auto w-4/5 mb-4"></div>
           
           <div class="text-md sm:text-lg font-bold text-gray-600 mb-1">残業時間<span class="text-sm">（17:30以降）</span></div>
@@ -792,8 +774,23 @@
             </div>
           </div>
           
-          <button type="submit" class="btn btn-primary large-button mt-8 py-6 text-2xl">この内容で登録する</button>
-          <button type="button" onclick="resetInputOnly()" class="w-full large-button bg-gray-500 text-white font-bold text-2xl py-6 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors mt-4">入力をリセット</button>
+          <!-- メモエリア -->
+          <div class="mb-8 p-6 bg-gray-50 border-4 border-gray-200 rounded-2xl shadow-sm">
+            <label class="block text-2xl font-bold text-gray-700 mb-4 border-b-2 border-gray-300 pb-2">📝 メモ <span class="text-lg font-normal text-gray-500">（任意）</span></label>
+            <textarea id="memoInput" oninput="autoResizeMemo(this)" class="input-field mb-0 w-full min-h-[6rem] sm:min-h-[8rem] text-lg sm:text-xl text-gray-800 placeholder-gray-400 p-4 text-left leading-relaxed overflow-hidden resize-none" placeholder="例：課長の指示により小玉のブロッコリーは製品に入れない"></textarea>
+          </div>
+
+          <!-- 新規登録モードのボタン -->
+          <div id="btnGroupNew">
+            <button type="submit" class="btn btn-primary large-button mt-8 py-6 text-2xl">この内容で登録する</button>
+            <button type="button" onclick="resetInputOnly()" class="w-full large-button bg-gray-500 text-white font-bold text-2xl py-6 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors mt-4">入力をリセット</button>
+          </div>
+
+          <!-- 修正モードのボタン -->
+          <div id="btnGroupEdit" class="hidden">
+            <button type="submit" class="btn btn-primary large-button mt-8 py-6 text-2xl">この内容で修正する</button>
+            <button type="button" onclick="cancelEdit()" class="w-full large-button bg-gray-500 text-white font-bold text-2xl py-6 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors mt-4">キャンセル</button>
+          </div>
         </form>
       </div>
     </div> <!-- tabInputの終了 -->
@@ -851,7 +848,10 @@
         <h2 class="text-xl font-bold text-gray-700 mb-1 mt-4">⏳ 87時間まで のこり</h2>
         <div id="remainingTime" class="text-huge text-gray-700 font-bold mb-2 bg-white rounded-2xl py-3 px-6 sm:px-10 inline-block shadow-sm border-2 border-gray-200">--時間 --分</div>
         
-        <p class="text-xs sm:text-sm text-gray-500 font-bold mt-1 mb-4">※87時間超過を防ぐため、85時間を目安に調整すると安心です</p>
+        <p class="text-xs sm:text-sm text-gray-500 font-bold mt-1 mb-4 leading-relaxed">
+          ※87時間超過を防ぐため、<br>
+          85時間を目安に調整すると安心です💡
+        </p>
 
         <div id="warningMessage" class="hidden"></div>
       </div>
@@ -900,6 +900,12 @@
       const dd = String(today.getDate()).padStart(2, '0');
       return `${yyyy}-${mm}-${dd}`;
     }
+
+    window.autoResizeMemo = function(el) {
+      if (!el) return;
+      el.style.height = 'auto'; // 一旦autoにして縮む場合にも対応
+      el.style.height = el.scrollHeight + 'px'; // 中身の高さに合わせて広げる
+    };
 
     function updateTopDisplayBg(isConfirmed) {
       const boxes = ['displayStartBox', 'displayEndBox', 'displayRestBox'];
@@ -1219,10 +1225,10 @@
       let endTotal = endH * 60 + endM;
       
       if (endTotal < startTotal) {
-        endTotal += 24 * 60; // 翌日またぎ
+        endTotal += 24 * 60; 
       }
       
-      const limitTime = 17 * 60 + 30; // 17:30 = 1050分
+      const limitTime = 17 * 60 + 30; 
 
       let workMinutes = 0;
       let overMinutes = 0;
@@ -1788,6 +1794,7 @@
       const startM = document.getElementById('startMinute').value;
       const endH = document.getElementById('endHour').value;
       const endM = document.getElementById('endMinute').value;
+      const memo = document.getElementById('memoInput').value;
       
       if (!currentCommuteMode) {
         showMessage('出勤モード（通常出勤または時間差出勤）を選択してください', true);
@@ -1836,6 +1843,7 @@
         workMinutes: wTimes.workMinutes,
         overMinutes: wTimes.overMinutes,
         isFlexCommute: isFlex, 
+        memo: memo,
         createdAt: Date.now()
       };
 
@@ -1906,6 +1914,11 @@
       
       document.getElementById('endHour').value = '';
       document.getElementById('endMinute').value = '';
+      const memoEl = document.getElementById('memoInput');
+      if (memoEl) {
+        memoEl.value = '';
+        autoResizeMemo(memoEl);
+      }
       
       updateAllInputBgs(); 
 
@@ -1929,6 +1942,11 @@
       if (optionsDiv) optionsDiv.classList.add('hidden');
       updateEveningOptionStyles();
 
+      const btnGroupNew = document.getElementById('btnGroupNew');
+      const btnGroupEdit = document.getElementById('btnGroupEdit');
+      if (btnGroupNew) btnGroupNew.classList.remove('hidden');
+      if (btnGroupEdit) btnGroupEdit.classList.add('hidden');
+
       const editGuide = document.getElementById('editGuideMessage');
       if (editGuide) editGuide.classList.add('hidden');
 
@@ -1937,6 +1955,7 @@
     }
 
     function resetFormAfterSave(recordData) {
+      const wasEditMode = isEditMode;
       resetFormUI();
       
       const today = new Date();
@@ -1958,6 +1977,10 @@
       isEditMode = false;
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (wasEditMode) {
+        switchTab('list');
+      }
     }
 
     function loadUserName() {
@@ -2031,6 +2054,22 @@
       updateTopDisplay(); 
       isEditMode = false;
       showMessage('🔄 入力内容をリセットしました');
+    };
+
+    window.cancelEdit = function() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
+      
+      resetFormUI();
+      updateTopDisplayBg(false);
+      updateTopDisplay(); 
+      isEditMode = false;
+      updateInputVisibilityByToday();
+      switchTab('list');
+      showMessage('修正をキャンセルしました');
     };
 
     window.showSuccessModal = function(isEdit = false, dateStr = '') {
@@ -2196,6 +2235,11 @@
 
       isEditMode = true;
 
+      const btnGroupNew = document.getElementById('btnGroupNew');
+      const btnGroupEdit = document.getElementById('btnGroupEdit');
+      if (btnGroupNew) btnGroupNew.classList.add('hidden');
+      if (btnGroupEdit) btnGroupEdit.classList.remove('hidden');
+
       document.getElementById('date').value = record.date;
       
       if (record.startTime) {
@@ -2253,6 +2297,13 @@
       } else {
         toggleEveningRest(false);
       }
+
+      if (record.memo) {
+        document.getElementById('memoInput').value = record.memo;
+      } else {
+        document.getElementById('memoInput').value = '';
+      }
+      autoResizeMemo(document.getElementById('memoInput')); // 修正時に高さを自動調整
 
       const inputFormArea = document.getElementById('inputFormArea');
       if (inputFormArea) inputFormArea.classList.remove('hidden');
