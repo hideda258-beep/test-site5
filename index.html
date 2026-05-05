@@ -366,7 +366,7 @@
       background-color: #e6f4ea !important;
     }
 
-    /* 改修：タブボタンを通常出勤ボタン(画像2)のように深く凹ませるデザインに変更 */
+    /* タブボタンを通常出勤ボタンのように深く凹ませるデザイン */
     .tab-button {
       transition: all 0.15s ease !important;
       outline: none !important;
@@ -385,7 +385,6 @@
     .tab-button.active {
       background: #2f66e8 !important;
       color: #ffffff !important;
-      /* 2枚目の画像のように、左上から濃い影・右下からハイライトを入れて沈み込む表現 */
       box-shadow: 
         inset 6px 6px 12px rgba(0,0,0,0.35),
         inset -6px -6px 12px rgba(255,255,255,0.25) !important;
@@ -584,10 +583,15 @@
   </div>
 
   <main class="p-4 max-w-2xl mx-auto mt-4">
-    <!-- タブ切り替え -->
-    <div class="flex mb-4">
-      <button id="btnTabInput" onclick="switchTab('input')" class="flex-1 py-5 text-xl sm:text-2xl font-bold rounded-l-2xl tab-button active">本日の情報入力</button>
-      <button id="btnTabList" onclick="switchTab('list')" class="flex-1 py-5 text-xl sm:text-2xl font-bold rounded-r-2xl tab-button">月情報・タイムカード</button>
+    <!-- タブ切り替え（右側を2段書きに変更） -->
+    <div class="flex mb-4 items-stretch">
+      <button id="btnTabInput" onclick="switchTab('input')" class="flex-1 py-4 sm:py-5 text-[18px] sm:text-2xl font-bold rounded-l-2xl tab-button active flex items-center justify-center text-center px-1 leading-snug">
+        本日の情報入力
+      </button>
+      <button id="btnTabList" onclick="switchTab('list')" class="flex-1 py-3 sm:py-5 text-[16px] sm:text-2xl font-bold rounded-r-2xl tab-button flex flex-col items-center justify-center leading-snug px-1">
+        <span>勤務状況</span>
+        <span>タイムカード</span>
+      </button>
     </div>
 
     <!-- リアルタイム時計 -->
