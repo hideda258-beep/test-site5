@@ -274,12 +274,12 @@
         font-size: 0.65rem !important;
       }
       
-      /* 列幅の調整（出勤・退勤・残業を広げ、休憩・勤務を詰め、全体を100%に最適化） */
-      .timecard-table th:nth-child(1) { width: 21% !important; } /* 日付 */
-      .timecard-table th:nth-child(2) { width: 15% !important; } /* 出勤 (+1%) */
-      .timecard-table th:nth-child(3) { width: 15% !important; } /* 退勤 (+1%) */
-      .timecard-table th:nth-child(4) { width: 13% !important; } /* 休憩 (-1%) */
-      .timecard-table th:nth-child(5) { width: 10% !important; } /* 勤務 (-1%) */
+      /* 列幅の調整（日付を少し狭め、休憩と勤務を広げてバランスを最適化） */
+      .timecard-table th:nth-child(1) { width: 19% !important; } /* 日付 (-2%) */
+      .timecard-table th:nth-child(2) { width: 15% !important; } /* 出勤 */
+      .timecard-table th:nth-child(3) { width: 15% !important; } /* 退勤 */
+      .timecard-table th:nth-child(4) { width: 14% !important; } /* 休憩 (+1%) */
+      .timecard-table th:nth-child(5) { width: 11% !important; } /* 勤務 (+1%) */
       .timecard-table th:nth-child(6) { width: 13% !important; } /* 残業 */
       .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
       
@@ -1836,18 +1836,18 @@
         `;
       }
 
-      // style属性の直接幅指定を削除し、PC・スマホそれぞれのCSSメディアクエリで適切な幅を適用
+      // どの画面幅でも確実に指定の幅になるよう、style属性で直接幅を固定します
       return `
-        <table class="w-full text-left border-collapse timecard-table">
+        <table class="w-full text-left border-collapse timecard-table" style="table-layout: fixed;">
           <thead>
             <tr>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">日付</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">出勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">退勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">休憩</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">残業</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">操作</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 19%;">日付</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 15%;">出勤</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 15%;">退勤</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 14%;">休憩</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 11%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">残業</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">操作</th>
             </tr>
           </thead>
           <tbody>
