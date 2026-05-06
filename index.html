@@ -274,12 +274,12 @@
         font-size: 0.65rem !important;
       }
       
-      /* 列幅の調整（日付を少し狭め、休憩と勤務を広げてバランスを最適化） */
-      .timecard-table th:nth-child(1) { width: 19% !important; } /* 日付 (-2%) */
-      .timecard-table th:nth-child(2) { width: 15% !important; } /* 出勤 */
-      .timecard-table th:nth-child(3) { width: 15% !important; } /* 退勤 */
-      .timecard-table th:nth-child(4) { width: 14% !important; } /* 休憩 (+1%) */
-      .timecard-table th:nth-child(5) { width: 11% !important; } /* 勤務 (+1%) */
+      /* 列幅の調整（出勤・退勤を少し狭め、日付を広げて📝被りを防止） */
+      .timecard-table th:nth-child(1) { width: 22% !important; } /* 日付 (+3%) */
+      .timecard-table th:nth-child(2) { width: 13.5% !important; } /* 出勤 (-1.5%) */
+      .timecard-table th:nth-child(3) { width: 13.5% !important; } /* 退勤 (-1.5%) */
+      .timecard-table th:nth-child(4) { width: 14% !important; } /* 休憩 */
+      .timecard-table th:nth-child(5) { width: 11% !important; } /* 勤務 */
       .timecard-table th:nth-child(6) { width: 13% !important; } /* 残業 */
       .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
       
@@ -1841,9 +1841,9 @@
         <table class="w-full text-left border-collapse timecard-table" style="table-layout: fixed;">
           <thead>
             <tr>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 19%;">日付</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 15%;">出勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 15%;">退勤</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 22%;">日付</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13.5%;">出勤</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13.5%;">退勤</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 14%;">休憩</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 11%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">残業</th>
