@@ -252,12 +252,12 @@
         font-size: 0.65rem !important;
       }
       
-      /* 列幅の調整（休憩を広く、勤務を狭くする設定を強制反映） */
-      .timecard-table th:nth-child(1) { width: 16% !important; } /* 日付 */
-      .timecard-table th:nth-child(2) { width: 12% !important; } /* 出勤 */
-      .timecard-table th:nth-child(3) { width: 12% !important; } /* 退勤 */
-      .timecard-table th:nth-child(4) { width: 23% !important; } /* 休憩（広め） */
-      .timecard-table th:nth-child(5) { width: 13% !important; } /* 勤務（狭め） */
+      /* 列幅の調整（休憩を少し狭め、日付を広げる） */
+      .timecard-table th:nth-child(1) { width: 19% !important; } /* 日付 */
+      .timecard-table th:nth-child(2) { width: 11% !important; } /* 出勤 */
+      .timecard-table th:nth-child(3) { width: 11% !important; } /* 退勤 */
+      .timecard-table th:nth-child(4) { width: 22% !important; } /* 休憩 */
+      .timecard-table th:nth-child(5) { width: 13% !important; } /* 勤務 */
       .timecard-table th:nth-child(6) { width: 11% !important; } /* 残業 */
       .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
       
@@ -534,8 +534,27 @@
     </div>
   </div>
 
+  <div id="shortWorkRestConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-orange-50 p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-orange-400">
+      <div class="text-5xl mb-6">⚠️</div>
+      <div class="flex flex-col gap-4 mb-8">
+        <div class="flex items-center justify-center w-full text-orange-900">
+          <div class="mr-1.5 sm:mr-2 flex-shrink-0 text-[20px] sm:text-2xl">⚠️</div>
+          <div class="text-[16px] sm:text-xl font-bold whitespace-nowrap tracking-tight">休憩時間の確認</div>
+        </div>
+        <div class="text-center w-full text-orange-800 leading-snug mt-2">
+          <div id="shortWorkRestText" class="text-[15px] sm:text-lg font-bold tracking-tight">退勤時間が13:30以内ですが、<br>昼休憩60分が選択されています。<br><br>内容に相違がないか<br>確認してください。</div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3">
+        <button onclick="cancelShortWorkRest()" class="w-full bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">戻って修正する</button>
+        <button onclick="executeShortWorkRest()" class="w-full bg-orange-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-orange-600 active:translate-y-1 transition-colors">このまま登録する</button>
+      </div>
+    </div>
+  </div>
+
   <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all border-4 border-gray-300">
+    <div class="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all border-4 border-gray-300">
       <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center border-b-2 border-gray-200 pb-2">⚙️ 設定</h2>
       
       <div class="mb-4 text-left">
@@ -547,7 +566,7 @@
         <input type="text" id="settingFirstName" class="input-field mb-0 py-3 px-4 text-xl sm:text-2xl" placeholder="例：太郎" onkeydown="if(event.key === 'Enter' && !event.isComposing) { event.preventDefault(); this.blur(); }">
       </div>
       
-      <div class="mb-8 text-left">
+      <div class="mb-6 text-left">
         <label class="block text-sm font-bold text-gray-700 mb-2">アイコン</label>
         <div class="flex gap-4">
           <button type="button" id="btnIconMale" onclick="selectUserIcon('🙍🏻‍♂️')" class="flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat">
@@ -558,11 +577,37 @@
           </button>
         </div>
       </div>
+
+      <div class="mb-8 text-left">
+        <label class="block text-sm font-bold text-gray-700 mb-2">昼休憩開始時刻<span class="font-normal text-xs ml-2 text-gray-500">（「通常休憩」の初期値）</span></label>
+        <div class="flex items-center gap-2 sm:gap-4 mt-2">
+          <input type="text" inputmode="numeric" id="settingRestStartHour" class="input-field time-input mb-0 w-24 sm:w-32 text-3xl sm:text-4xl font-bold text-gray-800 py-3 px-2 text-center placeholder-gray-300" placeholder="--">
+          <span class="time-colon text-3xl font-bold text-gray-500">：</span>
+          <input type="text" inputmode="numeric" id="settingRestStartMinute" class="input-field time-input mb-0 w-24 sm:w-32 text-3xl sm:text-4xl font-bold text-gray-800 py-3 px-2 text-center placeholder-gray-300" placeholder="--">
+        </div>
+      </div>
       
       <div class="flex flex-col gap-3">
         <button onclick="saveSettings()" class="w-full bg-blue-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-blue-700 active:translate-y-1 transition-colors">保存する</button>
         <button onclick="closeSettings()" class="w-full bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">閉じる</button>
       </div>
+    </div>
+  </div>
+
+  <div id="memoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-[#fffdf0] p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-[#fde047] flex flex-col max-h-[85vh]">
+      <h2 class="text-2xl font-bold mb-2 text-gray-800 tracking-tight">📝 メモ内容</h2>
+      <p id="memoModalDate" class="text-sm sm:text-base font-bold text-gray-500 mb-4">----年--月--日（-）</p>
+      
+      <div class="w-full border-t border-dashed border-yellow-400 mb-4"></div>
+      
+      <div class="overflow-y-auto text-left mb-4 flex-1 pl-1 pr-2">
+        <p id="memoModalContent" class="text-lg sm:text-xl font-medium text-gray-700 leading-relaxed whitespace-pre-wrap break-words"></p>
+      </div>
+      
+      <div class="w-full border-t border-dashed border-yellow-400 mb-6 mt-auto"></div>
+      
+      <button onclick="closeMemoModal()" class="w-full bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors flex-shrink-0">閉じる</button>
     </div>
   </div>
 
@@ -876,6 +921,8 @@
     // 出勤モードを確実に管理する変数（null | 'normal' | 'flex'）
     let currentCommuteMode = null; 
     let currentRestMode = null; // 'normal' | 'flex' | 'none' | null
+    let defaultRestTotal = 60; // 通常休憩の初期値（設定で変更可能）
+    let defaultRestStartTotalMins = 12 * 60 + 30; // 昼休憩開始時刻（初期設定12:30）
     let flexRestMinutes = 30;
     let isEveningRestAdded = false;
     let eveningRestMinutes = 30;
@@ -965,7 +1012,7 @@
     }
 
     function updateAllInputBgs() {
-      ['startHour', 'startMinute', 'endHour', 'endMinute'].forEach(id => {
+      ['startHour', 'startMinute', 'endHour', 'endMinute', 'settingRestStartHour', 'settingRestStartMinute'].forEach(id => {
         const el = document.getElementById(id);
         if (el) updateInputBg(el);
       });
@@ -1018,8 +1065,10 @@
       setupTimeInput('startMinute');
       setupTimeInput('endHour', 'endMinute');
       setupTimeInput('endMinute');
+      setupTimeInput('settingRestStartHour', 'settingRestStartMinute');
+      setupTimeInput('settingRestStartMinute');
 
-      loadUserName();
+      loadSettingsData();
       resetFormUI();
       updateInputVisibilityByToday();
       initApp();
@@ -1279,7 +1328,7 @@
       
       let baseRest = 0;
       if (currentRestMode === 'none') baseRest = 0;
-      else if (currentRestMode === 'normal') baseRest = 60;
+      else if (currentRestMode === 'normal') baseRest = defaultRestTotal;
       else if (currentRestMode === 'flex') {
         baseRest = flexRestMinutes;
       }
@@ -1620,7 +1669,7 @@
         if (dayRecords.length === 0) {
           rowsHtml += `
             <tr class="hover:bg-gray-50">
-              <td class="p-0.5 sm:p-2 border ${tdBorder} text-center font-bold text-[11px] sm:text-sm ${dayColorClass} align-middle whitespace-nowrap tracking-tighter">
+              <td class="p-0.5 sm:p-2 border ${tdBorder} text-center font-bold text-[11px] sm:text-sm ${dayColorClass} align-middle whitespace-nowrap tracking-tighter relative">
                 <div class="relative inline-flex items-center justify-center">
                   <span>${day}日</span>
                   <span class="ml-0.5 sm:ml-1">(${dayOfWeek})</span>
@@ -1671,21 +1720,35 @@
               }
             }
             
-            let memoIconHtml = '';
+            let dateCellHtml = '';
             if (record.memo && record.memo.trim() !== '') {
-              // アイコンを絶対配置にして右側に置くことで、日にち・曜日の位置を全行で揃える
-              memoIconHtml = `<span class="absolute left-full ml-0.5 flex items-center justify-center" style="transform: translateY(0.5px);">📝</span>`;
+              // メモがある場合は、セル全体をボタンにしてタップ可能にする
+              dateCellHtml = `
+                <td class="p-0 border ${tdBorder} text-center font-bold text-[11px] sm:text-sm ${dayColorClass} align-middle whitespace-nowrap tracking-tighter h-full">
+                  <button type="button" onclick="openMemoModal('${record.date}')" class="w-full h-full min-h-[32px] sm:min-h-[44px] flex items-center justify-center relative focus:outline-none hover:bg-yellow-50 active:bg-yellow-100 transition-colors p-0.5 sm:p-2 rounded cursor-pointer">
+                    <div class="relative inline-flex items-center justify-center">
+                      <span>${day}日</span>
+                      <span class="ml-0.5 sm:ml-1">(${dayOfWeek})</span>
+                    </div>
+                    <span class="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 text-[10px] sm:text-[12px]">📝</span>
+                  </button>
+                </td>
+              `;
+            } else {
+              // メモがない場合はボタンにしない（タップ不可）
+              dateCellHtml = `
+                <td class="p-0.5 sm:p-2 border ${tdBorder} text-center font-bold text-[11px] sm:text-sm ${dayColorClass} align-middle whitespace-nowrap tracking-tighter relative">
+                  <div class="relative inline-flex items-center justify-center">
+                    <span>${day}日</span>
+                    <span class="ml-0.5 sm:ml-1">(${dayOfWeek})</span>
+                  </div>
+                </td>
+              `;
             }
             
             rowsHtml += `
               <tr class="hover:bg-gray-50 bg-white">
-                <td class="p-0.5 sm:p-2 border ${tdBorder} text-center font-bold text-[11px] sm:text-sm ${dayColorClass} align-middle whitespace-nowrap tracking-tighter">
-                  <div class="relative inline-flex items-center justify-center">
-                    <span>${day}日</span>
-                    <span class="ml-0.5 sm:ml-1">(${dayOfWeek})</span>
-                    ${memoIconHtml}
-                  </div>
-                </td>
+                ${dateCellHtml}
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${formatTimeColon(record.startTime)}</td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${formatTimeColon(record.endTime)}</td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center text-xs sm:text-sm align-middle">${restDisplayHtml}</td>
@@ -1754,10 +1817,10 @@
         <table class="w-full text-left border-collapse timecard-table" style="table-layout: fixed;">
           <thead>
             <tr>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 16%;">日付</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 19%;">日付</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">出勤</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">退勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 25%;">休憩</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 22%;">休憩</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 13%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">残業</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">操作</th>
@@ -1826,7 +1889,7 @@
       if (currentRestMode === 'none') {
         baseRest = 0;
       } else if (currentRestMode === 'normal') {
-        baseRest = 60;
+        baseRest = defaultRestTotal;
       } else if (currentRestMode === 'flex') {
         baseRest = flexRestMinutes;
       }
@@ -1862,6 +1925,24 @@
         return; 
       }
 
+      let endTotalMins = parseInt(endH) * 60 + parseInt(endM);
+      const startTotalMins = parseInt(startH) * 60 + parseInt(startM);
+      if (endTotalMins < startTotalMins) {
+        endTotalMins += 24 * 60;
+      }
+      
+      const alertLimitMins = defaultRestStartTotalMins + defaultRestTotal;
+      const limitH = Math.floor(alertLimitMins / 60);
+      const limitM = String(alertLimitMins % 60).padStart(2, '0');
+      const limitTimeStr = `${limitH}:${limitM}`;
+
+      if (startTime === '08:30' && endTotalMins <= alertLimitMins && baseRest === defaultRestTotal) {
+        document.getElementById('shortWorkRestText').innerHTML = `退勤時間が${limitTimeStr}以内ですが、<br>昼休憩${defaultRestTotal}分が選択されています。<br><br>内容に相違がないか<br>確認してください。`;
+        pendingRecordData = recordData;
+        document.getElementById('shortWorkRestConfirmModal').classList.remove('hidden');
+        return;
+      }
+
       await executeSaveOperation(recordData);
     };
 
@@ -1872,6 +1953,19 @@
 
     window.executeSavePendingRecord = async function() {
       document.getElementById('over8HoursConfirmModal').classList.add('hidden');
+      if (pendingRecordData) {
+        await executeSaveOperation(pendingRecordData);
+        pendingRecordData = null;
+      }
+    };
+
+    window.cancelShortWorkRest = function() {
+      document.getElementById('shortWorkRestConfirmModal').classList.add('hidden');
+      pendingRecordData = null;
+    };
+
+    window.executeShortWorkRest = async function() {
+      document.getElementById('shortWorkRestConfirmModal').classList.add('hidden');
       if (pendingRecordData) {
         await executeSaveOperation(pendingRecordData);
         pendingRecordData = null;
@@ -1992,10 +2086,22 @@
       }
     }
 
-    function loadUserName() {
+    function loadSettingsData() {
       const lastName = localStorage.getItem('lastName') || '';
       const firstName = localStorage.getItem('firstName') || '';
       const icon = localStorage.getItem('userIcon') || '🙍🏻‍♂️';
+      
+      defaultRestTotal = 60; // 通常休憩の長さは60分固定
+
+      const savedStartH = localStorage.getItem('defaultRestStartHour');
+      const savedStartM = localStorage.getItem('defaultRestStartMinute');
+      
+      if (savedStartH !== null && savedStartM !== null) {
+         defaultRestStartTotalMins = (parseInt(savedStartH) || 0) * 60 + (parseInt(savedStartM) || 0);
+      } else {
+         defaultRestStartTotalMins = 12 * 60 + 30; // 設定がない場合は12:30
+      }
+
       const nameDisplay = document.getElementById('headerUserName');
       
       const fullName = `${lastName} ${firstName}`.trim();
@@ -2006,18 +2112,70 @@
         nameDisplay.textContent = '';
         nameDisplay.style.display = 'none';
       }
+
+      updateNormalRestButton();
+    }
+
+    function updateNormalRestButton() {
+      const btn = document.getElementById('btnRestNormal');
+      if (btn) {
+        btn.innerHTML = `通常休憩<br><span class="text-lg font-normal">（${defaultRestTotal}分）</span>`;
+      }
     }
 
     window.openSettings = function() {
-      document.getElementById('settingLastName').value = localStorage.getItem('lastName') || '';
-      document.getElementById('settingFirstName').value = localStorage.getItem('firstName') || '';
+      const elLastName = document.getElementById('settingLastName');
+      if (elLastName) elLastName.value = localStorage.getItem('lastName') || '';
+      
+      const elFirstName = document.getElementById('settingFirstName');
+      if (elFirstName) elFirstName.value = localStorage.getItem('firstName') || '';
+      
       currentUserIcon = localStorage.getItem('userIcon') || '🙍🏻‍♂️';
       updateIconOptionsStyles();
-      document.getElementById('settingsModal').classList.remove('hidden');
+      
+      const savedStartH = localStorage.getItem('defaultRestStartHour');
+      const savedStartM = localStorage.getItem('defaultRestStartMinute');
+      
+      const elRestStartHour = document.getElementById('settingRestStartHour');
+      if (elRestStartHour) elRestStartHour.value = savedStartH !== null ? String(savedStartH).padStart(2, '0') : '';
+      
+      const elRestStartMinute = document.getElementById('settingRestStartMinute');
+      if (elRestStartMinute) elRestStartMinute.value = savedStartM !== null ? String(savedStartM).padStart(2, '0') : '';
+
+      updateAllInputBgs(); // 枠の背景色を更新
+      
+      const modal = document.getElementById('settingsModal');
+      if (modal) modal.classList.remove('hidden');
     };
 
     window.closeSettings = function() {
-      document.getElementById('settingsModal').classList.add('hidden');
+      const modal = document.getElementById('settingsModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.openMemoModal = function(dateStr) {
+      const record = workRecords.find(r => r.date === dateStr);
+      if (!record || !record.memo || record.memo.trim() === '') return;
+      
+      const d = new Date(dateStr);
+      const y = d.getFullYear();
+      const m = d.getMonth() + 1;
+      const day = d.getDate();
+      const week = ['日', '月', '火', '水', '木', '金', '土'][d.getDay()];
+      
+      const dateEl = document.getElementById('memoModalDate');
+      if (dateEl) dateEl.textContent = `${y}年${m}月${day}日（${week}）`;
+      
+      const contentEl = document.getElementById('memoModalContent');
+      if (contentEl) contentEl.textContent = record.memo;
+      
+      const modal = document.getElementById('memoModal');
+      if (modal) modal.classList.remove('hidden');
+    };
+
+    window.closeMemoModal = function() {
+      const modal = document.getElementById('memoModal');
+      if (modal) modal.classList.add('hidden');
     };
 
     window.selectUserIcon = function(icon) {
@@ -2030,23 +2188,43 @@
       const btnFemale = document.getElementById('btnIconFemale');
       
       if (currentUserIcon === '🙍🏻‍♂️') {
-        btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat is-active-blue";
-        btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
+        if (btnMale) btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat is-active-blue";
+        if (btnFemale) btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
       } else {
-        btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
-        btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat is-active-pink";
+        if (btnMale) btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
+        if (btnFemale) btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat is-active-pink";
       }
     }
 
     window.saveSettings = function() {
-      const lastName = document.getElementById('settingLastName').value;
-      const firstName = document.getElementById('settingFirstName').value;
+      const elLastName = document.getElementById('settingLastName');
+      const lastName = elLastName ? elLastName.value : '';
+      
+      const elFirstName = document.getElementById('settingFirstName');
+      const firstName = elFirstName ? elFirstName.value : '';
+      
+      const elRestStartHour = document.getElementById('settingRestStartHour');
+      const rsHour = elRestStartHour ? elRestStartHour.value : '';
+      
+      const elRestStartMinute = document.getElementById('settingRestStartMinute');
+      const rsMinute = elRestStartMinute ? elRestStartMinute.value : '';
       
       localStorage.setItem('lastName', lastName);
       localStorage.setItem('firstName', firstName);
       localStorage.setItem('userIcon', currentUserIcon);
       
-      loadUserName();
+      // 両方空白のまま保存された場合は、初期設定(12:30)に戻す
+      if (rsHour.trim() === '' && rsMinute.trim() === '') {
+        localStorage.removeItem('defaultRestStartHour');
+        localStorage.removeItem('defaultRestStartMinute');
+      } else {
+        const sh = parseInt(rsHour) || 0;
+        const sm = parseInt(rsMinute) || 0;
+        localStorage.setItem('defaultRestStartHour', sh);
+        localStorage.setItem('defaultRestStartMinute', sm);
+      }
+      
+      loadSettingsData();
       closeSettings();
       showMessage('⚙️ 設定を保存しました');
     };
@@ -2293,7 +2471,7 @@
 
       if (baseRest === 0) {
         setNoneRest();
-      } else if (baseRest === 60) {
+      } else if (baseRest === defaultRestTotal) {
         setNormalRest();
       } else {
         flexRestMinutes = baseRest;
