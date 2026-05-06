@@ -211,6 +211,28 @@
       z-index: 20;
     }
 
+    /* タイムカード表の共通設定 */
+    .timecard-table {
+      table-layout: fixed !important;
+      width: 100% !important;
+    }
+    .timecard-table th,
+    .timecard-table td {
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
+    /* PC・タブレット（481px以上）の列幅 */
+    @media (min-width: 481px) {
+      .timecard-table th:nth-child(1) { width: 17% !important; } /* 日付 */
+      .timecard-table th:nth-child(2) { width: 13% !important; } /* 出勤 */
+      .timecard-table th:nth-child(3) { width: 13% !important; } /* 退勤 */
+      .timecard-table th:nth-child(4) { width: 18% !important; } /* 休憩 */
+      .timecard-table th:nth-child(5) { width: 13% !important; } /* 勤務 */
+      .timecard-table th:nth-child(6) { width: 13% !important; } /* 残業 */
+      .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
+    }
+
     @media (max-width: 480px) {
       .header-area {
         padding-top: 16px !important;
@@ -252,13 +274,13 @@
         font-size: 0.65rem !important;
       }
       
-      /* 列幅の調整（休憩を少し狭め、残業を広げる） */
+      /* 列幅の調整（出勤・退勤・残業を広げ、休憩・勤務を詰め、全体を100%に最適化） */
       .timecard-table th:nth-child(1) { width: 21% !important; } /* 日付 */
-      .timecard-table th:nth-child(2) { width: 13.5% !important; } /* 出勤 */
-      .timecard-table th:nth-child(3) { width: 13.5% !important; } /* 退勤 */
-      .timecard-table th:nth-child(4) { width: 15.5% !important; } /* 休憩 (-1.5%) */
-      .timecard-table th:nth-child(5) { width: 12% !important; } /* 勤務 */
-      .timecard-table th:nth-child(6) { width: 11.5% !important; } /* 残業 (+1.5%) */
+      .timecard-table th:nth-child(2) { width: 15% !important; } /* 出勤 (+1%) */
+      .timecard-table th:nth-child(3) { width: 15% !important; } /* 退勤 (+1%) */
+      .timecard-table th:nth-child(4) { width: 13% !important; } /* 休憩 (-1%) */
+      .timecard-table th:nth-child(5) { width: 10% !important; } /* 勤務 (-1%) */
+      .timecard-table th:nth-child(6) { width: 13% !important; } /* 残業 */
       .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
       
       .timecard-btn {
@@ -443,7 +465,7 @@
         この勤務情報をどうしますか？
       </p>
       <div class="flex flex-col gap-5">
-        <button onclick="executeActionEdit()" class="w-full bg-blue-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-blue-700 active:translate-y-1 transition-colors">修正・メモ確認</button>
+        <button onclick="executeActionEdit()" class="w-full bg-blue-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-blue-700 active:translate-y-1 transition-colors">修正する</button>
         <button onclick="executeActionDelete()" class="w-full bg-red-600 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-red-700 active:translate-y-1 transition-colors">削除する</button>
         <button onclick="closeActionModal()" class="w-full bg-gray-500 text-white font-bold text-xl py-4 rounded-xl shadow-md hover:bg-gray-600 active:translate-y-1 transition-colors">キャンセル</button>
       </div>
@@ -1633,7 +1655,8 @@
       listContainer.innerHTML = `
         <div class="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed text-left mb-4 mt-2">
           ※ ℹ️未入力の日がある場合は「入力」ボタンを押してください<br>
-          ※ ✏️内容を変更したい場合は「修正」ボタンを押してください
+          ※ ✏️内容を変更したい場合は「修正」ボタンを押してください<br>
+          ※ 日付の横に📝がある場合、タップするとメモが確認できます
         </div>
         
         <h3 class="text-xl font-bold text-cyan-800 mb-2">前半（1日〜15日）</h3>
@@ -1706,11 +1729,11 @@
             let totalRest = baseRest + eveningVal;
             if (totalRest > 0) {
               if (baseRest > 0 && eveningVal > 0) {
+                // PCでも「分」の文字を省いて「昼60 / 夕30」に統一し、はみ出しを防止
                 restDisplayHtml = `
-                  <div class="flex flex-col items-center justify-center leading-tight whitespace-nowrap">
+                  <div class="flex flex-col items-center justify-center leading-tight whitespace-nowrap overflow-hidden text-ellipsis w-full">
                     <span>${totalRest}分</span>
-                    <span class="text-[10px] sm:text-xs text-gray-500 mt-0.5 hidden sm:block">昼${baseRest}分 / 夕${eveningVal}分</span>
-                    <span class="text-[9px] sm:text-xs text-gray-500 mt-0.5 sm:hidden tracking-tighter">昼${baseRest} / 夕${eveningVal}</span>
+                    <span class="text-[9px] sm:text-[11px] text-gray-500 mt-0.5 tracking-tighter">昼${baseRest} / 夕${eveningVal}</span>
                   </div>
                 `;
               } else if (baseRest > 0) {
@@ -1813,18 +1836,18 @@
         `;
       }
 
-      // どの画面幅でも確実に指定の幅になるよう、style属性で直接幅を固定します
+      // style属性の直接幅指定を削除し、PC・スマホそれぞれのCSSメディアクエリで適切な幅を適用
       return `
-        <table class="w-full text-left border-collapse timecard-table" style="table-layout: fixed;">
+        <table class="w-full text-left border-collapse timecard-table">
           <thead>
             <tr>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 21%;">日付</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13.5%;">出勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13.5%;">退勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 15.5%;">休憩</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 12%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11.5%;">残業</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">操作</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">日付</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">出勤</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">退勤</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">休憩</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">残業</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">操作</th>
             </tr>
           </thead>
           <tbody>
