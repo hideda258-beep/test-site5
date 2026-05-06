@@ -252,11 +252,11 @@
         font-size: 0.65rem !important;
       }
       
-      /* 列幅の調整（休憩を少し狭め、日付を広げる） */
-      .timecard-table th:nth-child(1) { width: 19% !important; } /* 日付 */
+      /* 列幅の調整（休憩を少し狭め、日付をさらに広げて被りを防止） */
+      .timecard-table th:nth-child(1) { width: 23% !important; } /* 日付 */
       .timecard-table th:nth-child(2) { width: 11% !important; } /* 出勤 */
       .timecard-table th:nth-child(3) { width: 11% !important; } /* 退勤 */
-      .timecard-table th:nth-child(4) { width: 22% !important; } /* 休憩 */
+      .timecard-table th:nth-child(4) { width: 18% !important; } /* 休憩 */
       .timecard-table th:nth-child(5) { width: 13% !important; } /* 勤務 */
       .timecard-table th:nth-child(6) { width: 11% !important; } /* 残業 */
       .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
@@ -1723,6 +1723,7 @@
             let dateCellHtml = '';
             if (record.memo && record.memo.trim() !== '') {
               // メモがある場合は、セル全体をボタンにしてタップ可能にする
+              // アイコンをright-0.5にして右端に寄せ、曜日との被りを防ぐ
               dateCellHtml = `
                 <td class="p-0 border ${tdBorder} text-center font-bold text-[11px] sm:text-sm ${dayColorClass} align-middle whitespace-nowrap tracking-tighter h-full">
                   <button type="button" onclick="openMemoModal('${record.date}')" class="w-full h-full min-h-[32px] sm:min-h-[44px] flex items-center justify-center relative focus:outline-none hover:bg-yellow-50 active:bg-yellow-100 transition-colors p-0.5 sm:p-2 rounded cursor-pointer">
@@ -1730,7 +1731,7 @@
                       <span>${day}日</span>
                       <span class="ml-0.5 sm:ml-1">(${dayOfWeek})</span>
                     </div>
-                    <span class="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 text-[10px] sm:text-[12px]">📝</span>
+                    <span class="absolute right-0.5 sm:right-2 top-1/2 transform -translate-y-1/2 text-[10px] sm:text-[12px]">📝</span>
                   </button>
                 </td>
               `;
@@ -1817,10 +1818,10 @@
         <table class="w-full text-left border-collapse timecard-table" style="table-layout: fixed;">
           <thead>
             <tr>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 19%;">日付</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 23%;">日付</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">出勤</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">退勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 22%;">休憩</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 18%;">休憩</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 13%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">残業</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">操作</th>
