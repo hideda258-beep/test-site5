@@ -252,13 +252,14 @@
         font-size: 0.65rem !important;
       }
       
-      .timecard-table th:nth-child(1) { width: 12%; }
-      .timecard-table th:nth-child(2) { width: 14%; }
-      .timecard-table th:nth-child(3) { width: 14%; }
-      .timecard-table th:nth-child(4) { width: 22%; }
-      .timecard-table th:nth-child(5) { width: 13%; }
-      .timecard-table th:nth-child(6) { width: 12%; }
-      .timecard-table th:nth-child(7) { width: 13%; }
+      /* 列幅の調整（休憩を広く、勤務を狭くする設定を強制反映） */
+      .timecard-table th:nth-child(1) { width: 16% !important; } /* 日付 */
+      .timecard-table th:nth-child(2) { width: 12% !important; } /* 出勤 */
+      .timecard-table th:nth-child(3) { width: 12% !important; } /* 退勤 */
+      .timecard-table th:nth-child(4) { width: 23% !important; } /* 休憩（広め） */
+      .timecard-table th:nth-child(5) { width: 13% !important; } /* 勤務（狭め） */
+      .timecard-table th:nth-child(6) { width: 11% !important; } /* 残業 */
+      .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
       
       .timecard-btn {
         padding: 6px 0 !important;
@@ -1619,10 +1620,10 @@
         if (dayRecords.length === 0) {
           rowsHtml += `
             <tr class="hover:bg-gray-50">
-              <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base ${dayColorClass} align-middle">
-                <div class="flex flex-col items-center justify-center leading-tight">
-                  <span class="mt-0.5">${day}日</span>
-                  <span class="text-[10px] sm:text-xs font-normal mt-1">(${dayOfWeek})</span>
+              <td class="p-0.5 sm:p-2 border ${tdBorder} text-center font-bold text-[11px] sm:text-sm ${dayColorClass} align-middle whitespace-nowrap tracking-tighter">
+                <div class="relative inline-flex items-center justify-center">
+                  <span>${day}日</span>
+                  <span class="ml-0.5 sm:ml-1">(${dayOfWeek})</span>
                 </div>
               </td>
               <td class="p-1 sm:p-2 border ${tdBorder} text-center text-gray-300 text-xs sm:text-sm align-middle">-</td>
@@ -1660,7 +1661,7 @@
                   <div class="flex flex-col items-center justify-center leading-tight whitespace-nowrap">
                     <span>${totalRest}分</span>
                     <span class="text-[10px] sm:text-xs text-gray-500 mt-0.5 hidden sm:block">昼${baseRest}分 / 夕${eveningVal}分</span>
-                    <span class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:hidden">昼${baseRest} / 夕${eveningVal}</span>
+                    <span class="text-[9px] sm:text-xs text-gray-500 mt-0.5 sm:hidden tracking-tighter">昼${baseRest}/夕${eveningVal}</span>
                   </div>
                 `;
               } else if (baseRest > 0) {
@@ -1670,12 +1671,19 @@
               }
             }
             
+            let memoIconHtml = '';
+            if (record.memo && record.memo.trim() !== '') {
+              // アイコンを絶対配置にして右側に置くことで、日にち・曜日の位置を全行で揃える
+              memoIconHtml = `<span class="absolute left-full ml-0.5 flex items-center justify-center" style="transform: translateY(0.5px);">📝</span>`;
+            }
+            
             rowsHtml += `
               <tr class="hover:bg-gray-50 bg-white">
-                <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base ${dayColorClass} align-middle">
-                  <div class="flex flex-col items-center justify-center leading-tight">
-                    <span class="mt-0.5">${day}日</span>
-                    <span class="text-[10px] sm:text-xs font-normal mt-1">(${dayOfWeek})</span>
+                <td class="p-0.5 sm:p-2 border ${tdBorder} text-center font-bold text-[11px] sm:text-sm ${dayColorClass} align-middle whitespace-nowrap tracking-tighter">
+                  <div class="relative inline-flex items-center justify-center">
+                    <span>${day}日</span>
+                    <span class="ml-0.5 sm:ml-1">(${dayOfWeek})</span>
+                    ${memoIconHtml}
                   </div>
                 </td>
                 <td class="p-1 sm:p-2 border ${tdBorder} text-center text-sm sm:text-base font-bold align-middle">${formatTimeColon(record.startTime)}</td>
@@ -1741,17 +1749,18 @@
         `;
       }
 
+      // どの画面幅でも確実に「休憩＞勤務」の幅になるよう、style属性で直接幅を固定します
       return `
-        <table class="w-full text-left border-collapse timecard-table">
+        <table class="w-full text-left border-collapse timecard-table" style="table-layout: fixed;">
           <thead>
             <tr>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">日付</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">出勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">退勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">休憩</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight">勤務<br><span class="text-[9px] sm:text-[10px] font-normal">(87h対象)</span></th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">残業</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm">操作</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 16%;">日付</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">出勤</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">退勤</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 25%;">休憩</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 13%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11%;">残業</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">操作</th>
             </tr>
           </thead>
           <tbody>
