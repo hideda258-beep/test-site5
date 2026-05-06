@@ -619,7 +619,7 @@
   <div id="memoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-[#fffdf0] p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm shadow-2xl transform transition-all text-center border-4 border-[#fde047] flex flex-col max-h-[85vh]">
       <h2 class="text-2xl font-bold mb-2 text-gray-800 tracking-tight">📝 メモ内容</h2>
-      <p id="memoModalDate" class="text-sm sm:text-base font-bold text-gray-500 mb-4">----年--月--日（-）</p>
+      <p id="memoModalDate" class="text-sm sm:text-base font-bold text-gray-500 mb-4">----年 --月--日 (-)</p>
       
       <div class="w-full border-t border-dashed border-yellow-400 mb-4"></div>
       
@@ -2188,8 +2188,8 @@
       const week = ['日', '月', '火', '水', '木', '金', '土'][d.getDay()];
       
       const dateEl = document.getElementById('memoModalDate');
-      // 年と月の間に半角スペースを追加
-      if (dateEl) dateEl.textContent = `${y}年 ${m}月${day}日（${week}）`;
+      // 全角カッコだと隙間が広くなりすぎるため、半角スペース＋半角カッコに変更して距離を最適化
+      if (dateEl) dateEl.textContent = `${y}年 ${m}月${day}日 (${week})`;
       
       const contentEl = document.getElementById('memoModalContent');
       if (contentEl) contentEl.textContent = record.memo;
