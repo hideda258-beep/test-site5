@@ -2188,7 +2188,8 @@
       const week = ['日', '月', '火', '水', '木', '金', '土'][d.getDay()];
       
       const dateEl = document.getElementById('memoModalDate');
-      if (dateEl) dateEl.textContent = `${y}年${m}月${day}日（${week}）`;
+      // 年と月の間に半角スペースを追加
+      if (dateEl) dateEl.textContent = `${y}年 ${m}月${day}日（${week}）`;
       
       const contentEl = document.getElementById('memoModalContent');
       if (contentEl) contentEl.textContent = record.memo;
