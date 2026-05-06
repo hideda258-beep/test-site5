@@ -429,7 +429,7 @@
 
       <button onclick="openSettings()" class="setting-btn bg-white/70 backdrop-blur-sm text-gray-600 border border-gray-300 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm sm:text-base font-bold shadow-sm hover:bg-white active:scale-95 transition-all flex items-center gap-1.5 sm:gap-2">
         <span class="text-base sm:text-lg">⚙️</span>
-        <span>設定</span>
+        <span>初期設定</span>
       </button>
     </div>
   </div>
@@ -577,7 +577,7 @@
 
   <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-6 sm:p-8 rounded-2xl w-11/12 max-w-sm max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all border-4 border-gray-300">
-      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center border-b-2 border-gray-200 pb-2">⚙️ 設定</h2>
+      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center border-b-2 border-gray-200 pb-2">⚙️ 初期設定</h2>
       
       <div class="mb-4 text-left">
         <label class="block text-sm font-bold text-gray-700 mb-2">姓</label>
@@ -663,7 +663,7 @@
 
         <!-- タイトル -->
         <div class="flex justify-center items-center text-[28px] sm:text-[34px] mb-3 mt-1">
-          <span class="mr-1 relative z-10" style="filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.2));">📋</span>
+          <span class="mr-2 relative z-10" style="filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.2));">📋</span>
           <div class="relative inline-block font-black tracking-[0.25em]" style="font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;">
             <span class="absolute left-0 top-0 text-[#fde047] select-none" style="-webkit-text-stroke: 8px #fde047; filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.35));">本日の勤務情報</span>
             <span class="absolute left-0 top-0 text-white select-none" style="-webkit-text-stroke: 3px white;">本日の勤務情報</span>
@@ -952,7 +952,7 @@
     let currentDateStr = '';
     let targetDeleteDate = null;
     let targetActionDate = null;
-    let currentUserIcon = '🙍🏻‍♂️';
+    let currentUserIcon = null;
     
     let pendingRecordData = null;
     
@@ -2113,7 +2113,7 @@
     function loadSettingsData() {
       const lastName = localStorage.getItem('lastName') || '';
       const firstName = localStorage.getItem('firstName') || '';
-      const icon = localStorage.getItem('userIcon') || '🙍🏻‍♂️';
+      const icon = localStorage.getItem('userIcon') || '';
       
       defaultRestTotal = 60; // 通常休憩の長さは60分固定
 
@@ -2130,7 +2130,7 @@
       
       const fullName = `${lastName} ${firstName}`.trim();
       if (fullName) {
-        nameDisplay.textContent = `${icon} ${fullName}`;
+        nameDisplay.textContent = icon ? `${icon} ${fullName}` : fullName;
         nameDisplay.style.display = 'flex'; 
       } else {
         nameDisplay.textContent = '';
@@ -2154,7 +2154,7 @@
       const elFirstName = document.getElementById('settingFirstName');
       if (elFirstName) elFirstName.value = localStorage.getItem('firstName') || '';
       
-      currentUserIcon = localStorage.getItem('userIcon') || '🙍🏻‍♂️';
+      currentUserIcon = localStorage.getItem('userIcon') || null;
       updateIconOptionsStyles();
       
       const savedStartH = localStorage.getItem('defaultRestStartHour');
@@ -2215,9 +2215,12 @@
       if (currentUserIcon === '🙍🏻‍♂️') {
         if (btnMale) btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat is-active-blue";
         if (btnFemale) btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
-      } else {
+      } else if (currentUserIcon === '🙍🏻‍♀️') {
         if (btnMale) btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
         if (btnFemale) btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat is-active-pink";
+      } else {
+        if (btnMale) btnMale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
+        if (btnFemale) btnFemale.className = "flex-1 py-3 px-2 text-lg sm:text-xl font-bold btn-3d-flat";
       }
     }
 
@@ -2236,7 +2239,7 @@
       
       localStorage.setItem('lastName', lastName);
       localStorage.setItem('firstName', firstName);
-      localStorage.setItem('userIcon', currentUserIcon);
+      localStorage.setItem('userIcon', currentUserIcon || '');
       
       // 両方空白のまま保存された場合は、初期設定(12:30)に戻す
       if (rsHour.trim() === '' && rsMinute.trim() === '') {
@@ -2251,7 +2254,7 @@
       
       loadSettingsData();
       closeSettings();
-      showMessage('⚙️ 設定を保存しました');
+      showMessage('⚙️ 初期設定を保存しました');
     };
 
     window.resetInputOnly = function() {
