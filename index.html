@@ -252,13 +252,13 @@
         font-size: 0.65rem !important;
       }
       
-      /* 列幅の調整（出勤・退勤を広げ、全体を100%に最適化） */
+      /* 列幅の調整（休憩を少し狭め、残業を広げる） */
       .timecard-table th:nth-child(1) { width: 21% !important; } /* 日付 */
-      .timecard-table th:nth-child(2) { width: 13.5% !important; } /* 出勤 (+2.5%) */
-      .timecard-table th:nth-child(3) { width: 13.5% !important; } /* 退勤 (+2.5%) */
-      .timecard-table th:nth-child(4) { width: 17% !important; } /* 休憩 (-1%) */
-      .timecard-table th:nth-child(5) { width: 12% !important; } /* 勤務 (-1%) */
-      .timecard-table th:nth-child(6) { width: 10% !important; } /* 残業 (-1%) */
+      .timecard-table th:nth-child(2) { width: 13.5% !important; } /* 出勤 */
+      .timecard-table th:nth-child(3) { width: 13.5% !important; } /* 退勤 */
+      .timecard-table th:nth-child(4) { width: 15.5% !important; } /* 休憩 (-1.5%) */
+      .timecard-table th:nth-child(5) { width: 12% !important; } /* 勤務 */
+      .timecard-table th:nth-child(6) { width: 11.5% !important; } /* 残業 (+1.5%) */
       .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
       
       .timecard-btn {
@@ -1710,7 +1710,7 @@
                   <div class="flex flex-col items-center justify-center leading-tight whitespace-nowrap">
                     <span>${totalRest}分</span>
                     <span class="text-[10px] sm:text-xs text-gray-500 mt-0.5 hidden sm:block">昼${baseRest}分 / 夕${eveningVal}分</span>
-                    <span class="text-[9px] sm:text-xs text-gray-500 mt-0.5 sm:hidden tracking-tighter">昼${baseRest}/夕${eveningVal}</span>
+                    <span class="text-[9px] sm:text-xs text-gray-500 mt-0.5 sm:hidden tracking-tighter">昼${baseRest} / 夕${eveningVal}</span>
                   </div>
                 `;
               } else if (baseRest > 0) {
@@ -1790,7 +1790,7 @@
            let o = r.overMinutes;
            if (o === undefined) {
              let base = r.baseRestMinutes !== undefined ? r.baseRestMinutes : r.restMinutes;
-             let eveningVal = r.eveningRestMinutes !== undefined ? record.eveningRestMinutes : (r.hasEveningRest ? 30 : 0);
+             let eveningVal = r.eveningRestMinutes !== undefined ? r.eveningRestMinutes : (r.hasEveningRest ? 30 : 0);
              const calc = calculateWorkTimes(r.startTime, r.endTime, base, eveningVal);
              w = calc.workMinutes;
              o = calc.overMinutes;
@@ -1821,9 +1821,9 @@
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 21%;">日付</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13.5%;">出勤</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13.5%;">退勤</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 17%;">休憩</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 15.5%;">休憩</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 12%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 10%;">残業</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11.5%;">残業</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">操作</th>
             </tr>
           </thead>
