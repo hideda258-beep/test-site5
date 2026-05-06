@@ -274,13 +274,13 @@
         font-size: 0.65rem !important;
       }
       
-      /* 列幅の調整（出勤・退勤を少し狭め、日付を広げて📝被りを防止） */
-      .timecard-table th:nth-child(1) { width: 22% !important; } /* 日付 (+3%) */
-      .timecard-table th:nth-child(2) { width: 13.5% !important; } /* 出勤 (-1.5%) */
-      .timecard-table th:nth-child(3) { width: 13.5% !important; } /* 退勤 (-1.5%) */
+      /* 列幅の調整（残業を狭め、勤務を広げて合計の改行を防止） */
+      .timecard-table th:nth-child(1) { width: 22% !important; } /* 日付 */
+      .timecard-table th:nth-child(2) { width: 13.5% !important; } /* 出勤 */
+      .timecard-table th:nth-child(3) { width: 13.5% !important; } /* 退勤 */
       .timecard-table th:nth-child(4) { width: 14% !important; } /* 休憩 */
-      .timecard-table th:nth-child(5) { width: 11% !important; } /* 勤務 */
-      .timecard-table th:nth-child(6) { width: 13% !important; } /* 残業 */
+      .timecard-table th:nth-child(5) { width: 12.5% !important; } /* 勤務 (+1.5%) */
+      .timecard-table th:nth-child(6) { width: 11.5% !important; } /* 残業 (-1.5%) */
       .timecard-table th:nth-child(7) { width: 13% !important; } /* 操作 */
       
       .timecard-btn {
@@ -1796,7 +1796,7 @@
         footerHtml = `
           <tr style="background-color: #fef9c3;">
             <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">小計</td>
-            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap align-middle" style="border: 2px solid #1e40af !important;">
+            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-800 whitespace-nowrap tracking-tighter align-middle" style="border: 2px solid #1e40af !important;">
               ${formatTimeColon(formatTimeShort(subTotalWorkMinutes))}
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
@@ -1825,7 +1825,7 @@
         footerHtml = `
           <tr style="background-color: #ffe4e6;">
             <td colspan="4" class="p-1 sm:p-2 border ${tdBorder} text-right text-xs sm:text-sm font-bold text-gray-800 whitespace-nowrap align-middle" style="padding-right: 12px !important;">合計</td>
-            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap align-middle" style="border: 3px solid #1e3a8a !important;">
+            <td class="p-1 sm:p-2 text-center font-bold text-sm sm:text-base text-blue-900 whitespace-nowrap tracking-tighter align-middle" style="border: 3px solid #1e3a8a !important;">
               ${formatTimeColon(formatTimeShort(totalWork))}
             </td>
             <td class="p-1 sm:p-2 border ${tdBorder} text-center font-bold text-sm sm:text-base text-[#d97706] whitespace-nowrap align-middle">
@@ -1845,8 +1845,8 @@
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13.5%;">出勤</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13.5%;">退勤</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 14%;">休憩</th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 11%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
-              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">残業</th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm leading-tight" style="width: 12.5%;">勤務<br><span class="text-[8px] sm:text-[9px] font-normal tracking-tighter">(87h対象)</span></th>
+              <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 11.5%;">残業</th>
               <th class="p-1 sm:p-2 border ${thClass} text-center text-xs sm:text-sm" style="width: 13%;">操作</th>
             </tr>
           </thead>
